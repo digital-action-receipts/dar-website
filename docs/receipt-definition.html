@@ -1,0 +1,193 @@
+# Receipt Definition (v1)
+
+A **Digital Action Receipt** is a neutral, append-only record that a specific action occurred inside a digital system, created at execution time and verifiable later.
+
+This document defines:
+- what a receipt is (and is not)
+- the minimum required fields
+- how verification works (at a high level, without crypto explanations)
+- practical integration and usage patterns
+
+---
+
+## 1) What a receipt is
+
+A receipt is a **fact record**, not an interpretation.
+
+It captures:
+- **what action occurred** (action summary)
+- **who/what performed it** (actor type + identifier)
+- **when it was recorded** (timestamp)
+- a **stable reference** (receipt_id)
+- a **verification reference** (verification URL)
+- a **tamper-evident linkage** to prior receipts (hash chain pointers)
+
+A receipt is designed to be:
+- **created at execution time**
+- **portable** (can be referenced in external systems)
+- **independently checkable** (verification does not require privileged access)
+
+---
+
+## 2) What a receipt is not
+
+Receipts are not:
+- a monitoring or analytics tool
+- an alerting system
+- a compliance guarantee
+- an explanation of *why* something happened
+- a replacement for a product’s workflow or permissions model
+- a log stream or verbose audit trail
+
+Receipts do not judge. They record.
+
+---
+
+## 3) When a receipt should be issued
+
+Issue a receipt for actions where “what happened?” becomes costly later.
+
+Common triggers:
+- identity & access changes (role grants, permission changes, admin actions)
+- approvals (financial approvals, policy approvals, release approvals)
+- infrastructure changes (deployments, config changes, automation execution)
+- data lifecycle events (exports, deletes, retention changes)
+- AI agent steps performed on behalf of a user or organization
+
+Rule of thumb:
+If an action can cause a dispute, audit question, or escalation — it’s a receipt candidate.
+
+---
+
+## 4) Canonical minimum fields (Receipt v1)
+
+A receipt MUST include the following minimum fields.
+
+### Required
+- `receipt_id` (string)
+  - Stable unique identifier for referencing.
+- `recorded_at` (timestamp)
+  - When the system recorded the receipt.
+- `actor_type` (enum)
+  - One of: `user`, `service`, `automation`, `agent`
+- `actor_id` (string)
+  - Identifier for the actor (user id, service name, agent id, etc.)
+- `action` (string)
+  - A simple verb: `approved`, `deployed`, `granted_access`, `ran_workflow`, etc.
+- `object_type` (string)
+  - The thing acted on: `loan_application`, `repository`, `account`, `policy`, etc.
+- `object_id` (string)
+  - Identifier for the object (internal id).
+- `verification_url` (string)
+  - URL where the receipt can be verified / referenced.
+- `event_hash` (string)
+  - Hash of this receipt’s canonical representation.
+- `prev_event_hash` (string | null)
+  - Hash pointer to the previous receipt in the chain.
+
+### Recommended (but still minimal)
+- `request_id` (string)
+  - The request correlation ID for support reconciliation.
+- `idempotency_key` (string)
+  - Prevent duplicates if the issuing call is retried.
+- `ref` (string)
+  - Optional stable pointer (ticket id, change request id, workflow run id).
+
+---
+
+## 5) Canonical action summary
+
+Receipts must be readable without exposing sensitive data.
+
+A canonical summary should:
+- be short and factual
+- avoid internal-only details
+- avoid interpretation
+
+Example:
+- “Deployment approved for repo X”
+- “Role change: analyst → admin”
+- “Workflow executed: nightly-reconciliation”
+
+---
+
+## 6) Verification model (high-level)
+
+Verification should answer a single question:
+**“Has this receipt been altered or removed from its chain?”**
+
+A verification page should display:
+- Verified status indicator
+- Receipt ID (monospace)
+- Recorded timestamp
+- Action summary
+- Actor type
+- Event hash and previous event hash (visible but not emphasized)
+- Link to previous receipt in the chain (when available)
+
+Verification should not imply:
+- compliance certification
+- correctness of business decisions
+- authorization validity (that’s the source system’s job)
+
+It only verifies the receipt integrity and chain linkage.
+
+---
+
+## 7) Receipt lifecycle and storage rules
+
+Receipts should be:
+- **append-only**
+- **immutable** once recorded
+- **never edited**
+- **never deleted** (if deactivation is required, issue a new receipt indicating deactivation)
+
+If a receipt must be corrected:
+- issue a *new* receipt describing the correction
+- reference the prior receipt id
+- keep both in the chain
+
+---
+
+## 8) Reference patterns (how receipts get used)
+
+Receipts work best when referenced in normal work artifacts:
+
+- Support ticket: paste `receipt_id` or `verification_url`
+- Audit note: cite receipt link + timestamp
+- Internal doc: include receipt references in decision records
+- Incident postmortem: attach the receipt chain segment
+
+Goal:
+Replace “screenshots + log archaeology” with a stable reference.
+
+---
+
+## 9) Minimal API response (developer-facing)
+
+A receipt creation call should return a tiny response:
+
+- `receipt_id`
+- `recorded_at`
+- `verification_url`
+- `request_id` (recommended)
+
+This keeps integration friction low and adoption high.
+
+---
+
+## 10) Design principles
+
+Receipts succeed when they feel:
+- neutral
+- low-risk
+- easy to integrate
+- easy to cite
+
+Receipts should not require:
+- adopting a new workflow
+- migrating systems
+- re-architecting logging
+- explaining cryptography to users
+
+The primitive should feel “inevitable”: small, durable, and referenceable.
