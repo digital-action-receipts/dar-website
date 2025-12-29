@@ -1,193 +1,124 @@
-# Receipt Definition (v1)
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Receipt Definition — Digital Action Receipts</title>
+  <meta name="description" content="Definition and properties of a Digital Action Receipt." />
+  <style>
+    :root{
+      --bg:#ffffff; --text:#0f172a; --muted:#475569; --line:#e2e8f0; --card:#f8fafc; --accent:#1d4ed8;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); line-height:1.55}
+    .wrap{max-width:920px; margin:0 auto; padding:34px 22px 64px}
+    header{display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding-bottom:16px; border-bottom:1px solid var(--line)}
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    h1{font-size:34px; letter-spacing:-0.02em; margin:22px 0 8px}
+    h2{font-size:18px; margin:26px 0 10px}
+    p{margin:0 0 10px}
+    .muted{color:var(--muted)}
+    .card{margin:14px 0; padding:14px; background:var(--card); border:1px solid var(--line); border-radius:14px}
+    pre{margin:10px 0 0; padding:12px; overflow:auto; background:#fff; border:1px solid var(--line); border-radius:12px; font-family:var(--mono); font-size:12px}
+    ul{margin:8px 0 0 18px}
+    li{margin:6px 0; color:var(--muted)}
+    .topnav{font-size:14px; color:var(--muted)}
+    .pill{display:inline-block; font-family:var(--mono); font-size:12px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px; background:#fff; margin-right:8px}
+    footer{padding-top:18px; border-top:1px solid var(--line); margin-top:28px; color:var(--muted); font-size:13px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="topnav">
+        <a href="../index.html">← Home</a>
+        <span class="muted"> / Receipt definition</span>
+      </div>
+      <div class="muted" style="font-size:13px">Digital Action Receipts</div>
+    </header>
 
-A **Digital Action Receipt** is a neutral, append-only record that a specific action occurred inside a digital system, created at execution time and verifiable later.
+    <h1>Receipt Definition</h1>
+    <p class="muted">
+      A <strong>Digital Action Receipt</strong> is a neutral, append-only, tamper-evident record that a specific digital action occurred,
+      issued at the moment the action executes, so it can be referenced and verified later.
+    </p>
 
-This document defines:
-- what a receipt is (and is not)
-- the minimum required fields
-- how verification works (at a high level, without crypto explanations)
-- practical integration and usage patterns
+    <div class="card">
+      <div class="pill">Goal</div>
+      <p class="muted" style="margin-top:8px">
+        Replace “post-hoc reconstruction” (logs + screenshots + narratives) with <strong>evidence created at decision time</strong>.
+        A receipt is the smallest possible proof artifact that can survive across systems, teams, and vendors.
+      </p>
+    </div>
 
----
+    <h2>Canonical properties</h2>
+    <ul>
+      <li><strong>Issued at execution time:</strong> created when the action happens (not hours/days later).</li>
+      <li><strong>Append-only:</strong> receipts are never edited; corrections happen by issuing a new receipt.</li>
+      <li><strong>Tamper-evident:</strong> integrity is verifiable via hashing/signatures and stable identifiers.</li>
+      <li><strong>Neutral:</strong> describes facts about an action without embedding internal logs or business logic.</li>
+      <li><strong>Referenceable:</strong> produces a stable receipt ID / verification link that can be pasted into tickets/docs.</li>
+      <li><strong>Independently verifiable:</strong> verification does not require privileged access to internal systems.</li>
+    </ul>
 
-## 1) What a receipt is
+    <h2>What a receipt proves</h2>
+    <ul>
+      <li>That an action was <strong>issued/executed</strong> at a specific time and context.</li>
+      <li>The <strong>who/what</strong> dimensions you choose to include (actor, action, object, scope).</li>
+      <li>The <strong>integrity</strong> of the receipt contents (that it has not been altered).</li>
+      <li>A stable <strong>reference</strong> that can be used in audits/disputes (“show me the proof”).</li>
+    </ul>
 
-A receipt is a **fact record**, not an interpretation.
+    <h2>What a receipt does not prove</h2>
+    <ul>
+      <li>That the action was <strong>correct</strong> (only that it occurred).</li>
+      <li>That the system is secure, compliant, or well-designed.</li>
+      <li>That the underlying data is true (only that this event record is intact).</li>
+      <li>That humans interpreted the event correctly (verification is about integrity, not meaning).</li>
+    </ul>
 
-It captures:
-- **what action occurred** (action summary)
-- **who/what performed it** (actor type + identifier)
-- **when it was recorded** (timestamp)
-- a **stable reference** (receipt_id)
-- a **verification reference** (verification URL)
-- a **tamper-evident linkage** to prior receipts (hash chain pointers)
+    <h2>Minimal receipt envelope</h2>
+    <p class="muted">A receipt should be small. The minimal envelope can look like this (fields are illustrative):</p>
+    <pre>{
+  "receipt_id": "rct_01J... (stable ID)",
+  "issued_at": "2025-12-29T18:23:11Z",
+  "actor": { "type": "user|service|agent", "id": "..." },
+  "action": "access.approved",
+  "object": { "type": "resource", "id": "payments" },
+  "ref": "internal-id-123",
+  "context": { "request_id": "...", "environment": "prod" },
+  "integrity": {
+    "hash": "sha256:...",
+    "signature": "optional"
+  },
+  "verification": { "url": "https://.../verify/rct_..." }
+}</pre>
 
-A receipt is designed to be:
-- **created at execution time**
-- **portable** (can be referenced in external systems)
-- **independently checkable** (verification does not require privileged access)
+    <h2>Design constraints (non-negotiables)</h2>
+    <ul>
+      <li><strong>No deletes / no edits.</strong> If something changes, issue a new receipt that references the prior receipt.</li>
+      <li><strong>Idempotency.</strong> The same action should not create duplicate receipts when retried.</li>
+      <li><strong>Stable identifiers.</strong> Receipt IDs must remain valid over time; avoid ephemeral links.</li>
+      <li><strong>Minimal surface area.</strong> Integrations should take minutes, not weeks.</li>
+    </ul>
 
----
+    <h2>Where receipts show up first</h2>
+    <ul>
+      <li>Access approvals and privileged actions</li>
+      <li>Deployments, config changes, automation events</li>
+      <li>Payment authorizations, limit changes, release approvals</li>
+      <li>Healthcare consent/access events</li>
+      <li>AI/agent actions executed on behalf of users/orgs</li>
+    </ul>
 
-## 2) What a receipt is not
+    <footer>
+      <div>Originated at EF Digital Sol • Independent Infrastructure Research</div>
+      <div><a href="./quickstart.html">Next: 5-minute quickstart →</a></div>
+    </footer>
+  </div>
+</body>
+</html>
 
-Receipts are not:
-- a monitoring or analytics tool
-- an alerting system
-- a compliance guarantee
-- an explanation of *why* something happened
-- a replacement for a product’s workflow or permissions model
-- a log stream or verbose audit trail
-
-Receipts do not judge. They record.
-
----
-
-## 3) When a receipt should be issued
-
-Issue a receipt for actions where “what happened?” becomes costly later.
-
-Common triggers:
-- identity & access changes (role grants, permission changes, admin actions)
-- approvals (financial approvals, policy approvals, release approvals)
-- infrastructure changes (deployments, config changes, automation execution)
-- data lifecycle events (exports, deletes, retention changes)
-- AI agent steps performed on behalf of a user or organization
-
-Rule of thumb:
-If an action can cause a dispute, audit question, or escalation — it’s a receipt candidate.
-
----
-
-## 4) Canonical minimum fields (Receipt v1)
-
-A receipt MUST include the following minimum fields.
-
-### Required
-- `receipt_id` (string)
-  - Stable unique identifier for referencing.
-- `recorded_at` (timestamp)
-  - When the system recorded the receipt.
-- `actor_type` (enum)
-  - One of: `user`, `service`, `automation`, `agent`
-- `actor_id` (string)
-  - Identifier for the actor (user id, service name, agent id, etc.)
-- `action` (string)
-  - A simple verb: `approved`, `deployed`, `granted_access`, `ran_workflow`, etc.
-- `object_type` (string)
-  - The thing acted on: `loan_application`, `repository`, `account`, `policy`, etc.
-- `object_id` (string)
-  - Identifier for the object (internal id).
-- `verification_url` (string)
-  - URL where the receipt can be verified / referenced.
-- `event_hash` (string)
-  - Hash of this receipt’s canonical representation.
-- `prev_event_hash` (string | null)
-  - Hash pointer to the previous receipt in the chain.
-
-### Recommended (but still minimal)
-- `request_id` (string)
-  - The request correlation ID for support reconciliation.
-- `idempotency_key` (string)
-  - Prevent duplicates if the issuing call is retried.
-- `ref` (string)
-  - Optional stable pointer (ticket id, change request id, workflow run id).
-
----
-
-## 5) Canonical action summary
-
-Receipts must be readable without exposing sensitive data.
-
-A canonical summary should:
-- be short and factual
-- avoid internal-only details
-- avoid interpretation
-
-Example:
-- “Deployment approved for repo X”
-- “Role change: analyst → admin”
-- “Workflow executed: nightly-reconciliation”
-
----
-
-## 6) Verification model (high-level)
-
-Verification should answer a single question:
-**“Has this receipt been altered or removed from its chain?”**
-
-A verification page should display:
-- Verified status indicator
-- Receipt ID (monospace)
-- Recorded timestamp
-- Action summary
-- Actor type
-- Event hash and previous event hash (visible but not emphasized)
-- Link to previous receipt in the chain (when available)
-
-Verification should not imply:
-- compliance certification
-- correctness of business decisions
-- authorization validity (that’s the source system’s job)
-
-It only verifies the receipt integrity and chain linkage.
-
----
-
-## 7) Receipt lifecycle and storage rules
-
-Receipts should be:
-- **append-only**
-- **immutable** once recorded
-- **never edited**
-- **never deleted** (if deactivation is required, issue a new receipt indicating deactivation)
-
-If a receipt must be corrected:
-- issue a *new* receipt describing the correction
-- reference the prior receipt id
-- keep both in the chain
-
----
-
-## 8) Reference patterns (how receipts get used)
-
-Receipts work best when referenced in normal work artifacts:
-
-- Support ticket: paste `receipt_id` or `verification_url`
-- Audit note: cite receipt link + timestamp
-- Internal doc: include receipt references in decision records
-- Incident postmortem: attach the receipt chain segment
-
-Goal:
-Replace “screenshots + log archaeology” with a stable reference.
-
----
-
-## 9) Minimal API response (developer-facing)
-
-A receipt creation call should return a tiny response:
-
-- `receipt_id`
-- `recorded_at`
-- `verification_url`
-- `request_id` (recommended)
-
-This keeps integration friction low and adoption high.
-
----
-
-## 10) Design principles
-
-Receipts succeed when they feel:
-- neutral
-- low-risk
-- easy to integrate
-- easy to cite
-
-Receipts should not require:
-- adopting a new workflow
-- migrating systems
-- re-architecting logging
-- explaining cryptography to users
-
-The primitive should feel “inevitable”: small, durable, and referenceable.
