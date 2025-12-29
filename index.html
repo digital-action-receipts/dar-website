@@ -1,133 +1,149 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Digital Action Receipts</title>
-
-  <meta name="description" content="Verifiable, append-only receipts for digital actions. Neutral proof that an action occurred — without logs, screenshots, or system coupling." />
-
+  <meta name="description" content="Verifiable, append-only receipts for digital actions." />
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                   Roboto, Helvetica, Arial, sans-serif;
-      background: #ffffff;
-      color: #111;
+    :root{
+      --bg:#ffffff;
+      --text:#0f172a;
+      --muted:#475569;
+      --line:#e2e8f0;
+      --card:#f8fafc;
+      --accent:#1d4ed8;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
-
-    .container {
-      max-width: 760px;
-      margin: 80px auto;
-      padding: 0 24px;
+    *{box-sizing:border-box}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font-family:var(--sans); line-height:1.45;
     }
-
-    h1 {
-      font-size: 42px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
+    .wrap{max-width:980px; margin:0 auto; padding:36px 22px 64px}
+    header{display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:18px; border-bottom:1px solid var(--line)}
+    nav a{color:var(--muted); text-decoration:none; margin-left:14px; font-size:14px}
+    nav a:hover{color:var(--text)}
+    .hero{padding:42px 0 18px}
+    h1{font-size:44px; letter-spacing:-0.02em; margin:0 0 10px}
+    .sub{font-size:18px; color:var(--muted); max-width:78ch; margin:0}
+    .def{margin-top:18px; padding:14px 14px; background:var(--card); border:1px solid var(--line); border-radius:14px}
+    .def code{font-family:var(--mono); font-size:13px; color:#111827}
+    section{padding:26px 0; border-top:1px solid var(--line)}
+    h2{font-size:18px; margin:0 0 10px}
+    p{margin:0 0 10px; color:var(--text)}
+    .muted{color:var(--muted)}
+    ul{margin:8px 0 0 18px; color:var(--text)}
+    li{margin:6px 0; color:var(--muted)}
+    .grid{display:grid; grid-template-columns:1fr; gap:14px}
+    @media (min-width:860px){ .grid{grid-template-columns:1fr 1fr} }
+    .card{border:1px solid var(--line); border-radius:14px; padding:16px; background:#fff}
+    .label{font-family:var(--mono); font-size:12px; color:var(--muted)}
+    pre{
+      margin:10px 0 0; padding:12px; overflow:auto;
+      background:var(--card); border:1px solid var(--line); border-radius:12px;
+      font-family:var(--mono); font-size:12px;
     }
-
-    .subtitle {
-      font-size: 18px;
-      color: #444;
-      margin-bottom: 48px;
-    }
-
-    h2 {
-      font-size: 22px;
-      margin-top: 48px;
-      margin-bottom: 12px;
-    }
-
-    p {
-      font-size: 16px;
-      line-height: 1.6;
-      color: #333;
-    }
-
-    ul {
-      margin-top: 12px;
-      padding-left: 20px;
-    }
-
-    li {
-      margin-bottom: 8px;
-    }
-
-    .divider {
-      margin: 48px 0;
-      border-top: 1px solid #eee;
-    }
-
-    .footer {
-      margin-top: 72px;
-      font-size: 14px;
-      color: #777;
-    }
+    a.inline{color:var(--accent); text-decoration:none}
+    a.inline:hover{text-decoration:underline}
+    footer{padding-top:22px; border-top:1px solid var(--line); margin-top:30px; color:var(--muted); font-size:13px}
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>Digital Action Receipts</h1>
-    <div class="subtitle">
-      Verifiable, append-only receipts for digital actions.
+  <div class="wrap">
+    <header>
+      <div>
+        <div style="font-weight:650">Digital Action Receipts</div>
+        <div class="muted" style="font-size:13px">A neutral infrastructure primitive</div>
+      </div>
+      <nav>
+        <a href="#definition">Definition</a>
+        <a href="#problem">Problem</a>
+        <a href="#how">How it works</a>
+        <a href="#use">Use cases</a>
+        <a href="#docs">Docs</a>
+      </nav>
+    </header>
+
+    <div class="hero" id="definition">
+      <h1>Digital Action Receipts</h1>
+      <p class="sub">Verifiable, append-only records of digital actions, generated at the moment they occur — designed to be referenced later during audits, disputes, and “what happened?” questions.</p>
+
+      <div class="def">
+        <div class="label">Canonical idea (minimal API surface)</div>
+        <pre>await issueReceipt({
+  actor: "system|service|agent|user",
+  action: "access.approved",
+  object: "resource:payments",
+  ref: "internal-id-123"
+})</pre>
+      </div>
     </div>
 
-    <p>
-      A <strong>Digital Action Receipt</strong> is neutral proof that a digital action occurred —
-      created at the moment of action, and verifiable later — without relying on logs,
-      screenshots, or tightly coupled systems.
-    </p>
+    <section id="problem">
+      <h2>The problem this addresses</h2>
+      <p class="muted">
+        Modern systems rely on logs, screenshots, and ad-hoc narratives to reconstruct what happened.
+        As automation and AI agents increase action volume and autonomy, post-hoc reconstruction becomes expensive, slow, and contested.
+      </p>
+      <ul>
+        <li>Logs are hard to correlate across services, teams, and vendors.</li>
+        <li>Evidence is not created at decision time; it’s pieced together later.</li>
+        <li>“Who did what, when, and under which authority?” becomes ambiguous.</li>
+      </ul>
+    </section>
 
-    <div class="divider"></div>
+    <section id="how">
+      <h2>How it works</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="label">1) Action happens</div>
+          <p class="muted">A deployment, approval, access change, payment authorization, or agent-run task occurs in an existing system.</p>
+        </div>
+        <div class="card">
+          <div class="label">2) Receipt created</div>
+          <p class="muted">At execution time, a small receipt is issued: neutral, tamper-evident, and referenceable.</p>
+        </div>
+        <div class="card">
+          <div class="label">3) Receipt referenced</div>
+          <p class="muted">Later, the receipt ID or verification link is pasted into a ticket, audit note, or internal doc.</p>
+        </div>
+        <div class="card">
+          <div class="label">4) Independently verified</div>
+          <p class="muted">Anyone can verify the receipt without privileged access to internal logs or systems.</p>
+        </div>
+      </div>
+    </section>
 
-    <h2>What this is</h2>
-    <ul>
-      <li>A minimal, append-only record of a digital action</li>
-      <li>Designed for systems, agents, and automation</li>
-      <li>Verifiable without privileged system access</li>
-      <li>Infrastructure — not a platform</li>
-    </ul>
+    <section id="use">
+      <h2>Where this shows up first</h2>
+      <ul>
+        <li><span style="color:var(--text)">Access & identity:</span> approvals, role changes, privileged actions</li>
+        <li><span style="color:var(--text)">Infrastructure:</span> deployments, config changes, automation events</li>
+        <li><span style="color:var(--text)">Financial ops:</span> payment authorization, limit changes, release approvals</li>
+        <li><span style="color:var(--text)">Healthcare workflows:</span> consent events, access grants, record actions</li>
+        <li><span style="color:var(--text)">AI agents:</span> actions taken on behalf of a user or organization</li>
+      </ul>
+    </section>
 
-    <h2>What this is not</h2>
-    <ul>
-      <li>A monitoring or analytics product</li>
-      <li>A compliance dashboard</li>
-      <li>A log aggregation system</li>
-      <li>A replacement for existing workflows</li>
-    </ul>
+    <section id="docs">
+      <h2>Docs</h2>
+      <p class="muted">
+        Next: publish a short “Receipt Definition” and a “5-minute integration” quickstart.
+        You can keep these as simple markdown pages inside the repo.
+      </p>
+      <ul>
+        <li><a class="inline" href="./docs/receipt-definition.html">Receipt definition</a> (create next)</li>
+        <li><a class="inline" href="./docs/quickstart.html">Quickstart</a> (create next)</li>
+        <li><a class="inline" href="./docs/threat-model.html">Threat model</a> (optional later)</li>
+      </ul>
+    </section>
 
-    <div class="divider"></div>
-
-    <h2>Why this exists</h2>
-    <p>
-      As automation and AI systems increase, the question
-      <em>“What actually happened?”</em> becomes harder to answer.
-    </p>
-
-    <p>
-      Digital Action Receipts provide a neutral, system-agnostic proof layer
-      that makes actions independently provable — across organizations,
-      systems, and time.
-    </p>
-
-    <div class="divider"></div>
-
-    <h2>Status</h2>
-    <p>
-      This site represents early reference materials and infrastructure
-      thinking. Additional documentation and specifications will be published
-      incrementally.
-    </p>
-
-    <div class="footer">
-      © Digital Action Receipts
-    </div>
+    <footer>
+      <div>Digital Action Receipts — neutral, append-only proof of action.</div>
+      <div class="muted">No dashboards. No monitoring. Just facts, referenceable later.</div>
+    </footer>
   </div>
 </body>
 </html>
-
