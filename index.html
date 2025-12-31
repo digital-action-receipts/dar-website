@@ -25,11 +25,16 @@
       color:var(--ink);
       font-family:var(--sans);
       line-height:1.55;
-    }
-    a{color:var(--accent); text-decoration:none}
-    a:hover{text-decoration:underline}
+    }a{
+  color:var(--accent);
+  text-decoration:none;
+}
+a:hover,
+a:focus,
+a:active{
+  text-decoration:none;
+}
     .wrap{max-width:980px; margin:0 auto; padding:0 20px}
-
     header{
       position:sticky; top:0;
       background:rgba(255,255,255,0.94);
