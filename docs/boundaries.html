@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>System Boundaries &amp; Non-Goals — Digital Action Receipts</title>
+  <meta name="description" content="Explicit system boundaries and non-goals for Digital Action Receipts. Clarifies what DAR does not do to prevent misinterpretation and scope creep." />
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --ink:#0b1220;
+      --muted:#4a5568;
+      --line:#e6eaf0;
+      --panel:#f7f9fc;
+      --accent:#2b5fd9;
+      --nav:#0f172a;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:var(--sans);
+      line-height:1.55;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:980px; margin:0 auto; padding:0 20px}
+    header{
+      position:sticky; top:0;
+      background:rgba(255,255,255,0.94);
+      backdrop-filter:saturate(180%) blur(10px);
+      border-bottom:1px solid var(--line);
+      z-index:10;
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:16px;
+    }
+    .brand{
+      display:flex; flex-direction:column; gap:2px;
+    }
+    .brand strong{font-size:14px; color:var(--nav)}
+    .brand span{font-size:12px; color:var(--muted)}
+    nav ul{
+      list-style:none; margin:0; padding:0;
+      display:flex; gap:16px; flex-wrap:wrap;
+      font-size:13px;
+    }
+    nav a{color:var(--nav)}
+    nav a[aria-current="page"]{
+      color:var(--ink);
+      text-decoration:none;
+      border-bottom:2px solid var(--line);
+      padding-bottom:2px;
+    }
+    main{padding:42px 0 64px}
+    h1{
+      margin:0 0 10px;
+      font-size:38px;
+      letter-spacing:-0.6px;
+      line-height:1.14;
+    }
+    .lede{
+      margin:0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:820px;
+    }
+    section{
+      padding:28px 0;
+      border-top:1px solid var(--line);
+    }
+    section:first-of-type{border-top:none}
+    h2{
+      margin:0 0 10px;
+      font-size:16px;
+      color:var(--nav);
+    }
+    .bullets{
+      margin:10px 0 0;
+      padding-left:18px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#fff;
+      padding:14px;
+    }
+    .callout{
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:var(--panel);
+      padding:14px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .callout b{color:var(--ink)}
+    .kicker{
+      font-size:12px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      margin-bottom:6px;
+    }
+    .doclinks{
+      margin:12px 0 0;
+      display:flex; gap:14px; flex-wrap:wrap;
+      font-size:13px;
+    }
+    .doclinks a{
+      padding:8px 10px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      color:var(--nav);
+      background:#fff;
+    }
+    footer{
+      border-top:1px solid var(--line);
+      padding:26px 0 36px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .foot{
+      display:flex; justify-content:space-between; flex-wrap:wrap;
+      gap:12px;
+    }
+    @media (max-width:860px){
+      h1{font-size:30px}
+      .grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">
+        <strong>Digital Action Receipts</strong>
+        <span>Neutral infrastructure primitive</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/definition.html">Definition</a></li>
+          <li><a href="/#problem">Problem</a></li>
+          <li><a href="/#how">How it works</a></li>
+          <li><a href="/#usecases">Use cases</a></li>
+          <li><a href="/boundaries.html" aria-current="page">Boundaries</a></li>
+          <li><a href="/#docs">Docs</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <h1>System Boundaries &amp; Non-Goals</h1>
+    <p class="lede">
+      Digital Action Receipts are intentionally narrow. This page states, explicitly, what the system does not do.
+      These boundaries protect correctness, prevent scope creep, and reduce misinterpretation.
+    </p>
+
+    <div class="doclinks">
+      <a href="/definition.html">Back to Definition</a>
+      <a href="/#docs">Docs index</a>
+    </div>
+  </section>
+
+  <section id="boundary-statement">
+    <h2>Boundary statement</h2>
+    <div class="callout">
+      <b>Digital Action Receipts record occurrence, not outcomes.</b>
+      They generate a verifiable, append-only record at the Moment of Action, and support Verification of integrity only.
+      They do not explain, judge, validate, enforce, or optimize decisions.
+    </div>
+
+    <ul class="bullets">
+      <li>The system’s purpose is to create a referenceable record that an action occurred at a particular time.</li>
+      <li>Verification confirms whether a receipt has been altered or mismatched.</li>
+      <li>Anything involving correctness, justification, or enforcement is out of scope.</li>
+    </ul>
+  </section>
+
+  <section id="non-goals">
+    <h2>Non-goals (explicit exclusions)</h2>
+
+    <div class="grid">
+      <div class="card">
+        <div class="kicker">Not a logging system</div>
+        Digital Action Receipts do not replace operational logs or application logging. They are not intended for
+        debugging, observability, or performance tracing.
+      </div>
+
+      <div class="card">
+        <div class="kicker">Not an audit trail</div>
+        Digital Action Receipts are not designed as a complete historical narrative of system behavior. They do not
+        guarantee completeness, coverage, or policy alignment.
+      </div>
+
+      <div class="card">
+        <div class="kicker">Not a compliance tool</div>
+        Digital Action Receipts do not determine compliance, produce compliance conclusions, or certify adherence to
+        regulations or internal controls.
+      </div>
+
+      <div class="card">
+        <div class="kicker">Not decision validation</div>
+        Verification is not correctness validation. A verified receipt only indicates integrity of the recorded receipt,
+        not that the action was correct or permitted.
+      </div>
+
+      <div class="card">
+        <div class="kicker">Not explainability</div>
+        Digital Action Receipts do not generate explanations, rationales, summaries, or narratives about why an action
+        occurred or what the actor intended.
+      </div>
+
+      <div class="card">
+        <div class="kicker">Not enforcement</div>
+        Digital Action Receipts do not block actions, approve actions, deny actions, or enforce rules. They are not a
+        gatekeeper or policy engine.
+      </div>
+
+      <div class="card">
+        <div class="kicker">Not monitoring or analytics</div>
+        Digital Action Receipts do not provide dashboards, trend monitoring, anomaly detection, or behavioral scoring.
+        Any analytics overlays are out of scope for this primitive.
+      </div>
+
+      <div class="card">
+        <div class="kicker">Not reconstruction</div>
+        The system is not designed to reconstruct internal state or infer what “really happened” beyond the receipt.
+        The receipt is generated at the Moment of Action, not reconstructed after the fact.
+      </div>
+    </div>
+  </section>
+
+  <section id="integrity-only">
+    <h2>Integrity-only verification</h2>
+
+    <div class="callout">
+      <b>Verification confirms integrity only.</b> No correctness • No intent • No enforcement.
+    </div>
+
+    <ul class="bullets">
+      <li>Verification determines whether a receipt appears altered or mismatched relative to its Integrity Information.</li>
+      <li>Verification does not validate that the action should have happened, was justified, or produced a correct outcome.</li>
+      <li>Verification does not authenticate identity beyond what the Action-Originating System represents.</li>
+    </ul>
+  </section>
+
+  <section id="coexistence">
+    <h2>Coexistence with existing records</h2>
+    <ul class="bullets">
+      <li>Digital Action Receipts coexist with logs, metrics, and audit processes.</li>
+      <li>Operational records may provide context; receipts provide a stable reference point for “this occurred.”</li>
+      <li>The system does not require replacing existing tooling or process.</li>
+    </ul>
+  </section>
+
+  <section id="scope-control">
+    <h2>Scope control (what would be separate invention families)</h2>
+    <div class="callout">
+      Extensions that introduce event detection, monitoring, policy evaluation, or automated interpretation are intentionally separate.
+      If included at all, they should be treated as separate invention families and separate product surfaces.
+    </div>
+
+    <ul class="bullets">
+      <li>Event-triggering systems that decide when to trigger a receipt</li>
+      <li>Boundary/rule receipts (BRR) that formalize rule boundaries or governance events</li>
+      <li>Analytics overlays, scoring, monitoring, or anomaly detection</li>
+      <li>Decision explanation layers or narrative generation</li>
+    </ul>
+  </section>
+
+  <section id="related">
+    <h2>Related documents</h2>
+    <ul class="bullets">
+      <li><a href="/definition.html">Definition</a></li>
+      <li><a href="/#docs">Docs index</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div><strong>Digital Action Receipts ©</strong> — neutral, append-only proof of action.</div>
+      <div>Originated at EF Digital Sol · Independent infrastructure research</div>
+    </div>
+    <div style="margin-top:10px;">
+      No dashboards. No monitoring. Just facts, referenceable later.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
