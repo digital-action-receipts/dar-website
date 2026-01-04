@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Action Domains — Digital Action Receipts (DAR)</title>
-  <meta name="description" content="Where Digital Action Receipts (DAR) apply: audit, disputes, AI accountability, infrastructure changes, access decisions, agent actions, claims, and investigations." />
+  <meta name="description" content="Action Domains describe where Digital Action Receipts (DAR) provide durable, customer-custodied evidence of digital actions—without monitoring, enforcement, or decision logic." />
 
   <style>
     :root{
@@ -19,7 +19,6 @@
       --radius:16px;
       --radius2:22px;
       --max: 1040px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
     *{ box-sizing:border-box; }
@@ -97,9 +96,7 @@
       font-weight:650;
       color:var(--text);
     }
-    .menuIcon{
-      width:18px; height:12px; position:relative;
-    }
+    .menuIcon{ width:18px; height:12px; position:relative; }
     .menuIcon span{
       position:absolute; left:0; right:0;
       height:2px; border-radius:2px;
@@ -160,7 +157,7 @@
     .lede{
       color:var(--muted);
       font-size:18px;
-      max-width:74ch;
+      max-width:80ch;
     }
 
     .card{
@@ -170,68 +167,119 @@
       padding:18px;
       box-shadow: var(--shadow);
     }
-    .card h2{ margin:0 0 10px; font-size:18px; letter-spacing:-0.01em; }
-    .small{ font-size:13px; color:var(--muted2); }
-    .callout{
-      background:linear-gradient(180deg, rgba(15,23,42,0.03), rgba(15,23,42,0.015));
-      border:1px solid rgba(15,23,42,0.08);
-      border-radius:var(--radius2);
-      padding:16px;
-    }
-    .callout strong{ display:block; margin-bottom:6px; }
-    .section{ margin-top:18px; }
 
-    /* Domain grid */
-    .domains{
+    .section{ margin-top:18px; }
+    .section h2{
+      margin:0 0 10px;
+      font-size:18px;
+      letter-spacing:-0.01em;
+    }
+    .small{ font-size:13px; color:var(--muted2); }
+
+    .grid2{
       margin-top:18px;
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:14px;
+      align-items:start;
     }
     @media (max-width:900px){
-      .domains{ grid-template-columns:1fr; }
+      .grid2{ grid-template-columns:1fr; }
     }
-    .domain{
+
+    .grid3{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    @media (max-width:900px){
+      .grid3{ grid-template-columns:1fr; }
+    }
+
+    ul{ margin:10px 0 0 18px; color:var(--muted); }
+    li{ margin:6px 0; }
+
+    .pillRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .pill{
       background:#fff;
       border:1px solid var(--line);
-      border-radius:18px;
-      padding:16px;
-    }
-    .domain h3{
-      margin:0 0 8px;
-      font-size:18px;
-      letter-spacing:-0.01em;
-    }
-    .domain p{
-      margin:0 0 10px;
-      color:var(--muted);
-    }
-    .tags{ display:flex; flex-wrap:wrap; gap:8px; }
-    .tag{
-      background:var(--chip);
-      border:1px solid var(--line);
       border-radius:999px;
-      padding:6px 10px;
-      font-size:12.5px;
+      padding:7px 10px;
+      font-size:13px;
       font-weight:650;
       color:var(--muted);
     }
 
-    /* Anchor list */
-    .quickNav{
+    .callout{
+      background:linear-gradient(180deg, rgba(37,99,235,0.06), rgba(14,165,233,0.04));
+      border:1px solid rgba(37,99,235,0.14);
+      border-radius:var(--radius2);
+      padding:16px;
+    }
+    .callout strong{ display:block; margin-bottom:6px; }
+
+    .domainCard{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:16px;
+      box-shadow: 0 8px 24px rgba(2,6,23,0.05);
       display:flex;
-      flex-wrap:wrap;
+      flex-direction:column;
       gap:10px;
+    }
+    .domainTitle{
+      font-weight:800;
+      letter-spacing:-0.01em;
+      font-size:16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .badge{
+      font-size:12px;
+      font-weight:750;
+      color:var(--muted);
+      background:var(--chip);
+      border:1px solid var(--line);
+      padding:6px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .domainDesc{ color:var(--muted); font-size:14px; }
+    .domainList{ margin:0; padding-left:18px; color:var(--muted); font-size:14px; }
+    .domainList li{ margin:5px 0; }
+
+    .ctaRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
       margin-top:14px;
     }
-    .quickNav a{
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
       border:1px solid var(--line);
       background:#fff;
-      padding:10px 12px;
-      border-radius:999px;
-      font-weight:650;
-      color:var(--muted);
-      font-size:13px;
+      font-weight:700;
+      color:var(--text);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(37,99,235,0.12), rgba(14,165,233,0.08));
+      border-color: rgba(37,99,235,0.18);
     }
 
     /* Footer */
@@ -263,11 +311,11 @@
         Menu
       </button>
 
+      <!-- Integration removed -->
       <div class="navlinks" aria-label="Primary navigation">
         <a href="index.html">Home</a>
         <a href="definition.html">Definition</a>
         <a class="active" href="action-domains.html">Action Domains</a>
-        <a href="integration.html">Integration</a>
         <a href="principles.html">Principles</a>
         <a href="docs.html">Docs</a>
       </div>
@@ -278,7 +326,6 @@
         <a href="index.html">Home</a>
         <a href="definition.html">Definition</a>
         <a class="active" href="action-domains.html">Action Domains</a>
-        <a href="integration.html">Integration</a>
         <a href="principles.html">Principles</a>
         <a href="docs.html">Docs</a>
       </div>
@@ -286,160 +333,161 @@
   </div>
 
   <main class="wrap">
-    <div class="kicker">Where DAR applies</div>
-    <h1>Action Domains</h1>
+    <div class="kicker">Action Domains</div>
+    <h1>Where DAR applies</h1>
     <p class="lede">
-      DAR is a universal evidence layer: it emits receipts after actions commit (non-blocking),
-      and stores them in customer-controlled, immutable/append-only storage. These domains represent
-      the highest-leverage places where disputes, audits, and investigations require durable proof.
+      DAR is most valuable anywhere a digital action can be questioned later.
+      These domains describe recurring dispute patterns—not limits.
+      The goal is simple: preserve durable, customer-custodied proof that an action occurred, at the time it occurred,
+      without turning DAR into monitoring, enforcement, or decision logic.
     </p>
 
     <div class="section callout">
-      <strong>Principle</strong>
+      <strong>The philosophy</strong>
       <div class="small">
-        DAR is not monitoring. DAR is not decision logic. DAR is not a system of record.
-        DAR is evidence — issued at action time, held under customer custody, and verified later.
+        In audits, disputes, and investigations, narratives drift and logs are contested.
+        DAR exists so a neutral evidence artifact can be referenced later—independent of vendor databases or post-hoc reconstruction.
+      </div>
+      <div class="pillRow" style="margin-top:12px;">
+        <span class="pill">issued at action time</span>
+        <span class="pill">tamper-evident</span>
+        <span class="pill">customer custody</span>
+        <span class="pill">independently verifiable</span>
+      </div>
+    </div>
+
+    <div class="section grid2">
+      <div class="card">
+        <h2>DAR, in one sentence</h2>
+        <p class="small">
+          A Digital Action Receipt is a small, durable evidence artifact that proves a specific action occurred at a specific time,
+          tied to a stable reference and any necessary context references—without storing sensitive payloads by default.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>What this page avoids</h2>
+        <p class="small">
+          This page is intentionally conceptual. It does not publish implementation details, schemas, or infrastructure patterns.
+          DAR can be integrated in many ways; the invariant is the evidence boundary and customer custody.
+        </p>
       </div>
     </div>
 
     <div class="section">
-      <div class="card">
-        <h2>Quick map</h2>
-        <p class="small">
-          Each domain below is a repeatable pattern: a high-stakes action occurs → a receipt is emitted → custody remains with the customer.
-        </p>
-        <div class="quickNav" aria-label="Jump to a domain">
-          <a href="#nonrepudiation">Non-repudiation</a>
-          <a href="#access">Access decisions</a>
-          <a href="#state">State & config changes</a>
-          <a href="#agents">Agent actions</a>
-          <a href="#ai">AI accountability</a>
-          <a href="#claims">Insurance & claims</a>
-          <a href="#audits">Audit continuity</a>
-          <a href="#disputes">Disputes & investigations</a>
+      <h2>Core domains</h2>
+      <div class="grid3">
+
+        <a class="domainCard" href="domain-nonrepudiation.html" aria-label="Non-repudiation domain page">
+          <div class="domainTitle">
+            Non-repudiation
+            <span class="badge">Approvals & authorizations</span>
+          </div>
+          <div class="domainDesc">
+            Durable proof of “who approved what, when” for high-stakes actions where denial or ambiguity is common.
+          </div>
+          <ul class="domainList">
+            <li>loan approvals, exception grants</li>
+            <li>payment releases, policy overrides</li>
+            <li>contract acceptance, consent capture</li>
+          </ul>
+        </a>
+
+        <a class="domainCard" href="domain-access.html" aria-label="Access decisions domain page">
+          <div class="domainTitle">
+            Access decisions
+            <span class="badge">Identity & entitlements</span>
+          </div>
+          <div class="domainDesc">
+            Proof of access grants/denials and privilege changes that become critical during incidents and reviews.
+          </div>
+          <ul class="domainList">
+            <li>role changes, admin actions</li>
+            <li>break-glass access events</li>
+            <li>privileged session approvals</li>
+          </ul>
+        </a>
+
+        <a class="domainCard" href="domain-state.html" aria-label="State and configuration domain page">
+          <div class="domainTitle">
+            State & configuration
+            <span class="badge">Version & condition disputes</span>
+          </div>
+          <div class="domainDesc">
+            Proof of what was in effect when an action occurred—helpful when systems evolve and memories diverge.
+          </div>
+          <ul class="domainList">
+            <li>policy / configuration changes</li>
+            <li>feature flag toggles</li>
+            <li>release promotions and rollbacks</li>
+          </ul>
+        </a>
+
+        <a class="domainCard" href="domain-agents.html" aria-label="Agent actions domain page">
+          <div class="domainTitle">
+            Agent actions
+            <span class="badge">Autonomy & accountability</span>
+          </div>
+          <div class="domainDesc">
+            As agents act on behalf of organizations, DAR provides neutral proof of what actions were taken and when.
+          </div>
+          <ul class="domainList">
+            <li>agent-run actions and tool outcomes</li>
+            <li>constraint checks and releases</li>
+            <li>executed transactions and settlements</li>
+          </ul>
+        </a>
+
+        <a class="domainCard" href="domain-audit.html" aria-label="Audit continuity domain page">
+          <div class="domainTitle">
+            Audit continuity
+            <span class="badge">Portable evidence</span>
+          </div>
+          <div class="domainDesc">
+            Receipts remain useful across migrations, refactors, and vendor changes—because the evidence stays with the customer.
+          </div>
+          <ul class="domainList">
+            <li>audit timelines & control evidence</li>
+            <li>incident postmortems</li>
+            <li>cross-team dispute resolution</li>
+          </ul>
+        </a>
+
+        <div class="domainCard" role="note" aria-label="More domains note">
+          <div class="domainTitle">
+            More domains
+            <span class="badge">Expands over time</span>
+          </div>
+          <div class="domainDesc">
+            DAR applies anywhere the organization later needs defensible proof of digital actions, especially across systems and vendors.
+          </div>
+          <ul class="domainList">
+            <li>financial operations & claims</li>
+            <li>compliance attestations</li>
+            <li>digital-to-physical access controls</li>
+          </ul>
         </div>
+
       </div>
-    </div>
-
-    <div class="domains">
-      <section class="domain" id="nonrepudiation">
-        <h3>Non-repudiation for high-stakes actions</h3>
-        <p>
-          When an action is later denied (“we didn’t do that”), DAR provides durable proof bound to actor, action, object, time, and context references.
-        </p>
-        <div class="tags">
-          <span class="tag">approvals</span>
-          <span class="tag">authorizations</span>
-          <span class="tag">sign-offs</span>
-          <span class="tag">contract execution</span>
-        </div>
-      </section>
-
-      <section class="domain" id="access">
-        <h3>Access & entitlement decisions</h3>
-        <p>
-          Proof of access grants/denials, role changes, and privileged actions — without turning DAR into a monitoring system.
-        </p>
-        <div class="tags">
-          <span class="tag">IAM</span>
-          <span class="tag">privileged access</span>
-          <span class="tag">role changes</span>
-          <span class="tag">admin actions</span>
-        </div>
-      </section>
-
-      <section class="domain" id="state">
-        <h3>State, config, and infrastructure changes</h3>
-        <p>
-          Many disputes boil down to: “that config/policy wasn’t in effect.” DAR anchors version references at the time of change.
-        </p>
-        <div class="tags">
-          <span class="tag">CI/CD</span>
-          <span class="tag">policy versions</span>
-          <span class="tag">config refs</span>
-          <span class="tag">change management</span>
-        </div>
-      </section>
-
-      <section class="domain" id="agents">
-        <h3>Autonomous agent actions</h3>
-        <p>
-          Agents act, and later humans must explain. DAR provides receipts for runs, inferences, constraints, and executed transactions.
-        </p>
-        <div class="tags">
-          <span class="tag">agent runs</span>
-          <span class="tag">tool calls</span>
-          <span class="tag">transactions</span>
-          <span class="tag">policy/budget refs</span>
-        </div>
-      </section>
-
-      <section class="domain" id="ai">
-        <h3>AI accountability & traceability</h3>
-        <p>
-          Receipts bind an outcome to referenced model/version/policy context—supporting accountability without retaining sensitive prompts or data.
-        </p>
-        <div class="tags">
-          <span class="tag">model_version_hash</span>
-          <span class="tag">policy_version_ref</span>
-          <span class="tag">inference performed</span>
-          <span class="tag">auditability</span>
-        </div>
-      </section>
-
-      <section class="domain" id="claims">
-        <h3>Insurance, underwriting & claims</h3>
-        <p>
-          For claims and disputes, DAR can show that reasonable process controls existed and what was true at the moment decisions were made.
-        </p>
-        <div class="tags">
-          <span class="tag">claims evidence</span>
-          <span class="tag">process defensibility</span>
-          <span class="tag">underwriting decisions</span>
-          <span class="tag">custody</span>
-        </div>
-      </section>
-
-      <section class="domain" id="audits">
-        <h3>Audit continuity (evidence survives)</h3>
-        <p>
-          Audit asks: “prove it.” DAR gives a portable evidence layer that remains valid even if the vendor’s database is unavailable or changed.
-        </p>
-        <div class="tags">
-          <span class="tag">SOC</span>
-          <span class="tag">compliance</span>
-          <span class="tag">control evidence</span>
-          <span class="tag">immutability</span>
-        </div>
-      </section>
-
-      <section class="domain" id="disputes">
-        <h3>Disputes, investigations, and litigation support</h3>
-        <p>
-          When narratives diverge, receipts reduce ambiguity by anchoring a stable timeline of facts—what occurred, when, and under which references.
-        </p>
-        <div class="tags">
-          <span class="tag">timeline</span>
-          <span class="tag">chain of custody</span>
-          <span class="tag">verification</span>
-          <span class="tag">digital evidence</span>
-        </div>
-      </section>
     </div>
 
     <div class="section card">
-      <h2>Domain pattern (reusable)</h2>
-      <p class="small">
-        Most domains share the same mechanics. The only difference is the event taxonomy and what context references matter.
-      </p>
-      <div class="small" style="margin-top:10px; font-family:var(--mono); background:#fff; border:1px solid var(--line); border-radius:18px; padding:14px; overflow:auto;">
-<code>
-1) Action commits (approval / change / inference / transaction)
-2) Receipt emitted (non-blocking) with stable reference + context refs
-3) Receipt stored append-only in customer-controlled immutable storage
-4) Later: receipts retrieved and verified for audit / dispute / investigation
-</code>
+      <h2>What these domains share</h2>
+      <ul>
+        <li><strong>Dispute pressure</strong> — the action is likely to be questioned later.</li>
+        <li><strong>Cross-boundary reality</strong> — multiple systems, teams, vendors, or stakeholders.</li>
+        <li><strong>Time sensitivity</strong> — evidence is strongest when emitted at the moment of action.</li>
+        <li><strong>Misuse resistance</strong> — DAR must not become monitoring, enforcement, or an explanation layer.</li>
+      </ul>
+
+      <div class="ctaRow">
+        <a class="btn primary" href="definition.html">Read the Definition</a>
+        <a class="btn" href="principles.html">See Principles</a>
       </div>
+
+      <p class="small" style="margin-top:10px;">
+        Note: DAR intentionally emphasizes evidence boundaries and custody. Detailed technical guidance belongs in private docs.
+      </p>
     </div>
 
     <footer class="footer">
@@ -452,7 +500,6 @@
       <div style="display:flex; gap:14px; flex-wrap:wrap;">
         <a href="definition.html">Definition</a>
         <a href="action-domains.html">Action Domains</a>
-        <a href="integration.html">Integration</a>
         <a href="principles.html">Principles</a>
         <a href="docs.html">Docs</a>
       </div>
