@@ -1,258 +1,447 @@
-<!-- FILE: index.html (DROP-IN, UPDATED) -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Digital Action Receipts</title>
-  <meta name="description" content="Verifiable, append-only receipts for digital actions—issued at execution time and preserved as tamper-evident records." />
-  <meta name="color-scheme" content="light" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Digital Action Receipts (DAR) — verifiable, append-only evidence for digital actions, issued at execution time." />
+  <title>Digital Action Receipts (DAR) — Verifiable receipts for digital actions</title>
+
   <style>
     :root{
-      --bg:#ffffff; --text:#0f172a; --muted:#475569; --line:#e2e8f0; --card:#f8fafc; --accent:#1d4ed8;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      --radius:14px;
+      --bg:#ffffff;
+      --text:#0f172a;          /* slate-900 */
+      --muted:#475569;         /* slate-600 */
+      --muted2:#64748b;        /* slate-500 */
+      --border:#e2e8f0;        /* slate-200 */
+      --soft:#f8fafc;          /* slate-50 */
+      --link:#2563eb;          /* blue-600 */
+      --chip:#eef2ff;          /* indigo-50 */
+      --chipText:#1e293b;      /* slate-800 */
+      --shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+      --radius: 16px;
+      --max: 1080px;
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;
-      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-    a{color:var(--accent);text-decoration:none}
-    a:hover{text-decoration:underline}
-    .skip{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
-    .skip:focus{left:16px;top:12px;width:auto;height:auto;padding:10px 12px;background:var(--bg);
-      border:1px solid var(--line);border-radius:10px;z-index:9999}
-    .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
-    header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);
-      backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--line)}
-    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
-    .brand a{display:flex;align-items:baseline;gap:10px;white-space:nowrap;color:inherit;text-decoration:none}
-    .brand a:hover{text-decoration:none}
-    .brand strong{font-weight:650;letter-spacing:-.02em}
-    .brand small{color:var(--muted);font-family:var(--mono);font-size:12px}
-    nav ul{list-style:none;margin:0;padding:0;display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}
-    nav a{display:inline-block;padding:8px 10px;border-radius:10px;color:var(--text)}
-    nav a:hover{background:var(--card);text-decoration:none}
-    nav a[aria-current="page"]{background:var(--card);border:1px solid var(--line)}
-    main{padding:42px 0 56px}
-    .hero{padding:10px 0 22px;border-bottom:1px solid var(--line)}
-    .kicker{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px}
-    h1{margin:0 0 12px;font-size:44px;letter-spacing:-.035em;line-height:1.05}
-    .subhead{margin:0;color:var(--muted);font-size:16px;max-width:90ch}
-    .callout{margin-top:18px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius);
-      background:var(--card);font-family:var(--mono);font-size:13px;overflow:auto}
-    .section{margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
-    .section h2{margin:0 0 10px;font-size:22px;letter-spacing:-.02em}
-    .section p{margin:0;color:var(--muted);max-width:95ch}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:16px}
-    .card{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:16px}
-    .card h3{margin:0 0 8px;letter-spacing:-.01em}
-    .card p{margin:0;color:var(--muted)}
-    .span-4{grid-column:span 4}
-    .span-6{grid-column:span 6}
-    .span-12{grid-column:span 12}
-    @media (max-width:900px){
-      h1{font-size:36px}
-      .span-4,.span-6{grid-column:span 12}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.45;
     }
-    .pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .pill{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);
-      background:#fff;padding:6px 10px;border-radius:999px}
-    .list{margin:12px 0 0;padding-left:18px;color:var(--muted)}
-    .list li{margin:6px 0}
-    .links{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
-    .links a{font-family:var(--mono);font-size:12px}
-    footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:13px}
-    footer .foot{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
-    footer a{color:var(--muted)}
+
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:var(--max); margin:0 auto; padding:24px 18px}
+    header{
+      position:sticky;
+      top:0;
+      background:rgba(255,255,255,.85);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--border);
+      z-index:10;
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:14px 18px;
+      max-width:var(--max);
+      margin:0 auto;
+    }
+    .brand{
+      display:flex;
+      align-items:baseline;
+      gap:10px;
+      font-weight:700;
+      letter-spacing:-0.02em;
+      white-space:nowrap;
+    }
+    .brand small{
+      font-weight:600;
+      color:var(--muted2);
+      letter-spacing:0.08em;
+      font-size:12px;
+    }
+
+    .navlinks{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .navlinks a{
+      color:var(--muted);
+      font-weight:600;
+      font-size:14px;
+      padding:8px 10px;
+      border-radius:999px;
+    }
+    .navlinks a[aria-current="page"]{
+      color:var(--text);
+      background:var(--soft);
+      border:1px solid var(--border);
+    }
+
+    .eyebrow{
+      font-size:12px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:var(--muted2);
+      margin:18px 0 10px;
+    }
+
+    .hero{
+      padding:34px 0 10px;
+    }
+    .hero h1{
+      font-size: clamp(34px, 5vw, 56px);
+      line-height:1.05;
+      letter-spacing:-0.035em;
+      margin:10px 0 14px;
+    }
+    .hero p.lede{
+      font-size: clamp(16px, 2.2vw, 20px);
+      color:var(--muted);
+      max-width: 72ch;
+      margin:0 0 14px;
+    }
+    .hero p.support{
+      margin:0;
+      color:var(--muted2);
+      max-width: 72ch;
+    }
+    .hero p.support strong{color:var(--text); font-weight:700}
+
+    .ctaRow{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:18px;
+      align-items:center;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:var(--bg);
+      font-weight:700;
+      color:var(--text);
+      box-shadow: 0 1px 0 rgba(2,6,23,0.03);
+    }
+    .btn:hover{ text-decoration:none; border-color:#cbd5e1 }
+    .btn.primary{
+      background: #0b1220;
+      color: #fff;
+      border-color:#0b1220;
+    }
+    .btn.primary:hover{ filter:brightness(1.02) }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:18px;
+      margin-top:18px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card.pad{ padding:18px; }
+    .card h2{ margin:0 0 10px; font-size:18px; letter-spacing:-0.02em }
+    .card p{ margin:0 0 10px; color:var(--muted) }
+    .muted{color:var(--muted)}
+    .small{font-size:13px; color:var(--muted2)}
+
+    .codebox{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background: #0b1220;
+      color:#e5e7eb;
+      border-radius: 14px;
+      padding:14px 14px;
+      overflow:auto;
+      font-size: 13px;
+      line-height:1.4;
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    .chips{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .chip{
+      padding:6px 10px;
+      border-radius:999px;
+      background:var(--soft);
+      border:1px solid var(--border);
+      color:var(--chipText);
+      font-weight:700;
+      font-size:13px;
+    }
+
+    .section{
+      padding:22px 0;
+      border-top:1px solid var(--border);
+      margin-top:22px;
+    }
+    .section h3{
+      margin:0 0 10px;
+      font-size:22px;
+      letter-spacing:-0.02em;
+    }
+
+    .diagram{
+      margin-top:18px;
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      overflow:hidden;
+      background: var(--soft);
+    }
+    .diagram figure{margin:0}
+    .diagram img{
+      width:100%;
+      display:block;
+      background:#fff;
+    }
+    .diagram figcaption{
+      padding:12px 14px;
+      color:var(--muted);
+      font-size:14px;
+      border-top:1px solid var(--border);
+      background:#fff;
+    }
+
+    .callout{
+      margin-top:16px;
+      padding:14px 16px;
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background: var(--soft);
+      color: var(--text);
+    }
+    .callout strong{font-weight:800}
+
+    ul.clean{
+      padding-left: 18px;
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+    ul.clean li{ margin: 8px 0 }
+
+    .footer{
+      padding:26px 18px;
+      border-top:1px solid var(--border);
+      color:var(--muted2);
+      font-size:14px;
+    }
+    .footer .row{
+      max-width:var(--max);
+      margin:0 auto;
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .footer a{ color: var(--muted); font-weight:700 }
   </style>
 </head>
 
 <body>
-  <a class="skip" href="#content">Skip to content</a>
-
   <header>
-    <div class="wrap">
-      <div class="nav">
-        <div class="brand">
-          <!-- Clickable brand → Home -->
-          <a href="index.html">
-            <strong>Digital Action Receipts</strong>
-            <small>DAR</small>
-          </a>
-        </div>
-
-        <nav aria-label="Primary">
-          <ul>
-            <li><a href="index.html" aria-current="page">Home</a></li>
-            <li><a href="definition.html">Definition</a></li>
-            <li><a href="action-domains.html">Action Domains</a></li>
-            <li><a href="integration.html">Integration</a></li>
-            <li><a href="principles.html">Principles</a></li>
-            <li><a href="docs.html">Docs</a></li>
-          </ul>
-        </nav>
+    <nav class="nav" aria-label="Primary">
+      <div class="brand">
+        <span>Digital Action Receipts</span>
+        <small>DAR</small>
       </div>
-    </div>
+
+      <div class="navlinks">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="definition.html">Definition</a>
+        <a href="action-domains.html">Action Domains</a>
+        <a href="integration.html">Integration</a>
+        <a href="principles.html">Principles</a>
+        <a href="docs.html">Docs</a>
+      </div>
+    </nav>
   </header>
 
-  <main id="content">
-    <div class="wrap">
+  <main class="wrap">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="eyebrow">Neutral infrastructure primitive</div>
 
-      <!-- HERO -->
-      <section class="hero" aria-labelledby="title">
-        <p class="kicker">Neutral infrastructure primitive</p>
-        <h1 id="title">Verifiable receipts for digital actions.</h1>
-        <p class="subhead">
-          Digital Action Receipts (DARs) are issued at the moment an action occurs and preserved as append-only,
-          tamper-evident records. They provide a durable reference to what happened—before disputes, audits,
-          incident reviews, or narrative reconstruction.
-        </p>
+      <h1>The receipt is the authority for digital actions.</h1>
 
-        <div class="callout" role="note" aria-label="One-line definition">
+      <p class="lede">
+        Digital Action Receipts (DARs) are issued at the moment an action commits, creating durable, append-only evidence
+        that stands independently of the systems that produced it.
+      </p>
+
+      <p class="support">
+        Systems execute actions. Logs describe behavior. <strong>Receipts establish what happened.</strong>
+      </p>
+
+      <div class="ctaRow">
+        <a class="btn primary" href="definition.html">Read the formal definition →</a>
+        <a class="btn" href="principles.html">See invariants &amp; non-goals →</a>
+      </div>
+    </section>
+
+    <!-- UNIVERSAL EVIDENCE LAYER DIAGRAM -->
+    <section class="diagram" aria-label="Universal evidence layer diagram">
+      <figure>
+        <!-- Replace the src with your actual path in the repo -->
+        <img
+          src="assets/dar-universal-evidence-layer.png"
+          alt="Digital Action Receipts (DAR) — a universal evidence layer beneath SaaS apps, AI agents, automation workflows, CI/CD, and infrastructure services, storing receipts in customer-controlled immutable storage for later verification."
+          loading="lazy"
+        />
+        <figcaption>
+          <strong>DAR provides a neutral evidence fabric beneath many systems</strong> — preserving what occurred, when it occurred, and under which references — without observing, controlling, or interpreting behavior.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- DEFINITION + PHILOSOPHY (DROP-IN REPLACEMENT) -->
+    <section class="section" id="definition">
+      <div class="grid">
+        <div class="card pad">
+          <h3>Verifiable receipts for digital actions.</h3>
+          <p>
+            Digital Action Receipts (DARs) are issued at the moment an action occurs and preserved as append-only, tamper-evident records.
+            They provide a durable reference to what happened — <em>before</em> disputes, audits, incident reviews, or narrative reconstruction.
+          </p>
+
+          <div class="callout">
+            <div class="small" style="margin-bottom:8px;">DAR (core definition)</div>
+            <div class="codebox" aria-label="DAR definition snippet">
 DAR = a verifiable, append-only record of a digital action, issued at execution time.
 It preserves: actor · action · object · timestamp · reference · policy/context (optional) · integrity proof
-        </div>
-      </section>
 
-      <!-- ORIENTATION CARDS -->
-      <section class="section" aria-labelledby="orient">
-        <h2 id="orient">Orientation</h2>
-        <div class="grid">
-          <div class="card span-4">
-            <h3>What DAR is</h3>
-            <p>A small, durable artifact that proves an action occurred. DAR records facts, not interpretations.</p>
-            <div class="pillrow" aria-hidden="true">
-              <span class="pill">append-only</span>
-              <span class="pill">tamper-evident</span>
-              <span class="pill">verifiable</span>
+DARs are designed to remain valid even if the originating system changes, fails, or is disputed.
             </div>
           </div>
-          <div class="card span-4">
-            <h3>What DAR is not</h3>
-            <p>Not monitoring. Not dashboards. Not policy enforcement. Not a compliance product. It preserves evidence.</p>
-            <div class="pillrow" aria-hidden="true">
-              <span class="pill">no alerts</span>
-              <span class="pill">no scoring</span>
-              <span class="pill">no interpretation</span>
-            </div>
+
+          <div class="chips" aria-label="Common drivers">
+            <span class="chip">disputes</span>
+            <span class="chip">audits</span>
+            <span class="chip">incidents</span>
           </div>
-          <div class="card span-4">
-            <h3>Why it exists</h3>
-            <p>When systems are questioned later, mutable logs and narratives fail. DAR provides a stable reference that survives remediation and hindsight.</p>
-            <div class="pillrow" aria-hidden="true">
-              <span class="pill">disputes</span>
-              <span class="pill">audits</span>
-              <span class="pill">incidents</span>
-            </div>
+
+          <p style="margin-top:14px;">
+            When systems are questioned later, mutable logs and narratives fail. DAR provides a stable reference that survives remediation and hindsight.
+            <strong>DAR replaces retrospective reconstruction with contemporaneous proof.</strong>
+          </p>
+        </div>
+
+        <aside class="card pad">
+          <h2>What this is (and isn’t)</h2>
+          <p class="small">
+            DAR is an evidentiary layer: it preserves facts. It does not interpret, score, or enforce.
+          </p>
+          <ul class="clean">
+            <li><strong>Append-only:</strong> no rewriting history.</li>
+            <li><strong>Tamper-evident:</strong> integrity proof travels with the receipt.</li>
+            <li><strong>Verifiable:</strong> confirm authenticity by reference.</li>
+            <li><strong>Customer custody:</strong> receipts live in customer-controlled storage.</li>
+          </ul>
+
+          <div class="callout" style="margin-top:14px;">
+            <strong>Authority boundary:</strong> DAR does not participate in execution, control flow, or decision-making.
+            It establishes authority over <em>evidence of action</em> — nothing more, nothing less.
           </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- HOW IT FITS -->
+    <section class="section" id="fit">
+      <h3>How DAR fits into existing systems</h3>
+      <p class="muted">
+        <strong>DAR is an evidentiary layer — not an execution, control, or decision layer.</strong>
+        Engineers add DAR with minimal coupling: issue a receipt where an action is committed; store it append-only; verify it later by reference.
+        DAR complements logs and observability by preserving an immutable anchor for the most consequential actions.
+      </p>
+
+      <ul class="clean">
+        <li><strong>Write-heavy, read-light:</strong> optimized for issuance at scale and verification on demand.</li>
+        <li><strong>No runtime ML inference:</strong> receipts are evidence artifacts, not predictions.</li>
+        <li><strong>Neutral boundary:</strong> provides proof of action without becoming the arbiter of disputes.</li>
+        <li><strong>Independent authority:</strong> receipts remain verifiable without relying on mutable logs, dashboards, or narratives.</li>
+      </ul>
+
+      <div class="ctaRow" style="margin-top:14px;">
+        <a class="btn" href="integration.html">Integration patterns →</a>
+        <a class="btn" href="docs.html">Quickstart &amp; examples →</a>
+      </div>
+    </section>
+
+    <!-- ACTION DOMAINS PREVIEW -->
+    <section class="section" id="domains">
+      <h3>Action Domains</h3>
+      <p class="muted">
+        DAR applies wherever digital actions can be questioned later. These domains describe common patterns — not limits.
+        Each domain is defined by the action surface and the evidentiary questions that follow.
+      </p>
+
+      <div class="grid">
+        <div class="card pad">
+          <h2>Action Proof &amp; Non-Repudiation</h2>
+          <p>Prove an action occurred at time T, by actor A, against object O — verifiably and durably.</p>
+          <a class="btn" href="action-domains.html#nonrepudiation">Explore domain →</a>
         </div>
 
-        <div class="links">
-          <a href="definition.html">Read the formal definition →</a>
-          <a href="principles.html">See invariants & non-goals →</a>
+        <div class="card pad">
+          <h2>Autonomous &amp; Agent Actions</h2>
+          <p>Record agent tool calls and delegated actions for accountability without surveillance or interpretation.</p>
+          <a class="btn" href="action-domains.html#agents">Explore domain →</a>
         </div>
-      </section>
+      </div>
 
-      <!-- HOW IT FITS (NO HYPE) -->
-      <section class="section" aria-labelledby="fit">
-        <h2 id="fit">How DAR fits into existing systems</h2>
-        <p>
-          DAR is designed to be added with minimal coupling: issue a receipt where an action is committed; store it append-only;
-          verify it later by reference. It complements logs and observability by preserving an immutable anchor for the most consequential actions.
-        </p>
-        <ul class="list">
-          <li><strong>Write-heavy, read-light:</strong> optimized for issuance at scale and verification on demand.</li>
-          <li><strong>No runtime ML inference:</strong> receipts are evidence artifacts, not predictions.</li>
-          <li><strong>Neutral boundary:</strong> provides proof of action without becoming the arbiter of disputes.</li>
-        </ul>
-        <div class="links">
-          <a href="integration.html">Integration patterns →</a>
-          <a href="docs.html">Quickstart & examples →</a>
+      <div class="ctaRow" style="margin-top:14px;">
+        <a class="btn" href="action-domains.html">View the full domain map →</a>
+      </div>
+    </section>
+
+    <!-- OPTIONAL: PHILOSOPHY CALLOUT (SAFE, NOT HYPE) -->
+    <section class="section" id="philosophy">
+      <h3>Why this philosophy matters</h3>
+      <div class="callout">
+        <strong>In disputes, audits, and investigations, the system is not the witness. The receipt is.</strong>
+        <div class="small" style="margin-top:8px;">
+          DAR does not replace systems of record. DAR replaces reconstruction.
         </div>
-      </section>
-
-      <!-- ACTION DOMAINS PREVIEW -->
-      <section class="section" aria-labelledby="domains">
-        <h2 id="domains">Action Domains</h2>
-        <p>
-          DAR applies wherever digital actions can be questioned later. These domains describe common patterns—not limits.
-          Each domain is defined by the action surface and the evidentiary questions that follow.
-        </p>
-
-        <div class="grid" aria-label="Domain preview">
-          <div class="card span-6">
-            <h3>Action Proof & Non-Repudiation</h3>
-            <p>Prove an action occurred at time T, by actor A, against object O—verifiably and durably.</p>
-            <div class="links"><a href="action-domains.html#nonrepudiation">Explore domain →</a></div>
-          </div>
-          <div class="card span-6">
-            <h3>Access & Control Decisions</h3>
-            <p>Record authentication/authorization decisions and boundary enforcement under a policy context.</p>
-            <div class="links"><a href="action-domains.html#access">Explore domain →</a></div>
-          </div>
-          <div class="card span-6">
-            <h3>State Transitions</h3>
-            <p>Infrastructure/config changes: preserve what was applied, when, and by whom—without rewriting history.</p>
-            <div class="links"><a href="action-domains.html#state">Explore domain →</a></div>
-          </div>
-          <div class="card span-6">
-            <h3>Autonomous & Agent Actions</h3>
-            <p>Record agent tool calls and delegated actions for accountability without surveillance or interpretation.</p>
-            <div class="links"><a href="action-domains.html#agents">Explore domain →</a></div>
-          </div>
-        </div>
-
-        <div class="links">
-          <a href="action-domains.html">View the full domain map →</a>
-        </div>
-      </section>
-
-      <!-- SDK TASTE (5 MINUTES) -->
-      <section class="section" aria-labelledby="sdk">
-        <h2 id="sdk">Dead-simple integration (concept)</h2>
-        <p>
-          Engineers should be able to add DAR in minutes: issue a receipt at the action boundary and attach a stable reference.
-        </p>
-        <div class="callout" style="background:#fff" aria-label="SDK sketch">
-await issueReceipt({
-  actor: "system|user|agent",
-  action: "approved",
-  object: "loan_application",
-  ref: "internal-id-123"
-})
-        </div>
-        <div class="links">
-          <a href="integration.html">See integration primitives →</a>
-          <a href="docs.html">See examples →</a>
-        </div>
-      </section>
-
-    </div>
+      </div>
+    </section>
   </main>
 
-  <footer>
-    <div class="wrap">
-      <div class="foot">
-        <div>
-          <div><strong style="color:var(--text)">© Digital Action Receipts</strong></div>
-          <div style="margin-top:6px">Neutral, verifiable receipts for digital actions.</div>
-          <div style="margin-top:10px"> <span id="y"></span> EF Digital Sol </div>
-        </div>
-        <div>
-          <div><a href="definition.html">Definition</a></div>
-          <div><a href="action-domains.html">Action Domains</a></div>
-          <div><a href="integration.html">Integration</a></div>
-          <div><a href="principles.html">Principles</a></div>
-          <div><a href="docs.html">Docs</a></div>
-        </div>
+  <footer class="footer">
+    <div class="row">
+      <div>
+        <strong>© Digital Action Receipts</strong>
+        <span class="small" style="margin-left:10px;">Neutral, verifiable receipts for digital actions.</span>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <a href="definition.html">Definition</a>
+        <a href="action-domains.html">Action Domains</a>
+        <a href="integration.html">Integration</a>
+        <a href="principles.html">Principles</a>
+        <a href="docs.html">Docs</a>
       </div>
     </div>
   </footer>
-
-  <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
+```0
