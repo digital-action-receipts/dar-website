@@ -2,386 +2,413 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Digital Action Receipts (DAR) — Customer-Owned Proof of Action</title>
-  <meta name="description" content="Digital Action Receipts provide cryptographically verifiable proof that a digital action occurred, preserved in customer-controlled immutable storage." />
-  <meta name="theme-color" content="#0B1220" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Digital Action Receipts (DAR)</title>
+  <meta name="description" content="Digital Action Receipts (DAR) are signed, tamper-evident evidence artifacts emitted after actions commit—stored under customer custody and independently verifiable." />
 
   <style>
     :root{
-      --bg:#0B1220;
-      --panel:#0F1A33;
-      --card:#0E1730;
-      --text:#E7ECF6;
-      --muted:#AAB6D3;
-      --line:rgba(231,236,246,.12);
-      --accent:#7AA7FF;
-      --accent2:#67E8F9;
-      --shadow: 0 18px 50px rgba(0,0,0,.35);
-      --radius: 16px;
-      --radius2: 22px;
-      --max: 1120px;
+      --bg:#ffffff;
+      --text:#0f172a;
+      --muted:#475569;
+      --muted2:#64748b;
+      --line:#e2e8f0;
+      --card:#f8fafc;
+      --chip:#f1f5f9;
+      --shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+      --radius:16px;
+      --radius2:22px;
+      --max: 1040px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{ box-sizing:border-box; }
     body{
       margin:0;
       font-family:var(--sans);
-      background: radial-gradient(1200px 600px at 12% 0%, rgba(122,167,255,.22), transparent 55%),
-                  radial-gradient(900px 500px at 85% 10%, rgba(103,232,249,.12), transparent 50%),
-                  var(--bg);
+      background:var(--bg);
       color:var(--text);
       line-height:1.45;
     }
-    a{color:inherit; text-decoration:none}
-    .wrap{max-width:var(--max); margin:0 auto; padding:0 20px}
+    a{ color:inherit; text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding:22px 18px 60px; }
+
+    /* Top Nav */
     .topbar{
-      position:sticky; top:0; z-index:20;
-      background: rgba(11,18,32,.72);
-      backdrop-filter: blur(10px);
+      position:sticky; top:0;
+      background:rgba(255,255,255,0.92);
+      backdrop-filter:saturate(180%) blur(10px);
       border-bottom:1px solid var(--line);
+      z-index:50;
     }
     .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:14px; padding:14px 0;
+      max-width:var(--max);
+      margin:0 auto;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
     .brand{
       display:flex; align-items:center; gap:10px;
-      font-weight:700; letter-spacing:.2px;
+      font-weight:650;
+      letter-spacing:-0.01em;
     }
-    .mark{
-      width:34px; height:34px; border-radius:10px;
-      background: linear-gradient(135deg, rgba(122,167,255,.95), rgba(103,232,249,.75));
-      box-shadow: 0 10px 28px rgba(122,167,255,.18);
+    .brand small{
+      font-weight:600;
+      color:var(--muted2);
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      font-size:11px;
+      margin-left:6px;
     }
-    .navlinks{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
+    .navlinks{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
     .navlinks a{
-      font-size:14px; color:var(--muted);
-      padding:8px 10px; border-radius:10px;
+      padding:8px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      font-weight:550;
+      font-size:14px;
     }
-    .navlinks a:hover{background:rgba(231,236,246,.06); color:var(--text)}
-    .cta{
-      display:flex; align-items:center; gap:10px;
-    }
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:10px 14px; border-radius:12px;
-      border:1px solid var(--line);
-      background: rgba(231,236,246,.06);
+    .navlinks a.active{
+      background:var(--chip);
       color:var(--text);
-      font-size:14px; font-weight:600;
-      cursor:pointer;
-    }
-    .btn:hover{background: rgba(231,236,246,.10)}
-    .btn.primary{
-      border-color: rgba(122,167,255,.45);
-      background: linear-gradient(135deg, rgba(122,167,255,.25), rgba(103,232,249,.14));
     }
 
-    .hero{padding:70px 0 28px}
-    .hero-grid{
+    /* Mobile menu */
+    .menuBtn{
+      display:none;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:10px 12px;
+      box-shadow: 0 2px 10px rgba(2,6,23,0.04);
+      cursor:pointer;
+      align-items:center;
+      gap:10px;
+      font-weight:650;
+      color:var(--text);
+    }
+    .menuIcon{
+      width:18px; height:12px; position:relative;
+    }
+    .menuIcon span{
+      position:absolute; left:0; right:0;
+      height:2px; border-radius:2px;
+      background:var(--text);
+      opacity:0.75;
+    }
+    .menuIcon span:nth-child(1){ top:0; }
+    .menuIcon span:nth-child(2){ top:5px; }
+    .menuIcon span:nth-child(3){ top:10px; }
+
+    .mobileDrawer{
+      display:none;
+      border-top:1px solid var(--line);
+      background:#fff;
+    }
+    .mobileDrawer .inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:10px 18px 16px;
       display:grid;
-      grid-template-columns: 1.12fr .88fr;
-      gap:26px;
-      align-items:stretch;
+      gap:10px;
     }
-    @media (max-width: 920px){
-      .hero-grid{grid-template-columns:1fr}
+    .mobileDrawer a{
+      padding:12px 12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--card);
+      color:var(--muted);
+      font-weight:600;
     }
-    .eyebrow{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 10px; border:1px solid var(--line);
-      border-radius:999px; color:var(--muted);
-      font-size:13px; background: rgba(231,236,246,.04);
+    .mobileDrawer a.active{
+      color:var(--text);
+      border-color:#cbd5e1;
+      background:#fff;
     }
-    .dot{
-      width:8px; height:8px; border-radius:50%;
-      background: var(--accent2);
-      box-shadow: 0 0 0 4px rgba(103,232,249,.14);
+
+    @media (max-width:820px){
+      .navlinks{ display:none; }
+      .menuBtn{ display:inline-flex; }
+      .mobileDrawer{ display:block; }
+      .mobileDrawer[hidden]{ display:none !important; }
+    }
+
+    /* Hero */
+    .kicker{
+      margin:26px 0 10px;
+      font-size:12px;
+      letter-spacing:0.2em;
+      text-transform:uppercase;
+      color:var(--muted2);
     }
     h1{
-      margin:16px 0 14px;
-      font-size:46px; line-height:1.06;
-      letter-spacing:-.6px;
+      margin:0 0 12px;
+      font-size:48px;
+      letter-spacing:-0.03em;
+      line-height:1.02;
     }
-    @media (max-width: 520px){
-      h1{font-size:38px}
-    }
-    .lead{color:var(--muted); font-size:18px; max-width: 62ch}
-    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:22px}
-    .note{
-      margin-top:16px;
-      color:var(--muted); font-size:13px;
-    }
-    .panel{
-      border:1px solid var(--line);
-      border-radius: var(--radius2);
-      background: linear-gradient(180deg, rgba(15,26,51,.78), rgba(14,23,48,.78));
-      box-shadow: var(--shadow);
-      padding:18px;
-    }
-    .panel h3{margin:0 0 10px; font-size:16px}
-    .panel p{margin:0; color:var(--muted); font-size:14px}
-    .kvs{display:grid; gap:10px; margin-top:14px}
-    .kv{
-      border:1px solid var(--line);
-      border-radius: 14px;
-      padding:12px;
-      background: rgba(231,236,246,.04);
-    }
-    .kv .k{font-size:12px; color:var(--muted); margin-bottom:6px}
-    .kv .v{font-size:14px; color:var(--text)}
-    .kv .v code{font-family:var(--mono); font-size:12px; color:rgba(231,236,246,.92)}
-    .section{padding:34px 0}
-    .section h2{margin:0 0 10px; font-size:22px; letter-spacing:-.2px}
-    .sub{margin:0; color:var(--muted); max-width:78ch}
-    .cards{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:14px;
-    }
-    @media (max-width: 920px){ .cards{grid-template-columns:1fr} }
-    .card{
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      padding:16px;
-      background: rgba(231,236,246,.04);
-    }
-    .card h3{margin:0 0 8px; font-size:15px}
-    .card p{margin:0; color:var(--muted); font-size:14px}
-    .flow{
-      margin-top:18px;
-      border:1px solid var(--line);
-      border-radius: var(--radius2);
-      background: rgba(231,236,246,.03);
-      padding:18px;
-      overflow:hidden;
-    }
-    .flow-row{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:12px;
-    }
-    @media (max-width: 920px){ .flow-row{grid-template-columns:1fr} }
-    .step{
-      border:1px solid var(--line);
-      border-radius: 14px;
-      padding:14px;
-      background: rgba(15,26,51,.55);
-    }
-    .step .n{
-      display:inline-flex; align-items:center; justify-content:center;
-      width:26px; height:26px; border-radius:9px;
-      border:1px solid rgba(122,167,255,.45);
-      background: rgba(122,167,255,.12);
-      font-weight:700; font-size:13px; margin-bottom:10px;
-    }
-    .step .t{font-weight:700; font-size:14px; margin-bottom:6px}
-    .step .d{color:var(--muted); font-size:13px}
-    .callout{
-      margin-top:14px;
-      padding:12px 14px;
-      border-radius: 14px;
-      border:1px dashed rgba(122,167,255,.38);
-      background: rgba(122,167,255,.08);
-      color: rgba(231,236,246,.92);
-      font-size:13px;
-    }
-    .footer{
-      padding:34px 0 40px;
-      border-top:1px solid var(--line);
-      margin-top:22px;
+    .lede{
       color:var(--muted);
-      font-size:13px;
+      font-size:18px;
+      max-width:80ch;
     }
-    .footer a{color:rgba(231,236,246,.82)}
-    .footer a:hover{color:var(--text)}
+    .heroGrid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    @media (max-width:900px){
+      .heroGrid{ grid-template-columns:1fr; }
+      h1{ font-size:42px; }
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius2);
+      padding:18px;
+      box-shadow: var(--shadow);
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size:18px;
+      letter-spacing:-0.01em;
+    }
+    .small{ font-size:13px; color:var(--muted2); }
+    .ctaRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:700;
+      color:var(--text);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(37,99,235,0.12), rgba(14,165,233,0.08));
+      border-color: rgba(37,99,235,0.18);
+    }
+
+    /* Sections */
+    .section{ margin-top:18px; }
+    .grid3{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:14px;
+      align-items:start;
+    }
+    @media (max-width:900px){
+      .grid3{ grid-template-columns:1fr; }
+    }
+    ul{
+      margin:10px 0 0 18px;
+      color:var(--muted);
+    }
+    li{ margin:6px 0; }
+    .pillRow{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .pill{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:13px;
+      font-weight:650;
+      color:var(--muted);
+    }
+
+    /* Footer */
+    .footer{
+      border-top:1px solid var(--line);
+      margin-top:34px;
+      padding:18px 0 0;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+    .footnote{ margin-top:6px; font-size:13px; color:var(--muted2); max-width:60ch; }
   </style>
 </head>
 
 <body>
   <div class="topbar">
-    <div class="wrap">
-      <div class="nav">
-        <a class="brand" href="/">
-          <span class="mark" aria-hidden="true"></span>
-          <span>Digital Action Receipts</span>
-        </a>
+    <div class="nav">
+      <a class="brand" href="index.html">
+        <span>Digital Action Receipts</span><small>DAR</small>
+      </a>
 
-        <!-- UPDATED NAV: Integration removed -->
-        <nav class="navlinks" aria-label="Primary">
-          <a href="/definition.html">Definition</a>
-          <a href="/action-domains.html">Action Domains</a>
-          <a href="/principles.html">Principles</a>
-          <a href="/docs.html">Docs</a>
-        </nav>
+      <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileDrawer">
+        <span class="menuIcon" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+        Menu
+      </button>
 
-        <div class="cta">
-          <a class="btn primary" href="/docs.html#access">Request Integration Access</a>
-        </div>
+      <!-- Integration removed from top nav -->
+      <div class="navlinks" aria-label="Primary navigation">
+        <a class="active" href="index.html">Home</a>
+        <a href="definition.html">Definition</a>
+        <a href="action-domains.html">Action Domains</a>
+        <a href="principles.html">Principles</a>
+        <a href="docs.html">Docs</a>
+      </div>
+    </div>
+
+    <div class="mobileDrawer" id="mobileDrawer" hidden>
+      <div class="inner">
+        <a class="active" href="index.html">Home</a>
+        <a href="definition.html">Definition</a>
+        <a href="action-domains.html">Action Domains</a>
+        <a href="principles.html">Principles</a>
+        <a href="docs.html">Docs</a>
       </div>
     </div>
   </div>
 
-  <main>
-    <section class="hero">
-      <div class="wrap">
-        <div class="hero-grid">
-          <div>
-            <div class="eyebrow"><span class="dot" aria-hidden="true"></span>Customer-owned proof of digital actions</div>
-            <h1>Proof that an action occurred — independent, verifiable, and durable.</h1>
-            <p class="lead">
-              Digital Action Receipts (DAR) are cryptographically verifiable, append-only evidence that an action occurred at execution time,
-              preserved in customer-controlled immutable storage.
-            </p>
+  <main class="wrap">
+    <div class="kicker">Customer-owned evidence</div>
+    <h1>A receipt is the authority — not the vendor database.</h1>
+    <p class="lede">
+      Digital Action Receipts (DAR) are signed, tamper-evident evidence artifacts emitted after digital actions commit.
+      They are stored in customer-controlled immutable storage and can be independently verified later for audits,
+      disputes, investigations, and AI accountability.
+    </p>
 
-            <div class="hero-actions">
-              <a class="btn primary" href="/docs.html#access">Request Integration Access</a>
-              <a class="btn" href="/definition.html">Read the Definition</a>
-            </div>
-
-            <p class="note">
-              DAR is not monitoring, logging, or observability. It’s evidence designed for audit, dispute, and continuity.
-            </p>
-          </div>
-
-          <aside class="panel">
-            <h3>What DAR provides</h3>
-            <p>Receipts bind key facts at action time so you can prove what happened later.</p>
-
-            <div class="kvs">
-              <div class="kv">
-                <div class="k">Evidence primitive</div>
-                <div class="v">Signed receipt at the <code>action boundary</code> (commit time)</div>
-              </div>
-              <div class="kv">
-                <div class="k">Customer custody</div>
-                <div class="v">Stored in customer-controlled <code>immutable storage</code></div>
-              </div>
-              <div class="kv">
-                <div class="k">Independent verification</div>
-                <div class="v">Verify without trusting the application that produced the action</div>
-              </div>
-            </div>
-          </aside>
+    <div class="heroGrid">
+      <div class="card">
+        <h2>What DAR is</h2>
+        <ul>
+          <li><strong>Evidence</strong> of what happened, when it happened, and who/what performed it</li>
+          <li><strong>Issued at action time</strong> (not reconstructed later)</li>
+          <li><strong>Customer-custodied</strong> (written to customer-controlled storage)</li>
+          <li><strong>Independently verifiable</strong> (integrity can be checked outside the issuing system)</li>
+          <li><strong>Minimal by design</strong> (stores references to context, not sensitive payloads)</li>
+        </ul>
+        <div class="pillRow" aria-label="tags">
+          <span class="pill">post-commit</span>
+          <span class="pill">append-only</span>
+          <span class="pill">customer custody</span>
+          <span class="pill">verifiable</span>
         </div>
-      </div>
-    </section>
 
-    <section class="section">
-      <div class="wrap">
-        <h2>How it works (conceptual)</h2>
-        <p class="sub">
-          Integrators issue a receipt after a meaningful action completes, then persist it immutably.
-          Implementation details (schemas, SDKs, endpoints) are provided in gated documentation after access approval.
+        <div class="ctaRow">
+          <a class="btn primary" href="definition.html">Read the Definition</a>
+          <a class="btn" href="action-domains.html">Explore Action Domains</a>
+        </div>
+
+        <p class="small" style="margin-top:10px;">
+          DAR is not monitoring. DAR is not decision logic. DAR is not a system of record.
         </p>
-
-        <!-- UPDATED: no code snippets; only conceptual steps -->
-        <div class="flow">
-          <div class="flow-row">
-            <div class="step">
-              <div class="n">1</div>
-              <div class="t">Action completes</div>
-              <div class="d">A system, user, or agent performs a meaningful operation.</div>
-            </div>
-            <div class="step">
-              <div class="n">2</div>
-              <div class="t">Receipt is issued</div>
-              <div class="d">A receipt is generated and cryptographically signed at execution time.</div>
-            </div>
-            <div class="step">
-              <div class="n">3</div>
-              <div class="t">Receipt is archived</div>
-              <div class="d">Your system persists the receipt to customer-controlled immutable storage.</div>
-            </div>
-            <div class="step">
-              <div class="n">4</div>
-              <div class="t">Receipt is verified</div>
-              <div class="d">Later, the receipt can be verified independently for audit or dispute.</div>
-            </div>
-          </div>
-
-          <div class="callout">
-            <strong>Storage responsibility:</strong> DAR returns a signed receipt. Your system archives it.
-            DAR does not write into customer infrastructure by default.
-          </div>
-        </div>
       </div>
-    </section>
 
-    <section class="section">
-      <div class="wrap">
-        <h2>What DAR is for</h2>
-        <p class="sub">
-          DAR is designed for systems where trust, continuity, and accountability matter — especially when actions are executed by software,
-          agents, or distributed teams.
+      <div class="card">
+        <h2>Where the receipts live</h2>
+        <p class="small">
+          Receipts are written into customer-controlled immutable storage. This preserves custody and avoids a critical
+          dispute failure mode: the vendor controlling the authoritative evidence.
         </p>
-
-        <div class="cards">
-          <div class="card">
-            <h3>Audit continuity</h3>
-            <p>Provide durable evidence of what occurred, even when systems change or logs are incomplete.</p>
-          </div>
-          <div class="card">
-            <h3>Dispute evidence</h3>
-            <p>Resolve “what happened?” by referencing independently verifiable receipts.</p>
-          </div>
-          <div class="card">
-            <h3>Agent actions</h3>
-            <p>Bind AI/agent tool calls and outcomes to proof at execution time without relying on narrative logs.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <h2>Integration access</h2>
-        <p class="sub">
-          Integration kits (SDKs, schemas, API reference, verification utilities) are available after access approval.
-          This keeps operational details controlled while allowing engineers to integrate quickly once onboarded.
+        <ul>
+          <li>AWS S3 Object Lock</li>
+          <li>Azure Immutable Blob</li>
+          <li>GCP Retention Bucket</li>
+        </ul>
+        <p class="small" style="margin-top:10px;">
+          DAR may provide issuance and verification tooling, but does not become the owner of your evidence.
         </p>
-
-        <div class="cards">
-          <div class="card">
-            <h3>What you get</h3>
-            <p>Quickstart, OpenAPI reference, receipt schema, verification guide, storage playbooks, and SDK examples.</p>
-          </div>
-          <div class="card">
-            <h3>What stays public</h3>
-            <p>Definition, principles, and conceptual system fit — enough to evaluate, not enough to clone.</p>
-          </div>
-          <div class="card">
-            <h3>Request access</h3>
-            <p>Use the Docs page to request access and receive onboarding steps.</p>
-            <p style="margin-top:12px;">
-              <a class="btn primary" href="/docs.html#access">Request Integration Access</a>
-            </p>
-          </div>
-        </div>
       </div>
-    </section>
-
-    <div class="wrap">
-      <footer class="footer">
-        <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; align-items:center;">
-          <div>© <span id="year"></span> Digital Action Receipts</div>
-          <div style="display:flex; gap:14px; flex-wrap:wrap;">
-            <a href="/definition.html">Definition</a>
-            <a href="/action-domains.html">Action Domains</a>
-            <a href="/principles.html">Principles</a>
-            <a href="/docs.html">Docs</a>
-          </div>
-        </div>
-      </footer>
     </div>
+
+    <div class="section grid3">
+      <div class="card">
+        <h2>Why now</h2>
+        <p class="small">
+          Systems are increasingly automated and agent-driven. When something goes wrong, the demand is the same:
+          “Prove what happened under which conditions.” DAR makes that proof portable.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>What a receipt preserves</h2>
+        <p class="small">
+          A receipt anchors the action and the referenced context that matters for accountability:
+          policy version references, model version hashes, configuration references, and stable correlation.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>What DAR avoids</h2>
+        <p class="small">
+          DAR avoids becoming surveillance or a data lake. The goal is defensible evidence with minimal retained data
+          and clear custody boundaries.
+        </p>
+      </div>
+    </div>
+
+    <div class="section card">
+      <h2>How to think about it</h2>
+      <p class="small">
+        If a vendor system disappears, changes, or is disputed, the receipt remains valid.
+        Like a paper receipt: the database is a convenience; the receipt is the authority.
+      </p>
+      <ul>
+        <li><strong>Action happens</strong> → an evidence artifact is emitted after the action commits</li>
+        <li><strong>Evidence is stored</strong> → in customer-controlled immutable storage</li>
+        <li><strong>Later verification</strong> → receipts can be checked for integrity and reviewed as a timeline</li>
+      </ul>
+    </div>
+
+    <footer class="footer">
+      <div>
+        <strong>© EF Digital Sol</strong>
+        <span class="small" style="margin-left:10px;">Digital Action Receipts (DAR)</span>
+        <div class="footnote">Neutral, verifiable receipts for digital actions.</div>
+      </div>
+
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <a href="definition.html">Definition</a>
+        <a href="action-domains.html">Action Domains</a>
+        <a href="principles.html">Principles</a>
+        <a href="docs.html">Docs</a>
+      </div>
+    </footer>
   </main>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    (function(){
+      const btn = document.getElementById('menuBtn');
+      const drawer = document.getElementById('mobileDrawer');
+      if(!btn || !drawer) return;
+
+      btn.addEventListener('click', () => {
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!isOpen));
+        drawer.toggleAttribute('hidden');
+      });
+    })();
   </script>
 </body>
 </html>
