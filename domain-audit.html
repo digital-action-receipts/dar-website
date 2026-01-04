@@ -1,96 +1,165 @@
-<!-- FILE: domain-audit.html -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Domain · Audit & Regulatory Continuity · DAR</title>
-  <meta name="description" content="DAR for auditability over time: evidence continuity across policy, vendor, and system changes." />
-  <meta name="color-scheme" content="light" />
+  <title>Domain — Audit Continuity | Digital Action Receipts (DAR)</title>
+  <meta name="description" content="DAR domain: audit continuity. Portable evidence that survives migrations and vendor changes—issued at action time, stored in customer-controlled immutable storage, independently verifiable." />
   <style>
-    :root{--bg:#fff;--text:#0f172a;--muted:#475569;--line:#e2e8f0;--card:#f8fafc;--accent:#1d4ed8;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";--radius:14px;}
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55}
-    a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-    .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
-    header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--line)}
-    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
-    .brand{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
-    .brand strong{font-weight:650;letter-spacing:-.02em} .brand small{color:var(--muted);font-family:var(--mono);font-size:12px}
-    nav ul{list-style:none;margin:0;padding:0;display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}
-    nav a{display:inline-block;padding:8px 10px;border-radius:10px;color:var(--text)}
-    nav a:hover{background:var(--card);text-decoration:none}
-    main{padding:42px 0 56px}
-    .hero{padding:10px 0 20px;border-bottom:1px solid var(--line)}
-    .kicker{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px}
-    h1{margin:0 0 10px;font-size:34px;letter-spacing:-.03em;line-height:1.1}
-    .subhead{margin:0;color:var(--muted);max-width:90ch}
-    .section{margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
-    .section h2{margin:0 0 10px;font-size:20px;letter-spacing:-.02em}
-    .section p{margin:0;color:var(--muted);max-width:95ch}
-    .code{margin-top:12px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;font-family:var(--mono);font-size:13px;overflow:auto;white-space:pre}
-    footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:13px}
-    footer .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-    footer a{color:var(--muted)}
+    :root{--bg:#fff;--text:#0f172a;--muted:#475569;--muted2:#64748b;--line:#e2e8f0;--card:#f8fafc;--chip:#f1f5f9;--shadow:0 10px 30px rgba(2,6,23,.06);--radius2:22px;--max:1040px;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;--sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
+    *{box-sizing:border-box} body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.45}
+    a{color:inherit;text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:var(--max);margin:0 auto;padding:22px 18px 60px}
+    .topbar{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--line);z-index:50}
+    .nav{max-width:var(--max);margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:650;letter-spacing:-.01em}
+    .brand small{font-weight:600;color:var(--muted2);letter-spacing:.08em;text-transform:uppercase;font-size:11px;margin-left:6px}
+    .navlinks{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .navlinks a{padding:8px 10px;border-radius:999px;color:var(--muted);font-weight:550;font-size:14px}
+    .navlinks a.active{background:var(--chip);color:var(--text)}
+    .menuBtn{display:none;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;box-shadow:0 2px 10px rgba(2,6,23,.04);cursor:pointer;align-items:center;gap:10px;font-weight:650;color:var(--text)}
+    .menuIcon{width:18px;height:12px;position:relative}
+    .menuIcon span{position:absolute;left:0;right:0;height:2px;border-radius:2px;background:var(--text);opacity:.75}
+    .menuIcon span:nth-child(1){top:0}.menuIcon span:nth-child(2){top:5px}.menuIcon span:nth-child(3){top:10px}
+    .mobileDrawer{display:none;border-top:1px solid var(--line);background:#fff}
+    .mobileDrawer .inner{max-width:var(--max);margin:0 auto;padding:10px 18px 16px;display:grid;gap:10px}
+    .mobileDrawer a{padding:12px 12px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--muted);font-weight:600}
+    .mobileDrawer a.active{color:var(--text);border-color:#cbd5e1;background:#fff}
+    @media (max-width:820px){.navlinks{display:none}.menuBtn{display:inline-flex}.mobileDrawer{display:block}.mobileDrawer[hidden]{display:none!important}}
+    .kicker{margin:28px 0 10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2)}
+    h1{margin:0 0 12px;font-size:44px;letter-spacing:-.02em;line-height:1.05}
+    .lede{color:var(--muted);font-size:18px;max-width:78ch}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius2);padding:18px;box-shadow:var(--shadow)}
+    .section{margin-top:18px} .section h2{margin:0 0 10px;font-size:18px;letter-spacing:-.01em}
+    .small{font-size:13px;color:var(--muted2)}
+    ul{margin:10px 0 0 18px;color:var(--muted)} li{margin:6px 0}
+    .grid2{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+    @media (max-width:900px){.grid2{grid-template-columns:1fr}}
+    .codeBox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;overflow:auto;font-family:var(--mono);font-size:13px;color:#0f172a}
+    .callout{background:linear-gradient(180deg, rgba(37,99,235,.06), rgba(14,165,233,.04));border:1px solid rgba(37,99,235,.14);border-radius:var(--radius2);padding:16px}
+    .callout strong{display:block;margin-bottom:6px}
+    .footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 0;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap}
+    .footnote{margin-top:6px;font-size:13px;color:var(--muted2);max-width:60ch}
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <div class="nav">
-        <div class="brand"><strong>Digital Action Receipts</strong><small>DAR</small></div>
-        <nav aria-label="Primary">
-          <ul>
-            <li><a href="index.html">Definition</a></li>
-            <li><a href="action-domains.html">Action Domains</a></li>
-            <li><a href="integration.html">Integration</a></li>
-            <li><a href="principles.html">Principles</a></li>
-            <li><a href="docs.html">Docs</a></li>
-          </ul>
-        </nav>
+  <div class="topbar">
+    <div class="nav">
+      <a class="brand" href="index.html"><span>Digital Action Receipts</span><small>DAR</small></a>
+      <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileDrawer">
+        <span class="menuIcon" aria-hidden="true"><span></span><span></span><span></span></span>Menu
+      </button>
+      <div class="navlinks" aria-label="Primary navigation">
+        <a href="index.html">Home</a><a href="definition.html">Definition</a>
+        <a class="active" href="action-domains.html">Action Domains</a>
+        <a href="integration.html">Integration</a><a href="principles.html">Principles</a><a href="docs.html">Docs</a>
       </div>
     </div>
-  </header>
-
-  <main>
-    <div class="wrap">
-      <section class="hero" aria-labelledby="t">
-        <p class="kicker">Action domain (stub)</p>
-        <h1 id="t">Audit & Regulatory Continuity</h1>
-        <p class="subhead">
-          This is a placeholder page. Expand with evidence continuity, long-lived audit requirements, and exportable “proof by reference” patterns.
-        </p>
-      </section>
-
-      <section class="section">
-        <h2>Example events</h2>
-        <div class="code">policy_version_applied
-approval_recorded
-audit_export_generated
-control_enforced
-attestation_signed</div>
-      </section>
-
-      <section class="section">
-        <h2>Back to hub</h2>
-        <p><a href="action-domains.html#audit">Action Domains → #audit</a></p>
-      </section>
+    <div class="mobileDrawer" id="mobileDrawer" hidden>
+      <div class="inner">
+        <a href="index.html">Home</a><a href="definition.html">Definition</a>
+        <a class="active" href="action-domains.html">Action Domains</a>
+        <a href="integration.html">Integration</a><a href="principles.html">Principles</a><a href="docs.html">Docs</a>
+      </div>
     </div>
+  </div>
+
+  <main class="wrap">
+    <div class="kicker">Domain</div>
+    <h1>Audit continuity</h1>
+    <p class="lede">
+      Audits ask for proof that survives time, change, and vendor turnover. DAR provides portable evidence:
+      receipts issued at action time, held under customer custody, independently verifiable later.
+    </p>
+
+    <div class="section callout">
+      <strong>What breaks without DAR</strong>
+      <div class="small">
+        Audit evidence often depends on the vendor’s database, internal logs, or screenshots. When systems migrate or vendors change,
+        evidence becomes hard to verify. Receipts remain valid even when systems evolve.
+      </div>
+    </div>
+
+    <div class="section grid2">
+      <div class="card">
+        <h2>Audit evidence DAR supports</h2>
+        <ul>
+          <li>approval controls and exceptions</li>
+          <li>change management timelines</li>
+          <li>policy/version traceability</li>
+          <li>AI inference traceability (referenced)</li>
+          <li>transaction execution proof</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Receipt characteristics auditors like</h2>
+        <ul>
+          <li>immutable / append-only storage</li>
+          <li>consistent taxonomy</li>
+          <li>independent verification path</li>
+          <li>clear chain-of-custody (customer custody)</li>
+          <li>compact evidence (references, not payloads)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section card">
+      <h2>Event taxonomy examples</h2>
+      <div class="codeBox">
+<code>control.attestation.recorded
+approval.granted
+exception.granted
+policy.published
+config.changed
+deploy.promoted
+transaction.executed</code>
+      </div>
+    </div>
+
+    <div class="section grid2">
+      <div class="card">
+        <h2>Demo workflow (recommended)</h2>
+        <ul>
+          <li>Define a small set of control events</li>
+          <li>Emit receipts post-commit for each event</li>
+          <li>Store receipts in customer immutable storage</li>
+          <li>Provide “audit timeline view” that verifies receipts</li>
+          <li>Keep registries separate (policy/model/config)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Storage & custody</h2>
+        <p class="small">Customer-controlled immutable storage (DAR is not a system of record).</p>
+        <ul><li>AWS S3 Object Lock</li><li>Azure Immutable Blob</li><li>GCP Retention Bucket</li></ul>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div>
+        <strong>© EF Digital Sol</strong>
+        <span class="small" style="margin-left:10px;">Digital Action Receipts (DAR)</span>
+        <div class="footnote">Neutral, verifiable receipts for digital actions.</div>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <a href="action-domains.html">Action Domains</a>
+        <a href="integration.html">Integration</a>
+        <a href="principles.html">Principles</a>
+        <a href="definition.html">Definition</a>
+      </div>
+    </footer>
   </main>
 
-  <footer>
-    <div class="wrap">
-      <div class="foot">
-        <div>
-          <div><strong style="color:var(--text)">© Digital Action Receipts</strong></div>
-          <div style="margin-top:6px">Neutral, verifiable receipts for digital actions.</div>
-          <div style="margin-top:10px"> <span id="y"></span> EF Digital Sol </div>
-        </div>
-        <div><div><a href="action-domains.html">Action Domains</a></div></div>
-      </div>
-    </div>
-  </footer>
-  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+  <script>
+    (function(){
+      const btn = document.getElementById('menuBtn');
+      const drawer = document.getElementById('mobileDrawer');
+      if(!btn || !drawer) return;
+      btn.addEventListener('click', () => {
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!isOpen));
+        drawer.toggleAttribute('hidden');
+      });
+    })();
+  </script>
 </body>
 </html>
