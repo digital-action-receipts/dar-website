@@ -4,307 +4,418 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Definition — Digital Action Receipts (DAR)</title>
-  <meta name="description" content="Digital Action Receipts (DAR) are signed, tamper-evident evidence artifacts emitted after actions commit—stored under customer custody and independently verifiable later." />
+  <meta name="description" content="Digital Action Receipts (DAR) are cryptographically verifiable, tamper-evident evidence artifacts that prove a digital action occurred — not correctness, intent, authorization, or compliance." />
 
   <style>
     :root{
       --bg:#ffffff;
       --text:#0f172a;
       --muted:#475569;
-      --muted2:#64748b;
       --line:#e2e8f0;
       --card:#f8fafc;
-      --chip:#f1f5f9;
-      --shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+      --link:#0b5fff;
+      --shadow:0 10px 30px rgba(2,6,23,.06);
       --radius:16px;
-      --radius2:22px;
-      --max: 1040px;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --max:1100px;
+      --pad:24px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family:var(--sans);
-      background:var(--bg);
+      font-family:var(--font);
       color:var(--text);
-      line-height:1.45;
+      background:var(--bg);
     }
-    a{ color:inherit; text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-    .wrap{ max-width:var(--max); margin:0 auto; padding:22px 18px 60px; }
+    a{color:inherit;text-decoration:none}
+    a:focus-visible, button:focus-visible, summary:focus-visible{
+      outline:2px solid rgba(11,95,255,.55);
+      outline-offset:3px;
+      border-radius:10px;
+    }
 
-    /* Top Nav */
+    /* Skip link */
+    .skip{
+      position:absolute;
+      left:-9999px;
+      top:10px;
+      background:#fff;
+      border:1px solid var(--line);
+      padding:10px 12px;
+      border-radius:999px;
+      box-shadow:var(--shadow);
+      z-index:999;
+    }
+    .skip:focus{
+      left:12px;
+    }
+
     .topbar{
       position:sticky; top:0;
-      background:rgba(255,255,255,0.92);
-      backdrop-filter:saturate(180%) blur(10px);
+      background:rgba(255,255,255,.92);
       border-bottom:1px solid var(--line);
-      z-index:50;
+      backdrop-filter:saturate(180%) blur(10px);
+      z-index:10;
     }
     .nav{
       max-width:var(--max);
       margin:0 auto;
-      padding:14px 18px;
+      padding:14px var(--pad);
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
+      gap:16px;
     }
     .brand{
       display:flex; align-items:center; gap:10px;
-      font-weight:650;
-      letter-spacing:-0.01em;
+      font-weight:700;
+      letter-spacing:.2px;
+      min-height:44px;
     }
     .brand small{
       font-weight:600;
-      color:var(--muted2);
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      font-size:11px;
+      color:var(--muted);
       margin-left:6px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:12px;
     }
-    .navlinks{
+
+    /* Desktop menu */
+    .menu{
       display:flex;
-      gap:16px;
-      align-items:center;
+      gap:10px;
       flex-wrap:wrap;
+      align-items:center;
       justify-content:flex-end;
     }
-    .navlinks a{
-      padding:8px 10px;
+    .menu a{
+      padding:10px 12px;
       border-radius:999px;
       color:var(--muted);
-      font-weight:550;
+      font-weight:600;
       font-size:14px;
+      min-height:44px;
+      display:inline-flex;
+      align-items:center;
     }
-    .navlinks a.active{
-      background:var(--chip);
+    .menu a.active{
+      background:#eef2f7;
       color:var(--text);
     }
 
-    /* Mobile menu */
-    .menuBtn{
+    /* Mobile menu (no JS) */
+    .mobileMenu{
       display:none;
+      position:relative;
+    }
+    .mobileMenu details{
+      position:relative;
+    }
+    .mobileMenu summary{
+      list-style:none;
+      cursor:pointer;
+      padding:10px 12px;
+      border-radius:999px;
       border:1px solid var(--line);
       background:#fff;
-      border-radius:12px;
-      padding:10px 12px;
-      box-shadow: 0 2px 10px rgba(2,6,23,0.04);
-      cursor:pointer;
+      min-height:44px;
+      display:inline-flex;
       align-items:center;
       gap:10px;
-      font-weight:650;
+      font-weight:700;
       color:var(--text);
     }
-    .menuIcon{ width:18px; height:12px; position:relative; }
-    .menuIcon span{
-      position:absolute; left:0; right:0;
-      height:2px; border-radius:2px;
-      background:var(--text);
-      opacity:0.75;
-    }
-    .menuIcon span:nth-child(1){ top:0; }
-    .menuIcon span:nth-child(2){ top:5px; }
-    .menuIcon span:nth-child(3){ top:10px; }
-
-    .mobileDrawer{
-      display:none;
-      border-top:1px solid var(--line);
+    .mobileMenu summary::-webkit-details-marker{display:none}
+    .mobilePanel{
+      position:absolute;
+      right:0;
+      top:54px;
+      width:min(320px, calc(100vw - 24px));
       background:#fff;
-    }
-    .mobileDrawer .inner{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:10px 18px 16px;
-      display:grid;
-      gap:10px;
-    }
-    .mobileDrawer a{
-      padding:12px 12px;
       border:1px solid var(--line);
       border-radius:14px;
-      background:var(--card);
+      box-shadow:var(--shadow);
+      padding:10px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .mobilePanel a{
+      padding:12px 12px;
+      border-radius:12px;
+      font-weight:700;
+      color:var(--text);
+      min-height:44px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .mobilePanel a.active{
+      background:#eef2f7;
+    }
+    .mobileHint{
       color:var(--muted);
       font-weight:600;
-    }
-    .mobileDrawer a.active{
-      color:var(--text);
-      border-color:#cbd5e1;
-      background:#fff;
-    }
-
-    @media (max-width:820px){
-      .navlinks{ display:none; }
-      .menuBtn{ display:inline-flex; }
-      .mobileDrawer{ display:block; }
-      .mobileDrawer[hidden]{ display:none !important; }
-    }
-
-    /* Page */
-    .kicker{
-      margin:28px 0 10px;
       font-size:12px;
-      letter-spacing:0.2em;
+      padding:6px 10px 2px;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:38px var(--pad) 60px;
+    }
+    .kicker{
+      color:var(--muted);
+      letter-spacing:.14em;
       text-transform:uppercase;
-      color:var(--muted2);
+      font-size:12px;
+      font-weight:700;
+      margin-bottom:10px;
     }
     h1{
-      margin:0 0 12px;
-      font-size:44px;
-      letter-spacing:-0.02em;
+      font-size:52px;
       line-height:1.05;
+      margin:0 0 14px;
+      letter-spacing:-.02em;
     }
     .lede{
       color:var(--muted);
       font-size:18px;
-      max-width:78ch;
-    }
-
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius2);
-      padding:18px;
-      box-shadow: var(--shadow);
-    }
-    .section{ margin-top:18px; }
-    .section h2{
-      margin:0 0 10px;
-      font-size:18px;
-      letter-spacing:-0.01em;
-    }
-    .small{ font-size:13px; color:var(--muted2); }
-
-    .grid2{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-      align-items:start;
-    }
-    @media (max-width:900px){
-      .grid2{ grid-template-columns:1fr; }
-    }
-
-    ul{ margin:10px 0 0 18px; color:var(--muted); }
-    li{ margin:6px 0; }
-
-    .pillRow{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
-    }
-    .pill{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:13px;
-      font-weight:650;
-      color:var(--muted);
+      line-height:1.6;
+      max-width:900px;
+      margin:0 0 22px;
     }
 
     .callout{
-      background:linear-gradient(180deg, rgba(37,99,235,0.06), rgba(14,165,233,0.04));
-      border:1px solid rgba(37,99,235,0.14);
-      border-radius:var(--radius2);
-      padding:16px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+      margin:18px 0;
     }
-    .callout strong{ display:block; margin-bottom:6px; }
+    .callout strong{
+      display:block;
+      font-size:14px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#111827;
+      margin-bottom:6px;
+    }
+    .callout p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:15px;
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-top:14px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+      min-height:210px;
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size:18px;
+      letter-spacing:-.01em;
+    }
+    .card ul{
+      margin:0;
+      padding-left:18px;
+      color:var(--muted);
+      line-height:1.65;
+      font-size:15px;
+    }
+    .card li{margin:6px 0}
+    .note{
+      margin-top:12px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .pills{
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-top:14px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 10px;
+      border-radius:999px;
+      background:#ffffff;
+      border:1px solid var(--line);
+      color:#334155;
+      font-weight:600;
+      font-size:12px;
+    }
+
+    .wide{
+      margin-top:16px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .wide h2{margin:0 0 10px; font-size:18px}
+    .wide p{
+      margin:0 0 10px;
+      color:var(--muted);
+      line-height:1.65;
+      font-size:15px;
+      max-width:980px;
+    }
+    .wide ul{
+      margin:0;
+      padding-left:18px;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:15px;
+    }
+    .divider{
+      height:1px;
+      background:var(--line);
+      margin:22px 0;
+    }
 
     .ctaRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:14px;
+      display:flex; gap:12px; flex-wrap:wrap;
+      margin-top:10px;
     }
     .btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      gap:8px;
+      gap:10px;
       padding:10px 14px;
       border-radius:999px;
       border:1px solid var(--line);
-      background:#fff;
+      background:#ffffff;
       font-weight:700;
-      color:var(--text);
-      box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+      font-size:14px;
+      color:#0f172a;
+      min-height:44px;
     }
     .btn.primary{
-      background: linear-gradient(180deg, rgba(37,99,235,0.12), rgba(14,165,233,0.08));
-      border-color: rgba(37,99,235,0.18);
+      background:#eef2ff;
+      border-color:#dbeafe;
     }
 
-    /* Footer */
-    .footer{
+    footer{
       border-top:1px solid var(--line);
-      margin-top:34px;
-      padding:18px 0 0;
+      color:var(--muted);
+      background:#ffffff;
+    }
+    .foot{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:18px var(--pad);
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
-      gap:18px;
+      gap:20px;
       flex-wrap:wrap;
     }
-    .footnote{ margin-top:6px; font-size:13px; color:var(--muted2); max-width:60ch; }
+    .foot .left{
+      min-width:260px;
+    }
+    .foot .left strong{
+      color:#111827;
+    }
+    .foot .right{
+      display:flex; gap:18px; flex-wrap:wrap;
+      font-weight:600;
+    }
+    .foot small{
+      display:block;
+      margin-top:6px;
+      color:var(--muted);
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 980px){
+      h1{font-size:40px}
+      .grid2{grid-template-columns:1fr}
+    }
+    @media (max-width: 720px){
+      .menu{display:none;}
+      .mobileMenu{display:block;}
+      .nav{padding:12px var(--pad);}
+      .wrap{padding:28px var(--pad) 52px;}
+      h1{font-size:34px}
+      .lede{font-size:16px}
+    }
   </style>
 </head>
 
 <body>
+  <a class="skip" href="#main">Skip to content</a>
+
   <div class="topbar">
     <div class="nav">
       <a class="brand" href="index.html">
-        <span>Digital Action Receipts</span><small>DAR</small>
+        <span>Digital Action Receipts</span>
+        <small>DAR</small>
       </a>
 
-      <button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobileDrawer">
-        <span class="menuIcon" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </span>
-        Menu
-      </button>
-
-      <!-- Integration removed -->
-      <div class="navlinks" aria-label="Primary navigation">
+      <!-- Desktop menu -->
+      <nav class="menu" aria-label="Primary">
         <a href="index.html">Home</a>
         <a class="active" href="definition.html">Definition</a>
         <a href="action-domains.html">Action Domains</a>
         <a href="principles.html">Principles</a>
         <a href="docs.html">Docs</a>
-      </div>
-    </div>
+      </nav>
 
-    <div class="mobileDrawer" id="mobileDrawer" hidden>
-      <div class="inner">
-        <a href="index.html">Home</a>
-        <a class="active" href="definition.html">Definition</a>
-        <a href="action-domains.html">Action Domains</a>
-        <a href="principles.html">Principles</a>
-        <a href="docs.html">Docs</a>
+      <!-- Mobile menu -->
+      <div class="mobileMenu" aria-label="Mobile navigation">
+        <details>
+          <summary>Menu</summary>
+          <div class="mobilePanel" role="menu">
+            <div class="mobileHint">Navigate</div>
+            <a role="menuitem" href="index.html">Home</a>
+            <a role="menuitem" class="active" href="definition.html">Definition</a>
+            <a role="menuitem" href="action-domains.html">Action Domains</a>
+            <a role="menuitem" href="principles.html">Principles</a>
+            <a role="menuitem" href="docs.html">Docs</a>
+          </div>
+        </details>
       </div>
     </div>
   </div>
 
-  <main class="wrap">
+  <main id="main" class="wrap">
     <div class="kicker">Definition</div>
     <h1>What is a Digital Action Receipt?</h1>
+
     <p class="lede">
       A Digital Action Receipt (DAR) is a signed, tamper-evident evidence artifact emitted after a digital action commits.
       It exists to prove that an action happened, at a particular time, under a particular referenced context—without relying
       on internal logs or vendor-controlled databases as the ultimate authority.
+      <br><br>
+      <strong>A DAR proves occurrence — not correctness, intent, authorization, or compliance.</strong>
+      DARs are evidence, not enforcement.
     </p>
 
-    <div class="section callout">
+    <div class="callout">
       <strong>The core idea</strong>
-      <div class="small">
-        In disputes, the question is not “what does the system say now?” It’s “what can be proven happened then?”
+      <p>
+        In disputes, the question is not “what does the system say now?” It’s “what can be proven happened then — and under what referenced conditions?”
         DAR makes that proof portable.
-      </div>
+      </p>
     </div>
 
-    <div class="section grid2">
+    <section class="grid2" aria-label="Definition cards">
       <div class="card">
         <h2>What DAR is</h2>
         <ul>
@@ -312,14 +423,16 @@
           <li><strong>Issued at action time</strong> (not reconstructed later)</li>
           <li><strong>Append-only</strong> (corrections are new receipts, not edits)</li>
           <li><strong>Customer-custodied</strong> (stored under customer control)</li>
-          <li><strong>Independently verifiable</strong> (integrity can be checked outside the issuer)</li>
-          <li><strong>Minimal by design</strong> (references to context, not sensitive payloads)</li>
+          <li><strong>Independently verifiable</strong> (cryptographic integrity can be checked outside the issuer)</li>
+          <li><strong>Minimal by design</strong> (references to context; does not default to storing sensitive payloads)</li>
         </ul>
-        <div class="pillRow">
+
+        <div class="pills" aria-label="Keywords">
           <span class="pill">post-commit</span>
           <span class="pill">tamper-evident</span>
-          <span class="pill">portable proof</span>
+          <span class="pill">append-only</span>
           <span class="pill">customer custody</span>
+          <span class="pill">portable proof</span>
         </div>
       </div>
 
@@ -328,23 +441,26 @@
         <ul>
           <li><strong>Not monitoring</strong> — no continuous surveillance layer</li>
           <li><strong>Not decision logic</strong> — DAR does not approve/deny or score outcomes</li>
+          <li><strong>Not a compliance engine</strong> — DAR does not judge correctness or compliance</li>
           <li><strong>Not enforcement</strong> — DAR does not block actions</li>
           <li><strong>Not a system of record</strong> — source systems remain authoritative for data/state</li>
           <li><strong>Not a data lake</strong> — receipts do not default to storing sensitive payloads</li>
         </ul>
-        <p class="small" style="margin-top:10px;">
-          DAR’s value depends on staying narrow: evidence, custody, and verifiability.
-        </p>
-      </div>
-    </div>
 
-    <div class="section card">
+        <div class="note">
+          DAR’s value depends on staying narrow: evidence, custody, and verifiability.
+        </div>
+      </div>
+    </section>
+
+    <section class="wide" aria-label="Conceptual preservation">
       <h2>What a receipt preserves (conceptually)</h2>
-      <p class="small">
-        A receipt preserves a defensible statement about an action and the context needed to evaluate that action later—without copying private data.
+      <p>
+        A receipt preserves a defensible statement about an action and the references needed to evaluate that action later—without copying private data.
+        The key word is <em>references</em>: a receipt points to context registries and records; it doesn’t replace them.
       </p>
       <ul>
-        <li><strong>Who/what acted</strong> (human, service, agent)</li>
+        <li><strong>Who/what acted</strong> (as asserted at action time: human, service, agent)</li>
         <li><strong>What action committed</strong> (a stable action label)</li>
         <li><strong>What the action targeted</strong> (a durable reference to the object/resource)</li>
         <li><strong>When it committed</strong> (timestamp)</li>
@@ -352,18 +468,16 @@
         <li><strong>Which context applied</strong> (references to policy/model/config versions, when relevant)</li>
         <li><strong>Integrity proof</strong> (so tampering is detectable)</li>
       </ul>
-      <p class="small" style="margin-top:10px;">
-        The key word is <em>references</em>: a receipt points to context registries and records—it doesn’t replace them.
-      </p>
-    </div>
+    </section>
 
-    <div class="section grid2">
+    <section class="grid2" aria-label="Custody and verification">
       <div class="card">
         <h2>Custody: where receipts live</h2>
-        <p class="small">
+        <p class="lede" style="margin:0; font-size:15px;">
           Receipts should be stored in customer-controlled immutable storage. This preserves chain-of-custody and reduces a common dispute failure mode:
           the vendor controlling the authoritative evidence.
         </p>
+        <div class="divider"></div>
         <ul>
           <li><strong>Customer-controlled</strong> storage location and permissions</li>
           <li><strong>Immutable / append-only</strong> retention and write protections</li>
@@ -373,59 +487,49 @@
 
       <div class="card">
         <h2>Verification: how proof holds up</h2>
-        <p class="small">
-          A receipt should be verifiable without trusting the system that issued it. Verification is about integrity and consistency:
-          confirming the receipt hasn’t been altered and still matches the referenced context.
+        <p class="lede" style="margin:0; font-size:15px;">
+          Verification is about integrity and consistency: confirming the receipt hasn’t been altered and still matches the referenced context.
+          Verification does not require trusting the system that issued the receipt.
         </p>
+        <div class="divider"></div>
         <ul>
           <li>Validate integrity proof (tamper evidence)</li>
           <li>Confirm the receipt belongs to the customer’s evidence store</li>
           <li>Resolve referenced context (policy/model/config) as needed</li>
-          <li>Render an action timeline for review (audit, dispute, investigation)</li>
+          <li>Render a human-readable timeline for review (audit, dispute, investigation)</li>
         </ul>
       </div>
-    </div>
+    </section>
 
-    <div class="section card">
+    <section class="wide" aria-label="Why DAR exists">
       <h2>Why DAR exists</h2>
-      <p class="small">
+      <p>
         DAR exists because modern systems change quickly—especially AI and automated workflows.
         When accountability arrives, organizations need durable evidence that survives migrations, refactors, and vendor turnover.
+        DAR does not replace existing systems. It exists alongside them—as portable evidence.
       </p>
-      <div class="ctaRow">
+
+      <div class="ctaRow" aria-label="Call to action">
         <a class="btn primary" href="action-domains.html">Explore Action Domains</a>
         <a class="btn" href="principles.html">Read the Principles</a>
       </div>
-    </div>
+    </section>
+  </main>
 
-    <footer class="footer">
-      <div>
-        <strong>© EF Digital Sol</strong>
-        <span class="small" style="margin-left:10px;">Digital Action Receipts (DAR)</span>
-        <div class="footnote">Neutral, verifiable receipts for digital actions.</div>
+  <footer>
+    <div class="foot">
+      <div class="left">
+        <strong>© EF Digital Sol</strong> <span> &nbsp; Digital Action Receipts (DAR)</span>
+        <small>Neutral, verifiable receipts for digital actions.</small>
       </div>
 
-      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+      <div class="right" aria-label="Footer links">
         <a href="definition.html">Definition</a>
         <a href="action-domains.html">Action Domains</a>
         <a href="principles.html">Principles</a>
         <a href="docs.html">Docs</a>
       </div>
-    </footer>
-  </main>
-
-  <script>
-    (function(){
-      const btn = document.getElementById('menuBtn');
-      const drawer = document.getElementById('mobileDrawer');
-      if(!btn || !drawer) return;
-
-      btn.addEventListener('click', () => {
-        const isOpen = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', String(!isOpen));
-        drawer.toggleAttribute('hidden');
-      });
-    })();
-  </script>
+    </div>
+  </footer>
 </body>
 </html>
