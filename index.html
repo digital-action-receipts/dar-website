@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Digital Action Receipts (DAR) are open, verifiable records of digital actions. SV-DAR adds self-verifying guarantees for adversarial and high-stakes environments. Tools, specification, and open-source reference code included." />
+  <meta name="description" content="Digital Action Receipts (DAR) are an open, minimal format for cryptographically verifiable proof that a digital action occurred. SV-DAR adds self-verifying guarantees for adversarial and high-stakes environments. Optional tools, specification, and open-source reference code included." />
   <meta name="keywords" content="Digital Action Receipts, DAR, SV-DAR, verifiable logs, AI accountability, audit trails, cryptographic receipts, verification" />
-  <title>Digital Action Receipts (DAR) + SV-DAR — Open verifiable action proofs</title>
+  <title>Digital Action Receipts (DAR) + SV-DAR — Open proof an action occurred</title>
 
   <style>
     :root{
@@ -322,16 +322,16 @@
   <!-- HERO -->
   <header class="hero" id="top">
     <div class="container">
-      <span class="kicker"><span class="dot"></span> Open action receipts + self-verifying guarantees for high-stakes systems</span>
+      <span class="kicker"><span class="dot"></span> Open proof an action occurred + self-verifying guarantees for high-stakes systems</span>
 
-      <h1>Open, verifiable action proofs — plus SV-DAR for adversarial-grade trust.</h1>
+      <h1>Open, verifiable proof that a digital action occurred — with SV-DAR for adversarial-grade trust.</h1>
 
       <p class="lead">
-        <strong>DAR</strong> is the open receipt primitive: a small, tamper-evident record that a digital action occurred
+        <strong>DAR</strong> is an open receipt primitive: a small, tamper-evident record that a digital action occurred
         (API request, approval, transaction, or AI agent decision).
         <br><br>
-        <strong>SV-DAR</strong> is the premium layer built on top of DAR: stronger self-verifying guarantees designed for cross-organization workflows,
-        disputes, and audit-heavy environments — positioned as the primary commercial product line.
+        <strong>SV-DAR</strong> is the commercial layer: stronger, self-verifying guarantees for cross-organization workflows,
+        disputes, and audit-heavy environments.
       </p>
 
       <div class="hero-cta">
@@ -340,7 +340,7 @@
             <path d="M12 20h9"/>
             <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
           </svg>
-          Spec & Reference Code
+          Open Spec & Reference Implementation
         </a>
         <a class="btn" href="#svdar">
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
@@ -386,7 +386,7 @@
           <text class="s" x="40" y="92">API, approval, transaction, agent decision</text>
 
           <text class="t" x="310" y="68">Receipt issued</text>
-          <text class="s" x="310" y="92">hash refs + signature (DAR)</text>
+          <text class="s" x="310" y="92">hash refs (+ optional envelope)</text>
 
           <text class="t" x="580" y="68">Stored append-only</text>
           <text class="s" x="580" y="92">any storage chosen by parties</text>
@@ -416,7 +416,7 @@
         <div class="card">
           <span class="pill">Stronger guarantees</span>
           <h3 style="margin-top:10px;">Self-verifying trust</h3>
-          <p>Designed for environments where “basic signatures” are not enough for independent confidence at scale.</p>
+          <p>Designed for environments where basic signatures are not enough for independent confidence at scale.</p>
         </div>
         <div class="card">
           <span class="pill">Cross-organization</span>
@@ -438,7 +438,7 @@
       <div class="section-head">
         <div>
           <h2>Tools</h2>
-          <p>Optional services applied to DAR/SV-DAR: verification, chain operations, intelligence, and dispute workflows.</p>
+          <p>Optional, usage-based services that operate on DARs and SV-DARs: verification, chain operations, intelligence, and dispute workflows.</p>
         </div>
       </div>
 
@@ -446,7 +446,7 @@
         <div class="card">
           <span class="pill">Verification</span>
           <h3 style="margin-top:10px;">Verify receipts</h3>
-          <p>Signature validity, schema compliance, hash integrity — single or batch verification.</p>
+          <p>Signature validity (if present), schema compliance, and hash integrity — single or batch verification.</p>
         </div>
         <div class="card">
           <span class="pill">Chain operations</span>
@@ -463,8 +463,9 @@
       <div class="card" style="margin-top:16px;">
         <h3>Fairness model</h3>
         <p class="mini">
-          Receipts are free to exist. You pay only when you ask our systems to do work: verify, traverse, analyze, report, or support dispute workflows.
-          SV-DAR capabilities are premium.
+          <strong>Receipts are free to exist.</strong>
+          You pay only when our systems do work: verify at scale, traverse chains, analyze timelines, generate reports, or support disputes.
+          <strong>SV-DAR capabilities are premium by design.</strong>
         </p>
       </div>
     </div>
@@ -484,20 +485,37 @@
         <div class="card">
           <span class="pill">Minimal example</span>
           <h3 style="margin-top:10px;">Small by design</h3>
-          <div class="codebox" role="region" aria-label="DAR JSON example" style="margin-top:12px;">
+
+          <p class="mini" style="margin-top:10px;">
+            Example below includes a separate envelope (signature / receipt hash / locator). Canonicalization and hashing are performed over the <strong>payload</strong> only.
+          </p>
+
+          <div class="codebox" role="region" aria-label="DAR payload + envelope example" style="margin-top:12px;">
 <pre>{
-  "dar_version": "1.0",
-  "action_type": "ai_decision",
-  "timestamp": "2026-01-10T02:15:00Z",
-  "actor": "agent:billing-bot-v3",
-  "context_hash": "sha256:abc123...",
-  "outcome_hash": "sha256:def456...",
-  "prev_receipt_hash": "sha256:0000...",
-  "signature": "ed25519:..."
+  "payload": {
+    "dar_version": "1.0",
+    "action_type": "ai_decision",
+    "action_id": "issuer:billing-bot-v3:evt_0192",
+    "timestamp": "2026-01-10T02:15:00Z",
+    "actor": {
+      "type": "agent",
+      "id": "billing-bot-v3"
+    },
+    "inputs_hash": "sha256:abc123...",
+    "outcome_hash": "sha256:def456..."
+  },
+  "receipt_hash": "sha256:0000...",
+  "signature": {
+    "algorithm": "ed25519",
+    "key_id": "kid:billing-bot-v3",
+    "value": "BASE64..."
+  },
+  "locator": "s3://customer-bucket/dar/sha256-0000.json"
 }</pre>
           </div>
+
           <p class="mini" style="margin-top:10px;">
-            Principle: store references (hashes/IDs) to context — not sensitive payloads.
+            Principle: keep payload minimal; store references (hashes/IDs) — not sensitive data.
           </p>
         </div>
 
@@ -547,9 +565,10 @@ if (!result.ok) throw new Error(result.reason)</pre>
           <span class="pill">What the repo contains</span>
           <h3 style="margin-top:10px;">Minimum viable open source</h3>
           <ul class="list">
-            <li><span class="check">✓</span><span><strong>spec/</strong> schema + invariants + versioning</span></li>
+            <li><span class="check">✓</span><span><strong>spec/</strong> invariants + versioning</span></li>
             <li><span class="check">✓</span><span><strong>README</strong> overview + principles</span></li>
-            <li><span class="check">✓</span><span><strong>dar-schema.json</strong> canonical structure</span></li>
+            <li><span class="check">✓</span><span><strong>dar-payload-schema.json</strong> canonical payload (hashed)</span></li>
+            <li><span class="check">✓</span><span><strong>dar-schema.json</strong> envelope (payload + transport)</span></li>
             <li><span class="check">✓</span><span>License for reuse</span></li>
           </ul>
           <div class="hero-cta" style="margin-top:12px;">
@@ -579,7 +598,7 @@ if (!result.ok) throw new Error(result.reason)</pre>
         <div class="card">
           <span class="pill">Accountability</span>
           <h3 style="margin-top:10px;">AI decisions need auditability</h3>
-          <p>Receipts make it easier to reconstruct “what happened” without granting special access to internal systems.</p>
+          <p>Receipts make it easier to reconstruct what happened without granting special access to internal systems.</p>
         </div>
         <div class="card">
           <span class="pill">Disputes</span>
