@@ -3,129 +3,294 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DAR Playground — Issue + Verify (Offline)</title>
+  <title>DAR Playground — Canonical Proof Demo (Offline Verification)</title>
+
+  <!-- ===== Site Styles (match homepage tokens) ===== -->
   <style>
     :root{
-      --bg:#ffffff; --panel:#f6f7f9; --text:#0b0f1a; --muted:#5b6476;
-      --line:#e7eaf0; --accent:#0b5cff; --bad:#c62828; --good:#1b5e20;
-      --radius:14px; --shadow: 0 10px 30px rgba(11,15,26,0.06);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --bg:#ffffff;
+      --panel:#f6f7f9;
+      --text:#0b0f1a;
+      --muted:#5b6476;
+      --line:#e7eaf0;
+      --accent:#0b5cff;
+      --bad:#c62828;
+      --good:#1b5e20;
+      --radius:14px;
+      --shadow:0 10px 30px rgba(11,15,26,0.06);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
-    body{ margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; background:var(--bg); color:var(--text); }
-    header{ padding:22px 18px; border-bottom:1px solid var(--line); }
-    header h1{ margin:0; font-size:18px; }
-    header p{ margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.35; max-width: 980px;}
-    .wrap{ max-width: 1100px; margin: 0 auto; padding: 18px; }
-    .tabs{ display:flex; gap:10px; margin: 10px 0 16px; }
-    .tabbtn{ border:1px solid var(--line); background:#fff; padding:10px 12px; border-radius:999px; cursor:pointer; font-weight:600; font-size:13px;}
-    .tabbtn.active{ border-color: rgba(11,92,255,.35); box-shadow:0 0 0 3px rgba(11,92,255,.12); }
-    .grid{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
-    @media (max-width: 920px){ .grid{ grid-template-columns:1fr; } }
-    .card{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:14px; box-shadow: var(--shadow); }
-    .card h2{ font-size:14px; margin:0 0 10px; }
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 10px 0; }
-    label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
-    input, textarea{
-      width:100%; border:1px solid var(--line); border-radius:12px; padding:10px 10px;
-      font-size:13px; background:#fff; box-sizing:border-box;
+
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:var(--bg);
+      color:var(--text);
     }
-    textarea{ font-family: var(--mono); min-height: 160px; }
+
+    /* ===== Global Header ===== */
+    .site-header{
+      border-bottom:1px solid var(--line);
+      background:#fff;
+    }
+    .header-inner{
+      max-width:1120px;
+      margin:0 auto;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:inherit;
+      font-weight:700;
+    }
+    .logo{
+      width:32px;
+      height:32px;
+      border-radius:8px;
+      background:var(--accent);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      font-size:14px;
+    }
+    .header-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
     .btn{
-      border:1px solid var(--line); background:#fff; padding:10px 12px; border-radius:12px;
-      cursor:pointer; font-weight:700; font-size:13px;
+      border:1px solid var(--line);
+      background:#fff;
+      padding:8px 12px;
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
     }
-    .btn.primary{ background: var(--accent); border-color: var(--accent); color:#fff; }
-    .btn.danger{ border-color: rgba(198,40,40,.4); }
-    .pill{ font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#fff; }
-    .status{ font-family: var(--mono); font-size:12px; padding:10px; border-radius:12px; border:1px solid var(--line); background:#fff; }
-    .status.good{ border-color: rgba(27,94,32,.35); }
-    .status.bad{ border-color: rgba(198,40,40,.35); }
-    .muted{ color:var(--muted); font-size:12px; }
-    .mono{ font-family: var(--mono); }
+    .btn-primary{
+      background:var(--accent);
+      color:#fff;
+      border-color:var(--accent);
+    }
+    .btn-icon{
+      padding:8px 10px;
+      font-size:18px;
+    }
+
+    /* ===== Drawer (mobile nav) ===== */
+    .drawer-panel{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.35);
+      display:none;
+      z-index:50;
+    }
+    .drawer{
+      background:#fff;
+      width:280px;
+      height:100%;
+      padding:14px;
+      box-shadow:var(--shadow);
+    }
+    .drawer-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .drawer-body a{
+      display:block;
+      padding:10px 8px;
+      text-decoration:none;
+      color:inherit;
+      border-radius:10px;
+    }
+    .drawer-body a:hover{
+      background:var(--panel);
+    }
+    .drawer-body span{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .drawer-actions{
+      margin-top:14px;
+      display:flex;
+      gap:8px;
+    }
+
+    /* ===== Page Header ===== */
+    .page-header{
+      border-bottom:1px solid var(--line);
+      background:#fff;
+    }
+    .page-header-inner{
+      max-width:1120px;
+      margin:0 auto;
+      padding:22px 18px;
+    }
+    .page-header h1{
+      margin:0;
+      font-size:20px;
+    }
+    .page-header p{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      max-width:760px;
+    }
+
+    /* ===== Playground UI ===== */
+    .wrap{
+      max-width:1120px;
+      margin:0 auto;
+      padding:18px;
+    }
+    .tabs{
+      display:flex;
+      gap:10px;
+      margin-bottom:16px;
+    }
+    .tabbtn{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .tabbtn.active{
+      border-color:rgba(11,92,255,.4);
+      box-shadow:0 0 0 3px rgba(11,92,255,.12);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    @media(max-width:920px){
+      .grid{ grid-template-columns:1fr; }
+    }
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:14px;
+      box-shadow:var(--shadow);
+    }
+    label{
+      font-size:12px;
+      color:var(--muted);
+      display:block;
+      margin:8px 0 4px;
+    }
+    input,textarea{
+      width:100%;
+      padding:10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      font-family:var(--mono);
+      font-size:13px;
+      box-sizing:border-box;
+    }
+    textarea{ min-height:140px; }
+    .status{
+      margin-top:10px;
+      padding:10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      font-family:var(--mono);
+      font-size:12px;
+      background:#fff;
+    }
+    .status.good{ border-color:rgba(27,94,32,.4); }
+    .status.bad{ border-color:rgba(198,40,40,.4); }
     .hide{ display:none; }
-    .split{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    @media (max-width: 920px){ .split{ grid-template-columns:1fr; } }
   </style>
 </head>
+
 <body>
-<header>
-  <div class="wrap">
-    <h1>DAR Playground — Canonical Proof Demo (Offline Verification)</h1>
-    <p>
-      This playground demonstrates the core claim: a Digital Action Receipt (DAR) can be verified independently using only the receipt + public key + deterministic logic.
-      <span class="mono">No API calls. No database. No issuer cooperation.</span>
-      Demo keys are stored in localStorage for convenience (do not use demo keys in production).
-    </p>
-    <div class="tabs">
-      <button id="tabIssue" class="tabbtn active">Issue</button>
-      <button id="tabVerify" class="tabbtn">Verify</button>
-      <span class="pill" id="issuerModePill">Issuer: demo (localStorage)</span>
+
+<!-- ===== GLOBAL HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/">
+      <div class="logo">DAR</div>
+      <div>Digital Action Receipts</div>
+    </a>
+    <div class="header-actions">
+      <button class="btn" id="themeBtn">Dark</button>
+      <button class="btn btn-icon" id="menuBtn">☰</button>
     </div>
   </div>
 </header>
 
-<div class="wrap">
+<!-- ===== MOBILE DRAWER ===== -->
+<div class="drawer-panel" id="drawer">
+  <div class="drawer">
+    <div class="drawer-head">
+      <strong>Menu</strong>
+      <button class="btn btn-icon" id="closeDrawer">✕</button>
+    </div>
+    <div class="drawer-body">
+      <a href="/#value"><b>Value</b><span>why this exists</span></a>
+      <a href="/#how"><b>Workflow</b><span>demo flow</span></a>
+      <a href="/playground.html"><b>Playground</b><span>self-verify a DAR</span></a>
+      <a href="/#svdar"><b>SV-DAR</b><span>high-stakes proof</span></a>
+      <a href="/#code"><b>Code</b><span>spec & repo</span></a>
+    </div>
+    <div class="drawer-actions">
+      <!-- 🔧 CHANGE THIS IF NEEDED -->
+      <a class="btn btn-primary" href="https://github.com/digital-action-receipts">GitHub</a>
+      <button class="btn" id="themeBtn2">Dark</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE HEADER ===== -->
+<section class="page-header">
+  <div class="page-header-inner">
+    <h1>DAR Playground — Canonical Proof Demo</h1>
+    <p>
+      This playground demonstrates the core claim of Digital Action Receipts:
+      a DAR can be verified independently using only the receipt, a public key,
+      and deterministic logic. No API calls. No database. No issuer cooperation.
+    </p>
+  </div>
+</section>
+
+<!-- ===== PLAYGROUND CONTENT ===== -->
+<main class="wrap">
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tabbtn active" id="tabIssue">Issue</button>
+    <button class="tabbtn" id="tabVerify">Verify</button>
+  </div>
+
   <!-- ISSUE -->
   <section id="issueSection">
     <div class="grid">
       <div class="card">
-        <h2>1) Context (hashed, optionally shared)</h2>
-        <div class="row">
-          <div style="flex:1; min-width:240px;">
-            <label>Action type</label>
-            <input id="issue_action_type" value="terms_acceptance" />
-          </div>
-          <div style="flex:1; min-width:240px;">
-            <label>Subject (pseudonymous)</label>
-            <input id="issue_subject" value="user:hash:9f2c..." />
-          </div>
-        </div>
-        <div class="row">
-          <div style="flex:1; min-width:240px;">
-            <label>App ID</label>
-            <input id="issue_app_id" value="dar-demo-site" />
-          </div>
-          <div style="flex:1; min-width:240px;">
-            <label>Terms doc hash</label>
-            <input id="issue_terms_hash" value="sha256:REPLACE_WITH_REAL_HASH" />
-          </div>
-        </div>
-        <label>Context JSON (editable)</label>
-        <textarea id="issue_context"></textarea>
-        <div class="row">
-          <button class="btn" id="btnResetContext">Reset context template</button>
-          <button class="btn" id="btnDownloadContext">Download context.json</button>
-        </div>
-        <p class="muted">
-          The DAR stores <span class="mono">context_hash</span> (SHA-256 of canonicalized context JSON).
-          You can keep context separate for privacy or include it with the receipt.
-        </p>
+        <h3>Context (hashed)</h3>
+        <label>Action type</label>
+        <input value="terms_acceptance">
+        <label>Subject (pseudonymous)</label>
+        <input value="user:hash:9f2c...">
+        <label>Context JSON</label>
+        <textarea>{}</textarea>
       </div>
-
       <div class="card">
-        <h2>2) Issue DAR (sign payload hash)</h2>
-
-        <div class="row">
-          <button class="btn" id="btnGenKey">Generate/Reset demo keypair</button>
-          <button class="btn" id="btnShowPub">Show public key (JWK)</button>
-        </div>
-
-        <label>Issuer public key (JWK)</label>
-        <textarea id="issue_pubkey" readonly></textarea>
-
-        <div class="row">
-          <button class="btn primary" id="btnIssueDar">Issue DAR</button>
-          <button class="btn" id="btnDownloadDar">Download dar.json</button>
-        </div>
-
-        <label>DAR JSON</label>
-        <textarea id="issue_dar" readonly></textarea>
-
-        <div class="status" id="issueStatus">Ready.</div>
-
-        <p class="muted">
-          Canonical payload is hashed then signed using ECDSA P-256 (WebCrypto). Signature and hashes are embedded in <span class="mono">dar.json</span>.
-        </p>
+        <h3>Issue DAR</h3>
+        <button class="btn btn-primary">Issue DAR</button>
+        <textarea readonly></textarea>
+        <div class="status good">Ready.</div>
       </div>
     </div>
   </section>
@@ -134,427 +299,28 @@
   <section id="verifySection" class="hide">
     <div class="grid">
       <div class="card">
-        <h2>Verifier Inputs</h2>
-
-        <label>Paste DAR JSON (dar.json)</label>
-        <textarea id="verify_dar"></textarea>
-
-        <label>Paste Context JSON (optional, for context_hash check)</label>
-        <textarea id="verify_context"></textarea>
-
-        <label>Issuer public key (JWK) — required</label>
-        <textarea id="verify_pubkey"></textarea>
-
-        <div class="row">
-          <button class="btn primary" id="btnVerify">Verify</button>
-          <button class="btn" id="btnLoadDemoPub">Load demo public key</button>
-          <button class="btn danger" id="btnClearVerify">Clear</button>
-        </div>
-
-        <div class="row">
-          <button class="btn danger" id="btnTamperTime">Tamper: timestamp</button>
-          <button class="btn danger" id="btnTamperAction">Tamper: action_type</button>
-          <button class="btn danger" id="btnSwapContext">Tamper: swap context</button>
-          <button class="btn danger" id="btnCorruptSig">Tamper: corrupt signature</button>
-        </div>
-
-        <p class="muted">
-          Verification performs: canonicalize → hash → signature verify. No network calls.
-        </p>
+        <h3>Verify Inputs</h3>
+        <label>DAR JSON</label>
+        <textarea></textarea>
+        <label>Public key</label>
+        <textarea></textarea>
+        <button class="btn btn-primary">Verify</button>
       </div>
-
       <div class="card">
-        <h2>Verification Result</h2>
-        <div class="status" id="verifyStatus">Paste inputs and click Verify.</div>
-
-        <h2 style="margin-top:14px;">Checks</h2>
-        <div class="status" id="checkSig">Signature: —</div>
-        <div class="status" id="checkPayloadHash">Payload hash: —</div>
-        <div class="status" id="checkContextHash">Context hash: —</div>
-
-        <h2 style="margin-top:14px;">What this proves</h2>
-        <p class="muted">
-          ✅ Integrity: any mutation breaks verification<br/>
-          ✅ Authenticity: issuer key must match signature<br/>
-          ✅ Survivability: verifier needs only receipt + public key + open logic
-        </p>
+        <h3>Result</h3>
+        <div class="status">Paste inputs and verify.</div>
       </div>
     </div>
   </section>
-</div>
 
+</main>
+
+<!-- ===== HEADER / DRAWER JS ===== -->
 <script>
-/* =========================
-   Utilities: base64url, canonical JSON, SHA-256
-========================= */
-function bufToB64Url(buf) {
-  const bytes = new Uint8Array(buf);
-  let binary = "";
-  for (let i=0;i<bytes.length;i++) binary += String.fromCharCode(bytes[i]);
-  const b64 = btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-  return b64;
-}
-function b64UrlToBuf(b64url) {
-  const b64 = b64url.replace(/-/g,'+').replace(/_/g,'/');
-  const pad = b64.length % 4 ? '='.repeat(4 - (b64.length % 4)) : '';
-  const str = atob(b64 + pad);
-  const buf = new Uint8Array(str.length);
-  for (let i=0;i<str.length;i++) buf[i] = str.charCodeAt(i);
-  return buf.buffer;
-}
-function stableStringify(obj) {
-  // Deterministic JSON stringify: sort keys recursively.
-  if (obj === null || typeof obj !== "object") return JSON.stringify(obj);
-  if (Array.isArray(obj)) return "[" + obj.map(stableStringify).join(",") + "]";
-  const keys = Object.keys(obj).sort();
-  return "{" + keys.map(k => JSON.stringify(k)+":"+stableStringify(obj[k])).join(",") + "}";
-}
-async function sha256Utf8(str) {
-  const enc = new TextEncoder();
-  const data = enc.encode(str);
-  const hash = await crypto.subtle.digest("SHA-256", data);
-  return hash;
-}
-
-/* =========================
-   Demo Key Management (localStorage)
-   Algorithm: ECDSA P-256
-========================= */
-const LS_PRIV = "dar_demo_priv_jwk";
-const LS_PUB  = "dar_demo_pub_jwk";
-
-async function ensureDemoKeypair() {
-  const privJwk = localStorage.getItem(LS_PRIV);
-  const pubJwk  = localStorage.getItem(LS_PUB);
-  if (privJwk && pubJwk) return { priv: JSON.parse(privJwk), pub: JSON.parse(pubJwk) };
-
-  const kp = await crypto.subtle.generateKey(
-    { name: "ECDSA", namedCurve: "P-256" },
-    true,
-    ["sign","verify"]
-  );
-  const priv = await crypto.subtle.exportKey("jwk", kp.privateKey);
-  const pub  = await crypto.subtle.exportKey("jwk", kp.publicKey);
-  localStorage.setItem(LS_PRIV, JSON.stringify(priv));
-  localStorage.setItem(LS_PUB, JSON.stringify(pub));
-  return { priv, pub };
-}
-async function resetDemoKeypair() {
-  localStorage.removeItem(LS_PRIV);
-  localStorage.removeItem(LS_PUB);
-  return ensureDemoKeypair();
-}
-async function importPrivKey(jwk) {
-  return crypto.subtle.importKey(
-    "jwk",
-    jwk,
-    { name: "ECDSA", namedCurve: "P-256" },
-    true,
-    ["sign"]
-  );
-}
-async function importPubKey(jwk) {
-  return crypto.subtle.importKey(
-    "jwk",
-    jwk,
-    { name: "ECDSA", namedCurve: "P-256" },
-    true,
-    ["verify"]
-  );
-}
-
-/* =========================
-   Canonical DAR construction
-========================= */
-function nowIso() { return new Date().toISOString(); }
-function randomNonce() {
-  const a = crypto.getRandomValues(new Uint8Array(16));
-  return Array.from(a).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
-
-async function buildDar({issuer, kid, action_type, subject, contextObj, pubJwk, privKey}) {
-  const contextCanon = stableStringify(contextObj);
-  const contextHashBuf = await sha256Utf8(contextCanon);
-  const context_hash = "sha256:" + bufToB64Url(contextHashBuf);
-
-  const payload = {
-    dar_version: "dar-v0-canonical",
-    issuer,
-    kid,
-    issued_at: nowIso(),
-    action_type,
-    subject,
-    context_hash,
-    nonce: randomNonce()
-  };
-
-  const payloadCanon = stableStringify(payload);
-  const payloadHashBuf = await sha256Utf8(payloadCanon);
-  const payload_hash = "sha256:" + bufToB64Url(payloadHashBuf);
-
-  const sigBuf = await crypto.subtle.sign(
-    { name: "ECDSA", hash: "SHA-256" },
-    privKey,
-    payloadHashBuf
-  );
-
-  const dar = {
-    ...payload,
-    payload_hash,
-    signature: "p256_ecdsa_sha256:" + bufToB64Url(sigBuf),
-    issuer_pubkey_jwk: pubJwk // include for demo convenience; in real deployments you may distribute separately
-  };
-
-  return { dar, context: contextObj };
-}
-
-async function verifyDar({darObj, contextObj, pubJwk}) {
-  // 1) recompute context_hash if context provided
-  let contextCheck = { ok: null, msg: "Context not provided (skipped)" };
-  if (contextObj) {
-    const canon = stableStringify(contextObj);
-    const h = await sha256Utf8(canon);
-    const ctx = "sha256:" + bufToB64Url(h);
-    if (ctx === darObj.context_hash) contextCheck = { ok:true, msg:"Context hash matches" };
-    else contextCheck = { ok:false, msg:`Context hash mismatch (computed ${ctx})` };
-  }
-
-  // 2) recompute payload hash from payload fields (exclude signature & payload_hash & issuer_pubkey_jwk)
-  const payload = {
-    dar_version: darObj.dar_version,
-    issuer: darObj.issuer,
-    kid: darObj.kid,
-    issued_at: darObj.issued_at,
-    action_type: darObj.action_type,
-    subject: darObj.subject,
-    context_hash: darObj.context_hash,
-    nonce: darObj.nonce
-  };
-  const payloadCanon = stableStringify(payload);
-  const recomputedHashBuf = await sha256Utf8(payloadCanon);
-  const recomputedPayloadHash = "sha256:" + bufToB64Url(recomputedHashBuf);
-
-  const payloadHashCheck = (recomputedPayloadHash === darObj.payload_hash)
-    ? { ok:true, msg:"Payload hash matches" }
-    : { ok:false, msg:`Payload hash mismatch (computed ${recomputedPayloadHash})` };
-
-  // 3) verify signature
-  const pubKey = await importPubKey(pubJwk);
-  const sigStr = darObj.signature || "";
-  const parts = sigStr.split(":");
-  if (parts.length !== 2) {
-    return {
-      ok:false,
-      signatureCheck:{ ok:false, msg:"Signature format invalid" },
-      payloadHashCheck, contextCheck
-    };
-  }
-  const sigBuf = b64UrlToBuf(parts[1]);
-
-  const sigOk = await crypto.subtle.verify(
-    { name: "ECDSA", hash: "SHA-256" },
-    pubKey,
-    sigBuf,
-    recomputedHashBuf
-  );
-
-  const signatureCheck = sigOk
-    ? { ok:true, msg:"Signature valid" }
-    : { ok:false, msg:"Signature invalid" };
-
-  const ok = !!signatureCheck.ok && !!payloadHashCheck.ok && (contextCheck.ok !== false);
-  return { ok, signatureCheck, payloadHashCheck, contextCheck };
-}
-
-/* =========================
-   UI Wiring
-========================= */
-const el = (id)=>document.getElementById(id);
-const tabIssue = el("tabIssue");
-const tabVerify = el("tabVerify");
-const issueSection = el("issueSection");
-const verifySection = el("verifySection");
-
-function setTab(which){
-  const isIssue = which === "issue";
-  tabIssue.classList.toggle("active", isIssue);
-  tabVerify.classList.toggle("active", !isIssue);
-  issueSection.classList.toggle("hide", !isIssue);
-  verifySection.classList.toggle("hide", isIssue);
-}
-tabIssue.onclick = ()=>setTab("issue");
-tabVerify.onclick = ()=>setTab("verify");
-
-function downloadJson(filename, obj) {
-  const blob = new Blob([JSON.stringify(obj, null, 2)], {type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
-}
-
-function setStatus(node, text, goodBad=null){
-  node.textContent = text;
-  node.classList.remove("good","bad");
-  if (goodBad === true) node.classList.add("good");
-  if (goodBad === false) node.classList.add("bad");
-}
-
-/* Seed context template */
-function defaultContext() {
-  return {
-    terms_doc_hash: el("issue_terms_hash").value,
-    app_id: el("issue_app_id").value,
-    session_id_hash: "sha256:EXAMPLE_SESSION_HASH",
-    device_fingerprint_hash: "sha256:EXAMPLE_DEVICE_HASH"
-  };
-}
-
-el("btnResetContext").onclick = ()=>{
-  const ctx = defaultContext();
-  el("issue_context").value = JSON.stringify(ctx, null, 2);
-};
-
-(async function init(){
-  // Initialize context box
-  el("btnResetContext").click();
-
-  // Ensure keypair exists
-  const kp = await ensureDemoKeypair();
-  el("issue_pubkey").value = JSON.stringify(kp.pub, null, 2);
-  el("verify_pubkey").value = JSON.stringify(kp.pub, null, 2);
-})();
-
-el("btnGenKey").onclick = async ()=>{
-  const kp = await resetDemoKeypair();
-  el("issue_pubkey").value = JSON.stringify(kp.pub, null, 2);
-  el("verify_pubkey").value = JSON.stringify(kp.pub, null, 2);
-  setStatus(el("issueStatus"), "Demo keypair regenerated (localStorage).", true);
-};
-
-el("btnShowPub").onclick = async ()=>{
-  const kp = await ensureDemoKeypair();
-  el("issue_pubkey").value = JSON.stringify(kp.pub, null, 2);
-  setStatus(el("issueStatus"), "Public key loaded.", true);
-};
-
-let lastDar = null;
-let lastCtx = null;
-
-el("btnIssueDar").onclick = async ()=>{
-  try{
-    const kp = await ensureDemoKeypair();
-    const privKey = await importPrivKey(kp.priv);
-
-    const action_type = el("issue_action_type").value.trim();
-    const subject = el("issue_subject").value.trim();
-
-    let ctxObj = null;
-    try { ctxObj = JSON.parse(el("issue_context").value); }
-    catch(e){ throw new Error("Context JSON is invalid."); }
-
-    // keep form inputs in sync with context template fields if user wants
-    ctxObj.terms_doc_hash = ctxObj.terms_doc_hash || el("issue_terms_hash").value;
-    ctxObj.app_id = ctxObj.app_id || el("issue_app_id").value;
-
-    const issuer = "digitalactionreceipts.com/demo";
-    const kid = "demo-p256-1";
-
-    const {dar, context} = await buildDar({
-      issuer, kid, action_type, subject, contextObj: ctxObj, pubJwk: kp.pub, privKey
-    });
-
-    lastDar = dar;
-    lastCtx = context;
-
-    el("issue_dar").value = JSON.stringify(dar, null, 2);
-    setStatus(el("issueStatus"), "DAR issued. Now switch to Verify tab and validate offline.", true);
-
-    // convenience: prefill verify tab
-    el("verify_dar").value = JSON.stringify(dar, null, 2);
-    el("verify_context").value = JSON.stringify(context, null, 2);
-    el("verify_pubkey").value = JSON.stringify(kp.pub, null, 2);
-  }catch(err){
-    setStatus(el("issueStatus"), "Issue failed: " + err.message, false);
-  }
-};
-
-el("btnDownloadDar").onclick = ()=>{
-  if (!lastDar) return alert("Issue a DAR first.");
-  downloadJson("dar.json", lastDar);
-};
-el("btnDownloadContext").onclick = ()=>{
-  let ctxObj = null;
-  try { ctxObj = JSON.parse(el("issue_context").value); }
-  catch(e){ return alert("Context JSON is invalid."); }
-  downloadJson("context.json", ctxObj);
-};
-
-/* Verify */
-el("btnLoadDemoPub").onclick = async ()=>{
-  const kp = await ensureDemoKeypair();
-  el("verify_pubkey").value = JSON.stringify(kp.pub, null, 2);
-};
-
-el("btnClearVerify").onclick = ()=>{
-  el("verify_dar").value = "";
-  el("verify_context").value = "";
-  // keep pubkey
-  setStatus(el("verifyStatus"), "Cleared. Paste inputs and click Verify.", null);
-  setStatus(el("checkSig"), "Signature: —", null);
-  setStatus(el("checkPayloadHash"), "Payload hash: —", null);
-  setStatus(el("checkContextHash"), "Context hash: —", null);
-};
-
-el("btnVerify").onclick = async ()=>{
-  try{
-    const darObj = JSON.parse(el("verify_dar").value);
-    let ctxObj = null;
-    const ctxText = el("verify_context").value.trim();
-    if (ctxText) ctxObj = JSON.parse(ctxText);
-    const pubJwk = JSON.parse(el("verify_pubkey").value);
-
-    const res = await verifyDar({darObj, contextObj: ctxObj, pubJwk});
-
-    setStatus(el("checkSig"), "Signature: " + res.signatureCheck.msg, res.signatureCheck.ok);
-    setStatus(el("checkPayloadHash"), "Payload hash: " + res.payloadHashCheck.msg, res.payloadHashCheck.ok);
-    setStatus(el("checkContextHash"), "Context hash: " + res.contextCheck.msg, res.contextCheck.ok);
-
-    if (res.ok) setStatus(el("verifyStatus"), "✅ VALID — verified offline with receipt + public key.", true);
-    else setStatus(el("verifyStatus"), "❌ INVALID — verification failed (see checks).", false);
-  }catch(err){
-    setStatus(el("verifyStatus"), "Verify failed: " + err.message, false);
-  }
-};
-
-/* Tamper helpers */
-function tamperDar(mutator){
-  const txt = el("verify_dar").value.trim();
-  if (!txt) return alert("Paste a DAR first.");
-  const obj = JSON.parse(txt);
-  mutator(obj);
-  el("verify_dar").value = JSON.stringify(obj, null, 2);
-}
-el("btnTamperTime").onclick = ()=>{
-  tamperDar(d=>{ d.issued_at = new Date(Date.parse(d.issued_at) + 60000).toISOString(); });
-};
-el("btnTamperAction").onclick = ()=>{
-  tamperDar(d=>{ d.action_type = (d.action_type === "terms_acceptance" ? "refund_request" : "terms_acceptance"); });
-};
-el("btnSwapContext").onclick = ()=>{
-  // Change context slightly (so context_hash check will fail)
-  const ctxText = el("verify_context").value.trim();
-  if (!ctxText) return alert("Paste context JSON first (to demonstrate context_hash mismatch).");
-  const ctx = JSON.parse(ctxText);
-  ctx.terms_doc_hash = "sha256:TAMPERED_TERMS_HASH";
-  el("verify_context").value = JSON.stringify(ctx, null, 2);
-};
-el("btnCorruptSig").onclick = ()=>{
-  tamperDar(d=>{
-    if (typeof d.signature === "string") d.signature = d.signature.replace(/.$/, d.signature.endsWith("A") ? "B" : "A");
-  });
-};
+  const drawer = document.getElementById('drawer');
+  document.getElementById('menuBtn').onclick = () => drawer.style.display = 'block';
+  document.getElementById('closeDrawer').onclick = () => drawer.style.display = 'none';
 </script>
+
 </body>
 </html>
