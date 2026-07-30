@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digitalactionreceipts.com/schemas/dar-demo-1.0.json",
+  "title": "Minimum-Safe DAR Demonstration Receipt 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["receipt_id", "schema_version", "issuer_id", "signing_key_id", "actor_ref", "action_type", "target_ref", "event_time", "payload_hash", "related_receipt_refs", "signature_algorithm", "signature"],
+  "properties": {
+    "receipt_id": {"type": "string", "pattern": "^dar:demo:[A-Za-z0-9_-]{43}$", "maxLength": 52},
+    "schema_version": {"const": "dar-demo-1.0"},
+    "issuer_id": {"type": "string", "pattern": "^issuer:[a-z0-9][a-z0-9.-]{2,63}$", "maxLength": 71},
+    "signing_key_id": {"type": "string", "pattern": "^key:[A-Za-z0-9._-]{3,64}$", "maxLength": 68},
+    "actor_ref": {"type": "string", "pattern": "^actor:[A-Za-z0-9._:-]{3,96}$", "maxLength": 102},
+    "action_type": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]{2,63}$", "maxLength": 64},
+    "target_ref": {"type": "string", "pattern": "^target:[A-Za-z0-9._:-]{3,96}$", "maxLength": 103},
+    "event_time": {"type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$", "maxLength": 24},
+    "payload_hash": {"type": "string", "pattern": "^sha256:[A-Za-z0-9_-]{43}$", "maxLength": 50},
+    "authorization_context_ref": {"type": "string", "pattern": "^authctx:[A-Za-z0-9._:-]{3,96}$", "maxLength": 104},
+    "related_receipt_refs": {"type": "array", "maxItems": 16, "uniqueItems": true, "items": {"type": "string", "pattern": "^dar:demo:[A-Za-z0-9_-]{43}$", "maxLength": 52}},
+    "signature_algorithm": {"const": "ECDSA_P256_SHA256"},
+    "signature": {"type": "string", "pattern": "^[A-Za-z0-9_-]{80,100}$", "maxLength": 100}
+  }
+}
