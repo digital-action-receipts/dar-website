@@ -51,6 +51,10 @@ A datum may carry multiple classifications. Apply the most protective handling r
 
 These are accepted requirements without current technical enforcement.
 
+## Phase B1 verifier data handling
+
+The verifier processes receipt JSON in browser memory from pasted text or a local file. Input is limited to 16 KiB, is not sent to a remote service, and is not written to localStorage. The core schema contains identifiers/references, a timestamp, hashes, relationships, algorithm, and signature; unrestricted free-form content and unknown/prohibited fields are rejected. The committed registry contains public demonstration keys only. A matching development-only private fixture exists solely under `test/fixtures/` for automated tests and is prohibited for any production or demonstration signing use.
+
 ## Minimization rule for early pilots
 
 Receipt payloads must be limited to an approved receipt schema containing opaque, tenant-scoped identifiers and cryptographic digests of separately governed artifacts. A digest is still sensitive when it enables confirmation attacks, correlation, or inference. Raw source content must remain in the customer's authorized system of record.
