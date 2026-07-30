@@ -33,3 +33,9 @@ The assessment inspected all tracked files, recent Git history, repository confi
 ## Required follow-up evidence
 
 Before any government pilot, obtain and review: hosting provider and account configuration; DNS/TLS ownership; environments and deployment process; repository protections and administrator/MFA posture; subprocessors; secrets and key-management approach; incident and support contacts; logging/monitoring; backup/recovery; and the intended server-side receipt lifecycle.
+
+## Accepted founder decisions
+
+The founder approved the Phase A findings and ADR-0001 on 2026-07-30. Authoritative direction is: customer-controlled custody by default; no default DAR retention of receipt content; synthetic or explicitly approved non-sensitive demonstration data; temporary demonstration retention of 30 days or less absent approved exception; customer-controlled legal holds; policy-, hold-, and authorization-gated disposition; conditional and tested cryptographic erasure; minimal non-content-bearing disposition receipts; registered issuers with trusted keys; cryptographic validity kept distinct from issuer recognition and key status; no “Verified” result until all required cryptographic and trust checks pass; and a strict, versioned, minimal receipt schema that rejects unknown fields and excludes unrestricted free-form content.
+
+These are approved requirements, not implemented-control claims.
