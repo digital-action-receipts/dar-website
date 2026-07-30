@@ -43,3 +43,6 @@ The founder has approved the custody, retention, hold, disposition, erasure, iss
 ## Phase B1 demonstration boundary
 
 The verifier now accepts pasted JSON or a local JSON file only, capped at 16 KiB. It remains approved only for synthetic or explicitly approved non-sensitive demonstration data. A `Fully verified` result means only that the displayed schema, integrity, signature, issuer-recognition, and key-validity checks passed; it is not government certification and does not prove the action lawful, authorized, accurate, successful, fair, or complete. Production/private keys, authentication, managed storage, customer accounts, and sensitive information remain prohibited.
+# Phase B3 pilot boundary
+
+The secure-SDLC checks apply to repository changes and synthetic demonstration assets only. They do not authorize customer accounts, sensitive data, managed receipt storage, production deployment, or claims of certification. Phase B4 is reserved for privacy, data handling, retention, export, legal hold, deletion and disposition controls.

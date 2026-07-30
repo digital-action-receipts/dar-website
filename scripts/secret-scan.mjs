@@ -1,0 +1,5 @@
+import {readdir,readFile} from "node:fs/promises";
+import {join} from "node:path";
+const root=process.cwd(), ignored=new Set([".git","node_modules","dist","coverage"]), patterns=[/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/,/(?:ghp|github_pat|xox[baprs])-[-A-Za-z0-9_]{20,}/i,/AKIA[0-9A-Z]{16}/,/(?<![A-Za-z])(?:api[_-]?key|secret|token|password)\s*[:=]\s*["'][^"']{12,}["']/i];
+async function walk(dir){const out=[];for(const e of await readdir(dir,{withFileTypes:true})){if(ignored.has(e.name))continue;const p=join(dir,e.name);if(e.isDirectory())out.push(...await walk(p));else out.push(p)}return out}
+const hits=[];for(const file of await walk(root)){const text=await readFile(file,"utf8").catch(()=>"");for(const [i,line] of text.split(/\r?\n/).entries())if(patterns.some(p=>p.test(line))&&!file.includes("scripts\\secret-scan.mjs"))hits.push(`${file}:${i+1}`)}if(hits.length){console.error("High-confidence secret patterns found:\n"+hits.join("\n"));process.exit(1)}console.log("Secret scan passed: no high-confidence secret patterns found in tracked working files.");

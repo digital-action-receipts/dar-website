@@ -1,1 +1,1 @@
-{"name":"dar-website","private":true,"type":"module","scripts":{"test":"node --test test/*.test.mjs"},"engines":{"node":">=22"}}
+{"name":"dar-website","private":true,"type":"module","scripts":{"test":"node --test test/*.test.mjs","scan:secrets":"node scripts/secret-scan.mjs","scan:sast":"node scripts/sast-scan.mjs","scan:headers":"node scripts/validate-headers.mjs","sbom":"node scripts/generate-sbom.mjs","audit:dependencies":"node scripts/dependency-audit.mjs"},"engines":{"node":">=22"}}
