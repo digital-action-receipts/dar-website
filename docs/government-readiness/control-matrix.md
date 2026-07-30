@@ -57,3 +57,15 @@ Documentation alone is policy/specification evidence, not implementation evidenc
 - The verifier defaults its optional remote-fetch feature to offline mode, but its actual verification logic is a placeholder.
 
 These facts do not establish a production security control environment.
+
+## Phase B1 evidence update
+
+| ID | Updated status | Evidence and limitation |
+|---|---|---|
+| VT-01 | Partial | `verification/demo-trust-registry.mjs` and tests distinguish recognized/unrecognized issuers, known/unknown keys, event validity, and active/expired/revoked/compromised status. Production registration, distribution, rotation, and revocation operations remain unimplemented. |
+| VT-02 | Implemented for bounded demonstration only | `verification/verifier-core.mjs`, `verifier.html`, and false-positive tests gate `Fully verified` on every schema, integrity, signature, issuer, and key check. No production assurance claim. |
+| DS-01 | Implemented for bounded demonstration only | Normative `dar-demo-1.0` JSON Schema, manual runtime enforcement, 16 KiB cap, unknown/prohibited-field rejection, and automated negative tests. Production schema governance remains unimplemented. |
+| CY-DP-02 | Partial demonstration evidence | ECDSA P-256/SHA-256 verification and public registry are tested. Browser private-key persistence was removed from the verifier; production key lifecycle remains unimplemented. |
+| CY-SDLC-01 | Partial | Dependency-free Node test suite and PR-triggered GitHub Actions workflow exist. SAST, dependency scanning, SBOM, protected reviews, and broader SDLC controls remain unimplemented/not evidenced. |
+
+No Phase B1 evidence changes the status of production authentication, managed key custody, storage/retention, logging, backup/recovery, privacy operations, accessibility compliance, or incident response.
