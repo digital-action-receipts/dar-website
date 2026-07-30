@@ -40,6 +40,17 @@ A datum may carry multiple classifications. Apply the most protective handling r
 - No repository-evidenced retention, legal hold, archival, export service, authorized disposition, backup, or deletion workflow exists.
 - Git history is durable but is not an approved store for receipts, customer data, keys, tokens, or evidence.
 
+## Approved lifecycle and schema requirements
+
+- Customer-controlled custody is the default; DAR retains no customer receipt content by default.
+- Demonstrations use synthetic or explicitly approved non-sensitive data.
+- Any temporary demonstration storage expires within 30 days or less unless a documented approved exception applies.
+- The core receipt has a strict, versioned, minimal schema, rejects unknown fields by default, and contains no unrestricted free-form customer content.
+- Customer-authorized records roles control legal holds. Disposition requires policy eligibility, a no-hold check, and auditable authorization.
+- Disposition receipts contain only minimal authority and opaque lifecycle metadata, never deleted protected content.
+
+These are accepted requirements without current technical enforcement.
+
 ## Minimization rule for early pilots
 
 Receipt payloads must be limited to an approved receipt schema containing opaque, tenant-scoped identifiers and cryptographic digests of separately governed artifacts. A digest is still sensitive when it enables confirmation attacks, correlation, or inference. Raw source content must remain in the customer's authorized system of record.
