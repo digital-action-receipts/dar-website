@@ -42,3 +42,6 @@ The full Phase A validation set was rerun after confirming synchronization. Requ
 Phase B1 adds a dependency-free Node 22 test suite and pull-request GitHub Actions workflow. Local result on 2026-07-30: 22 tests passed, 0 failed. Coverage includes trusted verification, canonical property ordering, altered content/time/issuer/key, invalid and malformed signatures, unrecognized issuer with a mathematically valid signature, unknown/revoked/compromised/expired keys, event-time validity, malformed JSON, unknown and prohibited fields, oversized input, unsupported schema/algorithm, and explicit prevention of the prior field-presence false positive.
 
 Documentation/link/file checks, JSON parsing of the normative schema, SVG XML parsing, and `git diff --check` are also required before publication. Browser evidence captures `Fully verified`, `Verification incomplete`, and invalid-input outcomes. CI status is recorded in the Phase B1 pull request once GitHub Actions runs.
+## Phase B2 automated validation
+
+The Phase B2 branch adds signed-registry, freshness, rollback, issuer lifecycle, key lifecycle, compromise-timing, malformed-input, size-boundary and broader canonicalization tests. Run `npm test` with Node 22; the local run passed 54 tests.

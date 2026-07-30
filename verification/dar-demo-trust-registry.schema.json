@@ -1,0 +1,42 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://digitalactionreceipts.com/schemas/dar-trust-registry-demo-1.0.json",
+  "title":"DAR Demonstration Trust Registry 1.0",
+  "type":"object","additionalProperties":false,
+  "required":["registry_schema_version","registry_id","authority_id","sequence","issued_at","next_update","issuers","signing_keys","signature_algorithm","signature"],
+  "properties":{
+    "registry_schema_version":{"const":"dar-trust-registry-demo-1.0"},
+    "registry_id":{"type":"string","pattern":"^registry:[a-z0-9][a-z0-9.-]{2,63}$","maxLength":72},
+    "authority_id":{"type":"string","pattern":"^authority:[a-z0-9][a-z0-9.-]{2,63}$","maxLength":73},
+    "sequence":{"type":"integer","minimum":1,"maximum":2147483647},
+    "issued_at":{"type":"string","format":"date-time","maxLength":24},
+    "next_update":{"type":"string","format":"date-time","maxLength":24},
+    "issuers":{"type":"array","minItems":1,"maxItems":100,"items":{"$ref":"#/$defs/issuer"}},
+    "signing_keys":{"type":"array","minItems":1,"maxItems":500,"items":{"$ref":"#/$defs/signingKey"}},
+    "signature_algorithm":{"const":"ECDSA_P256_SHA256"},
+    "signature":{"type":"string","pattern":"^[A-Za-z0-9_-]{80,100}$","maxLength":100}
+  },
+  "$defs":{
+    "issuer":{"type":"object","additionalProperties":false,"required":["issuer_id","display_name","status","registered_at","approved_receipt_schemas","signing_key_refs"],"properties":{
+      "issuer_id":{"type":"string","pattern":"^issuer:[a-z0-9][a-z0-9.-]{2,63}$","maxLength":71},
+      "display_name":{"type":"string","minLength":1,"maxLength":80},
+      "status":{"enum":["active","suspended","revoked","retired","unknown"]},
+      "registered_at":{"type":"string","format":"date-time","maxLength":24},
+      "approved_receipt_schemas":{"type":"array","minItems":1,"maxItems":16,"uniqueItems":true,"items":{"type":"string","pattern":"^[A-Za-z0-9._-]{1,40}$","maxLength":40}},
+      "signing_key_refs":{"type":"array","minItems":1,"maxItems":32,"uniqueItems":true,"items":{"type":"string","pattern":"^key:[A-Za-z0-9._-]{3,64}$","maxLength":68}}
+    }},
+    "signingKey":{"type":"object","additionalProperties":false,"required":["issuer_id","signing_key_id","public_key_jwk","algorithm","valid_from","current_status","status_effective_at","reason_code"],"properties":{
+      "issuer_id":{"type":"string","pattern":"^issuer:[a-z0-9][a-z0-9.-]{2,63}$","maxLength":71},
+      "signing_key_id":{"type":"string","pattern":"^key:[A-Za-z0-9._-]{3,64}$","maxLength":68},
+      "public_key_jwk":{"$ref":"#/$defs/publicJwk"},
+      "algorithm":{"const":"ECDSA_P256_SHA256"},
+      "valid_from":{"type":"string","format":"date-time","maxLength":24},
+      "valid_until":{"type":"string","format":"date-time","maxLength":24},
+      "current_status":{"enum":["active","expired","revoked","compromised","suspended","retired","unknown"]},
+      "status_effective_at":{"type":"string","format":"date-time","maxLength":24},
+      "reason_code":{"enum":["none","routine-expiration","planned-retirement","administrative-revocation","suspected-compromise","confirmed-compromise","issuer-suspension","unknown"]},
+      "replacement_key_id":{"type":"string","pattern":"^key:[A-Za-z0-9._-]{3,64}$","maxLength":68}
+    }},
+    "publicJwk":{"type":"object","additionalProperties":false,"required":["kty","crv","x","y","ext","key_ops"],"properties":{"kty":{"const":"EC"},"crv":{"const":"P-256"},"x":{"type":"string","pattern":"^[A-Za-z0-9_-]{43}$"},"y":{"type":"string","pattern":"^[A-Za-z0-9_-]{43}$"},"ext":{"const":true},"key_ops":{"const":["verify"]}}}
+  }
+}
