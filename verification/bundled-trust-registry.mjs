@@ -1,0 +1,9 @@
+export const BUNDLED_DEMO_TRUST_REGISTRY={
+  registry_schema_version:"dar-trust-registry-demo-1.0",registry_id:"registry:dar-demo",authority_id:"authority:dar-demo-root",sequence:2,
+  issued_at:"2026-07-01T00:00:00Z",next_update:"2027-01-01T00:00:00Z",
+  issuers:[{issuer_id:"issuer:dar-demo",display_name:"DAR Demonstration Issuer",status:"active",registered_at:"2026-01-01T00:00:00Z",approved_receipt_schemas:["dar-demo-1.0"],signing_key_refs:["key:trusted-demo-2026","key:trusted-demo-2027"]}],
+  signing_keys:[
+    {issuer_id:"issuer:dar-demo",signing_key_id:"key:trusted-demo-2026",public_key_jwk:{kty:"EC",crv:"P-256",x:"1WB__cwuYJaOo__rCg0sSu_QTN8CKUpljR5zb6N6O00",y:"xNrRT1vP3WPgC-GiFa9hXBt2UEN-DRpbI5QB1eSND6I",ext:true,key_ops:["verify"]},algorithm:"ECDSA_P256_SHA256",valid_from:"2026-01-01T00:00:00Z",valid_until:"2027-01-01T00:00:00Z",current_status:"active",status_effective_at:"2026-01-01T00:00:00Z",reason_code:"none",replacement_key_id:"key:trusted-demo-2027"},
+    {issuer_id:"issuer:dar-demo",signing_key_id:"key:trusted-demo-2027",public_key_jwk:{kty:"EC",crv:"P-256",x:"wRSBazNQ2rbDS5AiSvkIZz5zPNZVY7mc3pESYc-nHw8",y:"Jm7DiIExjUQafMtlKgx4Ty5wP_8dJTNur9AQYpr8JuY",ext:true,key_ops:["verify"]},algorithm:"ECDSA_P256_SHA256",valid_from:"2027-01-01T00:00:00Z",current_status:"active",status_effective_at:"2027-01-01T00:00:00Z",reason_code:"none"}
+  ],signature_algorithm:"ECDSA_P256_SHA256",signature:"VcowWb6rI3__C2gzm7tcz5tPw0VjutQlZ_TrG3ly3Je686HGCDM6jY8T4egViigOkJskDg703l4UIJGhjrhuPw"
+};

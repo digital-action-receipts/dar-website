@@ -35,15 +35,17 @@
   </main>
   <script type="module">
     import { MAX_INPUT_BYTES, verifyReceiptText } from "./verification/verifier-core.mjs";
-    import { DEMO_TRUST_REGISTRY } from "./verification/demo-trust-registry.mjs";
+    import { verifyInputs } from "./verification/registry-core.mjs";
+    import { BUNDLED_DEMO_TRUST_REGISTRY } from "./verification/bundled-trust-registry.mjs";
     import { TRUSTED_DEMO_RECEIPT, UNTRUSTED_ISSUER_DEMO_RECEIPT } from "./verification/trusted-demo-receipt.mjs";
     const $ = (id) => document.getElementById(id);
-    const order = [["input","Input / JSON"],["structure","Schema / structure"],["integrity","Content integrity"],["signature","Mathematical signature"],["issuer","Issuer recognition"],["key","Signing-key validity"]];
+    const order = [["registry_structure","Registry structure"],["registry_signature","Registry signature"],["registry_authority","Registry authority"],["registry_freshness","Registry freshness"],["issuer_recognized","Issuer recognition"],["issuer_status","Issuer status"],["key_recognized","Signing-key recognition"],["key_event_validity","Key valid at event time"],["key_current_status","Current key status"],["content_integrity","Content integrity"],["receipt_signature","Receipt signature"]];
     function render(result){
       const overall=$("overall"); overall.textContent=result.overall; overall.className=`overall ${result.overall==="Fully verified"?"pass":result.overall==="Verification incomplete"?"warn":"fail"}`;
       $("checks").replaceChildren(...order.map(([key,label])=>{const check=result.checks[key]??{state:"unknown",detail:"Not evaluated."};const row=document.createElement("div");row.className=`check ${check.state}`;const icon=document.createElement("span");icon.className="icon";icon.textContent=check.state==="pass"?"✓":check.state==="fail"?"×":"?";const copy=document.createElement("div");const strong=document.createElement("strong");strong.textContent=label;const p=document.createElement("p");p.textContent=check.detail;copy.append(strong,p);row.append(icon,copy);return row;}));
     }
-    async function run(){render(await verifyReceiptText($("receiptJson").value,{registry:DEMO_TRUST_REGISTRY,now:"2026-07-30T13:00:00Z"}));}
+    const registryText=JSON.stringify(BUNDLED_DEMO_TRUST_REGISTRY);
+    async function run(){render(await verifyInputs($("receiptJson").value,registryText,{now:"2026-07-30T13:00:00Z"}));}
     $("verifyButton").addEventListener("click",run);
     $("loadTrusted").addEventListener("click",()=>{$("receiptJson").value=JSON.stringify(TRUSTED_DEMO_RECEIPT,null,2);run();});
     $("loadUnknown").addEventListener("click",()=>{$("receiptJson").value=JSON.stringify(UNTRUSTED_ISSUER_DEMO_RECEIPT,null,2);run();});
