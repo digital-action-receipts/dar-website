@@ -52,6 +52,15 @@ Only a source branch and browser execution context are evidenced. Development, t
 | Receipt source URL entered by a user | Customer-selected third party | Outside DAR control |
 | Future issuer, verifier, storage, retention services | Unassigned | Not implemented |
 
+## Approved target-boundary constraints
+
+- Customer-controlled receipt custody is the default; DAR-managed storage is deferred and optional.
+- DAR does not retain customer receipt content by default. Any future temporary demonstration storage expires within 30 days or less absent a documented approved exception.
+- Issuer trust uses registered issuers and trusted keys. Mathematical signature validity, issuer recognition, and current key status are separate determinations.
+- The core receipt uses a strict, versioned, minimal schema, rejects unknown fields by default, and excludes unrestricted free-form customer content.
+
+These constraints govern future design but do not expand the current evidenced boundary or establish implementation.
+
 ## Trust boundaries
 
 TB-1 separates repository/change control from released static content. TB-2 separates hosting/CDN delivery from the user's browser. TB-3 separates untrusted user-controlled input from browser code. TB-4 separates the browser from an arbitrary URL when remote fetch is enabled. TB-5 separates public content from browser persistence; private demo keys cross into localStorage. None of these boundaries currently has documented operational ownership or control evidence beyond code behavior.
