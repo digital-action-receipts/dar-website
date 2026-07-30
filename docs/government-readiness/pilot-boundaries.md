@@ -39,3 +39,7 @@ Demonstration results must distinguish mathematical signature validity from regi
 ## Remaining pilot entry approvals
 
 The founder has approved the custody, retention, hold, disposition, erasure, issuer-trust, verifier-language, and schema direction. Pilot-specific approval is still required for deployment/providers, use case/users, named data and records owners, issuer registration/key custody, access control, logging/incident handling, recovery, accessibility scope, customer exit/export, any retention exception, and explicit acceptance of remaining implementation risks.
+
+## Phase B1 demonstration boundary
+
+The verifier now accepts pasted JSON or a local JSON file only, capped at 16 KiB. It remains approved only for synthetic or explicitly approved non-sensitive demonstration data. A `Fully verified` result means only that the displayed schema, integrity, signature, issuer-recognition, and key-validity checks passed; it is not government certification and does not prove the action lawful, authorized, accurate, successful, fair, or complete. Production/private keys, authentication, managed storage, customer accounts, and sensitive information remain prohibited.
