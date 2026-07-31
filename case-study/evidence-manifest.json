@@ -129,6 +129,33 @@
       "detail": "28 tests passed; scanners and diff check passed"
     }
   ],
+  "external_corroboration": {
+    "repository": "digital-action-receipts/dar-website",
+    "remote_branch": "government-readiness/codex-case-study-instrumentation",
+    "pull_request": {
+      "number": 7,
+      "url": "https://github.com/digital-action-receipts/dar-website/pull/7",
+      "draft": true,
+      "base_branch": "government-readiness/phase-b3-secure-sdlc",
+      "head_sha": "ca9129379d5152b1a7501ca1e22ebdbf3c4a89e8"
+    },
+    "workflow": {
+      "run_id": 30594747383,
+      "run_number": 7,
+      "status": "completed",
+      "conclusion": "success",
+      "job_id": 91044573287,
+      "completed_at": "2026-07-31T00:51:55Z",
+      "evidence_url": "https://github.com/digital-action-receipts/dar-website/actions/runs/30594747383"
+    },
+    "artifact": {
+      "name": "dar-b3-sbom-78dbff48e8aa64870e882d81ac6e152f2cbba746",
+      "id": 8779667662,
+      "digest": "sha256:0841af8bcf12bf8502a17604546c3b3064b7ab43809708775813c3925bb7fd80",
+      "expired": false
+    },
+    "scope_note": "GitHub corroboration is limited to the draft PR and Actions run; no merge, deployment, settings, secrets, or external infrastructure changes were performed."
+  },
   "final_outcome": "complete",
   "evidence_digest": "-dYhNqQxQB17jaz6RcTUn2UMMFdICJf6RUn21yzM5-4"
 }
