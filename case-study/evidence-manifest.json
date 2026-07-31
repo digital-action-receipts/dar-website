@@ -137,25 +137,25 @@
       "url": "https://github.com/digital-action-receipts/dar-website/pull/7",
       "draft": true,
       "base_branch": "government-readiness/phase-b3-secure-sdlc",
-      "head_sha": "ca9129379d5152b1a7501ca1e22ebdbf3c4a89e8"
+      "head_sha": "fb2d9998d2127933963974f1c93eeba569be02e6"
     },
     "workflow": {
-      "run_id": 30594747383,
-      "run_number": 7,
+      "run_id": 30630775265,
+      "run_number": 9,
       "status": "completed",
       "conclusion": "success",
-      "job_id": 91044573287,
-      "completed_at": "2026-07-31T00:51:55Z",
-      "evidence_url": "https://github.com/digital-action-receipts/dar-website/actions/runs/30594747383"
+      "job_id": 91156340393,
+      "completed_at": "2026-07-31T12:29:09Z",
+      "evidence_url": "https://github.com/digital-action-receipts/dar-website/actions/runs/30630775265"
     },
     "artifact": {
-      "name": "dar-b3-sbom-78dbff48e8aa64870e882d81ac6e152f2cbba746",
-      "id": 8779667662,
-      "digest": "sha256:0841af8bcf12bf8502a17604546c3b3064b7ab43809708775813c3925bb7fd80",
+      "name": "dar-b3-sbom-852ac8dda00de995553c7aab3f871542a3acf728",
+      "id": 8793223743,
+      "digest": "sha256:35e3792060c23ca7dfaac1bc7abdd53c824b88d92cf9049ae01c1338e8ec203e",
       "expired": false
     },
     "scope_note": "GitHub corroboration is limited to the draft PR and Actions run; no merge, deployment, settings, secrets, or external infrastructure changes were performed."
   },
   "final_outcome": "complete",
-  "evidence_digest": "-dYhNqQxQB17jaz6RcTUn2UMMFdICJf6RUn21yzM5-4"
+  "evidence_digest": "fDofL6Q640pZqKjLZrOa9sMpBKfTLBEKd3zZ8bHLvcs"
 }
