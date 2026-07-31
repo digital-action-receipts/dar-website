@@ -1,0 +1,1 @@
+{"receipt_id":"dar:case-study:instrumentation-001","schema_version":"dar-codex-case-study-1.0","issuer_id":"issuer:dar-demo","event_type":"verification_run","event_time":"2026-07-30T00:00:00Z","subject":"synthetic-case-study","payload":{"result":"Fully verified","scope":"local-only"},"signature_algorithm":"none","signature":"demonstration-only-not-a-trust-assertion"}
