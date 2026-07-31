@@ -1,0 +1,23 @@
+{
+  "snapshot_version": "1.0.0",
+  "starting_commit": "e396ea58dd144076de767446d330981119ebae5f",
+  "implementation_commits": ["b184230f4d0b7f1b8a25769b233218f38be22ae9", "37aff89609b278a016e6ca974d3a746d342fb330", "500b060b542aa496ee149fc8320b865929d55cef"],
+  "evidence_commits": ["24e710b0e3c2e75ff105a876b3be569e5d30890a", "78a044d698eb5ba15f238b3a5ac03c3adf4c8785"],
+  "remote_head": "dc7e2d5b9972343aacb60c5f111fbbdfe9263109",
+  "pull_request": {"number": 7, "url": "https://github.com/digital-action-receipts/dar-website/pull/7", "draft": true, "base": "government-readiness/phase-b3-secure-sdlc", "head": "government-readiness/codex-case-study-instrumentation"},
+  "workflow": {"run_id": 30631129041, "conclusion": "success", "url": "https://github.com/digital-action-receipts/dar-website/actions/runs/30631129041", "completed_at": "2026-07-31T12:34:50Z"},
+  "sbom": {"artifact": "dar-b3-sbom-593de5a7876d3219b2ac57c0bd3246d3adba8644", "digest": "sha256:16c2546728c7921622bf62d85f45b50d840a4a1fe8c5876dc44158520cceecc0"},
+  "manifest_digest": "fDofL6Q640pZqKjLZrOa9sMpBKfTLBEKd3zZ8bHLvcs",
+  "verification_report_digest": "JPk3oEA6-7vKXjppnpsfTxVn1qopfnf6rN4LeRefbtM",
+  "timestamps": {"snapshot_created": "2026-07-31T00:00:00Z", "worktree": "clean"},
+  "authorization": ["Human authorized publication to the existing case-study branch and draft PR #7."],
+  "prohibited_actions": ["merge", "deploy", "infrastructure change", "settings/permissions/secrets/environments/branch-protection changes", "new pull request", "other branch push", "certification claim"],
+  "claims": [
+    {"claim": "Repository starting state and ancestry", "classification": "directly_observed"},
+    {"claim": "Local tests and security checks pass", "classification": "locally_verified"},
+    {"claim": "PR and GitHub Actions corroboration", "classification": "externally_corroborated"},
+    {"claim": "Publication authorization", "classification": "human_attested"},
+    {"claim": "Complete visibility into model actions", "classification": "not_verified"},
+    {"claim": "Regulatory certification", "classification": "not_applicable"}
+  ]
+}

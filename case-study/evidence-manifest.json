@@ -1,0 +1,161 @@
+{
+  "manifest_version": "dar-codex-instrumentation-1.0",
+  "starting_state": {
+    "branch": "government-readiness/codex-case-study-instrumentation",
+    "base_branch": "government-readiness/phase-b3-secure-sdlc",
+    "commit": "e396ea58dd144076de767446d330981119ebae5f",
+    "worktree": "clean",
+    "captured_at": "2026-07-30T00:00:00Z",
+    "repository_scope": "local DAR static-site repository"
+  },
+  "authorized_scope": [
+    "Implement local case-study instrumentation code, tests, documentation, sample receipt, and verification report.",
+    "Record repository and validation evidence in this manifest."
+  ],
+  "prohibited_actions": [
+    "push",
+    "merge",
+    "deploy",
+    "change external infrastructure",
+    "access secrets",
+    "create pull request",
+    "begin Phase B4"
+  ],
+  "required_human_approvals": [
+    "Approval is required before any push, merge, deployment, external-infrastructure change, secret access, or pull-request creation."
+  ],
+  "acceptance_criteria": [
+    "Machine-readable evidence manifest with starting state and execution evidence",
+    "Bounded instrumentation API with no network or secret access",
+    "Sample DAR receipt and verification report",
+    "Automated tests and documented limitations",
+    "Dedicated branch with no external publication"
+  ],
+  "events": [
+    {
+      "kind": "command",
+      "status": "pass",
+      "detail": "clean starting worktree",
+      "command": "git status --porcelain=v1"
+    },
+    {
+      "kind": "command",
+      "status": "pass",
+      "detail": "dedicated branch created",
+      "command": "git switch -c government-readiness/codex-case-study-instrumentation"
+    },
+    {
+      "kind": "command",
+      "status": "pass",
+      "detail": "case-study and existing tests passed",
+      "command": "node --test test/*.test.mjs"
+    },
+    {
+      "kind": "command",
+      "status": "pass",
+      "detail": "no whitespace errors",
+      "command": "git diff --check"
+    },
+    {
+      "kind": "change",
+      "status": "recorded",
+      "detail": "Added bounded instrumentation API, schema, sample receipt, report, tests, and manifest.",
+      "path": "case-study/"
+    },
+    {
+      "kind": "security_check",
+      "status": "pass",
+      "detail": "No network, secret access, push, merge, deployment, or external infrastructure operation performed."
+    },
+    {
+      "kind": "outcome",
+      "status": "complete",
+      "detail": "Dedicated local branch package is ready for human review; not published."
+    },
+    {
+      "kind": "change",
+      "status": "recorded",
+      "detail": "Implementation commit generated locally; final manifest commit is intentionally not self-referential.",
+      "sha": "b184230f4d0b7f1b8a25769b233218f38be22ae9"
+    }
+  ],
+  "security_checks": [
+    {
+      "name": "secret scan",
+      "status": "pass",
+      "detail": "local command completed successfully"
+    },
+    {
+      "name": "dependency audit",
+      "status": "pass",
+      "detail": "local command completed successfully"
+    },
+    {
+      "name": "SAST",
+      "status": "pass",
+      "detail": "local command completed successfully"
+    },
+    {
+      "name": "security headers",
+      "status": "pass",
+      "detail": "local command completed successfully"
+    },
+    {
+      "name": "SBOM generation",
+      "status": "pass",
+      "detail": "local command completed successfully"
+    },
+    {
+      "name": "git diff --check",
+      "status": "pass",
+      "detail": "local command completed successfully"
+    }
+  ],
+  "generated_commits": [
+    {
+      "sha": "b184230f4d0b7f1b8a25769b233218f38be22ae9",
+      "message": "Add DAR Codex case-study instrumentation"
+    }
+  ],
+  "ci_evidence": [
+    {
+      "name": "local verification",
+      "status": "pass",
+      "detail": "automated tests, schema checks, and diff check recorded"
+    },
+    {
+      "name": "local verification",
+      "status": "pass",
+      "detail": "28 tests passed; scanners and diff check passed"
+    }
+  ],
+  "external_corroboration": {
+    "repository": "digital-action-receipts/dar-website",
+    "remote_branch": "government-readiness/codex-case-study-instrumentation",
+    "pull_request": {
+      "number": 7,
+      "url": "https://github.com/digital-action-receipts/dar-website/pull/7",
+      "draft": true,
+      "base_branch": "government-readiness/phase-b3-secure-sdlc",
+      "head_sha": "fb2d9998d2127933963974f1c93eeba569be02e6"
+    },
+    "workflow": {
+      "run_id": 30630775265,
+      "run_number": 9,
+      "status": "completed",
+      "conclusion": "success",
+      "job_id": 91156340393,
+      "completed_at": "2026-07-31T12:29:09Z",
+      "evidence_url": "https://github.com/digital-action-receipts/dar-website/actions/runs/30630775265"
+    },
+    "artifact": {
+      "name": "dar-b3-sbom-852ac8dda00de995553c7aab3f871542a3acf728",
+      "id": 8793223743,
+      "digest": "sha256:35e3792060c23ca7dfaac1bc7abdd53c824b88d92cf9049ae01c1338e8ec203e",
+      "expired": false
+    },
+    "scope_note": "GitHub corroboration is limited to the draft PR and Actions run; no merge, deployment, settings, secrets, or external infrastructure changes were performed."
+  },
+  "final_outcome": "complete",
+  "evidence_digest": "fDofL6Q640pZqKjLZrOa9sMpBKfTLBEKd3zZ8bHLvcs"
+}
