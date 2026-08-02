@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="description" content="DAR creates verifiable histories of AI-assisted creative work by documenting prompts, generations, human edits, reviews, approvals, and publication events." />
-  <meta name="keywords" content="Digital Action Receipts, DAR, AI creators, creative process, verified creation report, process evidence, C2PA, trusted timestamps" />
-  <title>DAR — Verifiable creation histories for AI-assisted work</title>
+  <meta name="description" content="Digital Action Receipts create portable, independently verifiable proof that a digital action occurred without requiring access to internal logs or tightly coupled systems." />
+  <meta name="keywords" content="Digital Action Receipts, DAR, digital actions, verifiable receipts, portable evidence, independent verification, trusted timestamps" />
+  <title>DAR — Portable proof for digital actions</title>
   <style>
     :root{
       --bg:#f6f8fc; --surface:#fff; --surface-2:#eef3fb; --text:#111827; --muted:#5b6474;
@@ -63,9 +63,9 @@
 <body>
   <nav class="nav">
     <div class="container nav-inner">
-      <a class="brand" href="#top"><span class="logo">DAR</span><span>Digital Action Receipts<small>Verifiable process evidence</small></span></a>
-      <div class="nav-links"><a href="#creators">Creators</a><a href="#trust">How trust works</a><a href="#c2pa">DAR + C2PA</a><a href="#organizations">Organizations</a><a href="/tools.html">Tools</a></div>
-      <a class="btn btn-primary" href="#report">See the report</a>
+      <a class="brand" href="#top"><span class="logo">DAR</span><span>Digital Action Receipts<small>Portable proof that actions occurred</small></span></a>
+      <div class="nav-links"><a href="#how">How it works</a><a href="#trust">Trust</a><a href="#uses">Use cases</a><a href="#principles">Principles</a><a href="/tools.html">Tools</a></div>
+      <a class="btn btn-primary" href="/playground.html">Try the playground</a>
     </div>
   </nav>
 
@@ -73,27 +73,27 @@
     <header class="hero">
       <div class="container hero-grid">
         <div>
-          <div class="eyebrow"><span class="eyebrow-dot"></span>Built for AI-assisted creators</div>
-          <h1>Create a verifiable history of how your work was made.</h1>
-          <p class="lead">DAR documents the prompts, generations, human edits, reviews, approvals, and publication events behind digital work—then turns that history into a Verified Creation Report.</p>
-          <div class="hero-actions"><a class="btn btn-primary" href="#report">Explore the report</a><a class="btn" href="#organizations">For organizations</a></div>
-          <p class="trust-note">DAR does not determine copyright ownership. It creates independently verifiable evidence of the creative process.</p>
+          <div class="eyebrow"><span class="eyebrow-dot"></span>Evidence that travels with the action</div>
+          <h1>Portable proof that a digital action occurred.</h1>
+          <p class="lead">DAR creates a neutral, append-only receipt at the moment of action. Anyone can verify it later without needing access to private logs, screenshots, or the system where the action happened.</p>
+          <div class="hero-actions"><a class="btn btn-primary" href="#how">See how it works</a><a class="btn" href="/definition.html">Read the definition</a></div>
+          <p class="trust-note">A DAR proves evidence about an action. It does not decide whether the action was lawful, correct, authorized, or successful.</p>
         </div>
-        <aside class="report" aria-label="Verified Creation Report preview">
-          <div class="report-top"><div><div class="report-title">Verified Creation Report</div><div class="report-id">DAR-CR-2026-0713-0042</div></div><div class="score"><div><strong>86</strong><span>TRUST SCORE</span></div></div></div>
+        <aside class="report" aria-label="Digital Action Receipt preview">
+          <div class="report-top"><div><div class="report-title">Digital Action Receipt</div><div class="report-id">DAR-2026-0713-0042</div></div><div class="score"><div><strong>86</strong><span>TRUST SCORE</span></div></div></div>
           <div class="timeline">
-            <div class="event"><div class="time">2:15 PM</div><div class="rail"><div class="node"></div></div><div><h3>Prompt submitted</h3><p>Creative direction captured with source evidence.</p><span class="tag">TIMESTAMPED</span></div></div>
-            <div class="event"><div class="time">2:18 PM</div><div class="rail"><div class="node"></div></div><div><h3>AI generation created</h3><p>Platform output and generation reference recorded.</p><span class="tag">PLATFORM EVIDENCE</span></div></div>
-            <div class="event"><div class="time">3:05 PM</div><div class="rail"><div class="node"></div></div><div><h3>Human arrangement edited</h3><p>Project version and edit summary linked to the chain.</p><span class="tag">CHAIN VERIFIED</span></div></div>
-            <div class="event"><div class="time">4:15 PM</div><div class="rail"><div class="node"></div></div><div><h3>Final work published</h3><p>Export fingerprint and publication event preserved.</p><span class="tag">PUBLICLY ANCHORED</span></div></div>
+            <div class="event"><div class="time">2:15 PM</div><div class="rail"><div class="node"></div></div><div><h3>Action initiated</h3><p>Actor, action type, target, and context recorded.</p><span class="tag">TIMESTAMPED</span></div></div>
+            <div class="event"><div class="time">2:15 PM</div><div class="rail"><div class="node"></div></div><div><h3>Receipt issued</h3><p>A tamper-evident record is created at execution time.</p><span class="tag">SIGNED EVIDENCE</span></div></div>
+            <div class="event"><div class="time">2:16 PM</div><div class="rail"><div class="node"></div></div><div><h3>Receipt anchored</h3><p>The evidence is linked to an independent trust anchor.</p><span class="tag">CHAIN VERIFIED</span></div></div>
+            <div class="event"><div class="time">4:15 PM</div><div class="rail"><div class="node"></div></div><div><h3>Independently verified</h3><p>A verifier confirms integrity without internal system access.</p><span class="tag">PORTABLE PROOF</span></div></div>
           </div>
         </aside>
       </div>
     </header>
 
-    <section class="section" id="creators">
-      <div class="container"><div class="section-head"><div class="kicker">The creator wedge</div><h2>Your process is scattered across tools. DAR connects the evidence.</h2><p>An AI-assisted project may begin in a chatbot, move through a generation platform, change in a DAW or editor, and finish on a publishing platform. DAR creates one coherent timeline across that journey.</p></div>
-        <div class="grid-3"><article class="card"><div class="num">1</div><h3>Capture meaningful events</h3><p>Record prompts, source files, generations, selections, edits, approvals, exports, and publication events.</p></article><article class="card"><div class="num">2</div><h3>Anchor the timeline</h3><p>Hash-chain receipts, trusted timestamps, and public log anchoring make silent backdating or alteration detectable.</p></article><article class="card"><div class="num">3</div><h3>Generate usable evidence</h3><p>Turn the timeline into a portable report for clients, collaborators, licensing discussions, disputes, or internal records.</p></article></div>
+    <section class="section" id="how">
+      <div class="container"><div class="section-head"><div class="kicker">How it works</div><h2>Create evidence at the moment of action.</h2><p>DAR adds a small, portable proof layer to existing systems. It records the minimum facts needed to verify an event later without copying private logs or coupling the verifier to the original platform.</p></div>
+        <div class="grid-3"><article class="card"><div class="num">1</div><h3>Observe an action</h3><p>A person, service, workflow, or agent performs a defined digital action.</p></article><article class="card"><div class="num">2</div><h3>Issue a receipt</h3><p>The issuer records the action, time, parties, target, and evidence references in a signed, tamper-evident receipt.</p></article><article class="card"><div class="num">3</div><h3>Verify anywhere</h3><p>A recipient checks integrity, issuer identity, key status, and supporting trust anchors independently.</p></article></div>
       </div>
     </section>
 
@@ -108,33 +108,34 @@
       </div>
     </section>
 
-    <section class="section" id="report">
-      <div class="container grid-2"><div class="section-head"><div class="kicker">The first deliverable</div><h2>The Verified Creation Report</h2><p>A human-readable evidence package backed by machine-verifiable receipts. It explains what happened, when it happened, what supports each event, and how strong the evidence is.</p></div>
-        <article class="card"><h3>What the report includes</h3><div class="report-list"><div class="report-item"><span class="check">✓</span>Project and creator identity</div><div class="report-item"><span class="check">✓</span>Chronological creation timeline</div><div class="report-item"><span class="check">✓</span>Human and AI contribution markers</div><div class="report-item"><span class="check">✓</span>Evidence references and hashes</div><div class="report-item"><span class="check">✓</span>Trusted timestamps and anchors</div><div class="report-item"><span class="check">✓</span>Trust Score with explanation</div><div class="report-item"><span class="check">✓</span>Final asset fingerprint</div><div class="report-item"><span class="check">✓</span>Independent verification link</div></div></article>
+    <section class="section" id="principles">
+      <div class="container grid-2"><div class="section-head"><div class="kicker">A focused evidence primitive</div><h2>Small enough to travel. Strong enough to verify.</h2><p>A DAR is a machine-verifiable record with a human-readable explanation. It captures what happened, when it happened, who issued the evidence, and how that evidence can be checked.</p></div>
+        <article class="card"><h3>What a receipt can include</h3><div class="report-list"><div class="report-item"><span class="check">✓</span>Action type and identifier</div><div class="report-item"><span class="check">✓</span>Actor and issuer identity</div><div class="report-item"><span class="check">✓</span>Event and issuance times</div><div class="report-item"><span class="check">✓</span>Target and context references</div><div class="report-item"><span class="check">✓</span>Evidence hashes</div><div class="report-item"><span class="check">✓</span>Signature and key identifier</div><div class="report-item"><span class="check">✓</span>Trust anchors</div><div class="report-item"><span class="check">✓</span>Independent verification result</div></div></article>
       </div>
     </section>
 
-    <section class="section" id="c2pa">
-      <div class="container"><div class="section-head"><div class="kicker">Complementary by design</div><h2>DAR and C2PA answer different questions.</h2><p>C2PA can carry provenance information with a content asset. DAR preserves the broader process timeline across tools, files, people, and systems. A C2PA manifest can be recorded as one event within a DAR timeline.</p></div>
-        <div class="comparison"><table><thead><tr><th>Question</th><th>C2PA</th><th>DAR</th></tr></thead><tbody><tr><td>Primary object</td><td>A content asset and its credentials</td><td>A sequence of digital actions</td></tr><tr><td>Scope</td><td>Asset-level provenance</td><td>Cross-platform process evidence</td></tr><tr><td>Human review</td><td>Can be represented in asset assertions</td><td>Recorded as timestamped workflow events and attestations</td></tr><tr><td>Survival outside the file</td><td>Depends on credential preservation or recovery mechanisms</td><td>External receipt history remains separately verifiable</td></tr><tr><td>Relationship</td><td>Content credential standard</td><td>Evidence timeline that can reference C2PA events</td></tr></tbody></table></div>
-      </div>
-    </section>
-
-    <section class="section" id="organizations">
-      <div class="container"><div class="section-head"><div class="kicker">Two doors, one engine</div><h2>Start with creators. Expand into governed AI processes.</h2><p>The first product serves creators directly. The same receipt and trust architecture later supports organizations documenting review, approval, policy checks, and autonomous system actions.</p></div>
-        <div class="grid-2"><article class="card door"><h3>For creators</h3><p>Build a credible record of how an AI-assisted work evolved from idea to publication.</p><ul><li>Music, video, images, writing, and software</li><li>Client and collaborator documentation</li><li>Licensing and dispute support</li><li>Verified Creation Report</li></ul><a class="btn btn-primary" href="#report">See creator deliverable</a></article><article class="card door"><h3>For organizations</h3><p>Document who reviewed AI output, what changed, when approval occurred, and which controls were applied.</p><ul><li>Human-in-the-loop review evidence</li><li>Approval and policy checkpoints</li><li>Audit-ready process timelines</li><li>Future agent action receipts</li></ul><a class="btn" href="mailto:hello@digitalactionreceipts.com">Discuss an organizational use case</a></article></div>
+    <section class="section" id="uses">
+      <div class="container"><div class="section-head"><div class="kicker">Industry-neutral by design</div><h2>One receipt model, many kinds of action.</h2><p>DAR is infrastructure, not a vertical application. Systems can use the same evidence pattern wherever an action must be proven across organizational or technical boundaries.</p></div>
+        <div class="comparison"><table><thead><tr><th>Action</th><th>Receipt evidence</th><th>Why portability matters</th></tr></thead><tbody><tr><td>Approval or review</td><td>Who reviewed what, when, and under which policy</td><td>The recipient can verify the decision without private workflow access</td></tr><tr><td>Publication or delivery</td><td>Asset fingerprint, destination, time, and issuer</td><td>Proof remains useful after the source platform changes</td></tr><tr><td>Automated execution</td><td>Agent, instruction, tool, target, and result reference</td><td>Evidence can cross systems without sharing full logs</td></tr><tr><td>Consent or authorization</td><td>Scope, parties, terms reference, and time</td><td>Each party can retain and verify the same record</td></tr><tr><td>Transfer or handoff</td><td>Sender, recipient, object, and acknowledgment</td><td>The chain of evidence survives organizational boundaries</td></tr></tbody></table></div>
       </div>
     </section>
 
     <section class="section">
-      <div class="container"><div class="section-head"><div class="kicker">Deliberate sequencing</div><h2>What ships now—and what waits.</h2><p>DAR is narrowing the first release to one concrete creator workflow before expanding into platform attestations and enterprise infrastructure.</p></div>
-        <div class="roadmap"><article class="phase now"><span>NOW</span><h3>Creator report</h3><p>Receipt chains, timestamps, public anchoring, captured evidence, Trust Score, and PDF report.</p></article><article class="phase"><span>NEXT</span><h3>Capture tools</h3><p>Lightweight project capture across common creative platforms and desktop workflows.</p></article><article class="phase"><span>LATER</span><h3>Team review</h3><p>Collaborator attestations, client approvals, human review, and organization workflows.</p></article><article class="phase"><span>ROADMAP</span><h3>Attestation network</h3><p>Native platform co-signatures, verification APIs, enterprise agents, and SV-DAR trust services.</p></article></div>
+      <div class="container"><div class="section-head"><div class="kicker">Clear boundaries</div><h2>Evidence without surveillance or lock-in.</h2><p>DAR is meant to make specific actions verifiable, not to become another monitoring platform or a copy of every system log.</p></div>
+        <div class="grid-2"><article class="card door"><h3>What DAR is</h3><ul><li>A neutral receipt format for digital actions</li><li>Append-only, tamper-evident evidence</li><li>Portable across tools and organizations</li><li>Independently verifiable</li></ul><a class="btn btn-primary" href="/how-it-works.html">Explore the architecture</a></article><article class="card door"><h3>What DAR is not</h3><ul><li>A monitoring or analytics platform</li><li>A replacement for internal logs</li><li>A claim that an action was correct or lawful</li><li>A product tied to one industry or buyer</li></ul><a class="btn" href="/boundaries.html">Read the boundaries</a></article></div>
       </div>
     </section>
 
-    <section class="cta"><div class="container"><div class="cta-box"><div><h2>Make the process part of the proof.</h2><p>DAR is building the first Verified Creation Report around a real AI-assisted creative workflow. Follow the project or explore the open tools already available.</p></div><a class="btn" href="https://github.com/digital-action-receipts/dar-website">View on GitHub</a></div></div></section>
+    <section class="section">
+      <div class="container"><div class="section-head"><div class="kicker">Open foundation</div><h2>Build from the receipt outward.</h2><p>The project is developing the core receipt, verification, and trust layers before adding broader integrations.</p></div>
+        <div class="roadmap"><article class="phase now"><span>NOW</span><h3>Receipt verification</h3><p>Structured receipts, signatures, issuer recognition, key status, and independent verification.</p></article><article class="phase"><span>NEXT</span><h3>Issuance tools</h3><p>Simple ways for existing systems and workflows to issue consistent receipts.</p></article><article class="phase"><span>LATER</span><h3>Trust anchors</h3><p>Trusted timestamps, transparency services, and counterparty attestations.</p></article><article class="phase"><span>ROADMAP</span><h3>Interoperability</h3><p>Portable verification APIs, ecosystem integrations, and shared action domains.</p></article></div>
+      </div>
+    </section>
+
+    <section class="cta"><div class="container"><div class="cta-box"><div><h2>Make digital actions independently verifiable.</h2><p>Explore the open definition, verification demonstration, and reference materials behind Digital Action Receipts.</p></div><a class="btn" href="https://github.com/digital-action-receipts/dar-website">View on GitHub</a></div></div></section>
   </main>
 
   <footer><div class="container footer-inner"><div>© 2026 Digital Action Receipts. DAR provides evidence infrastructure, not legal ownership determinations.</div><div class="footer-links"><a href="/tools.html">Tools</a><a href="/playground.html">Playground</a><a href="https://github.com/digital-action-receipts">GitHub</a></div></div></footer>
 </body>
 </html>
+
