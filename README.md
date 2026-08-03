@@ -1,27 +1,46 @@
-# dar-website
-Reference implementation and website for issuing verifiable receipts for digital actions — neutral, append-only proof that an action occurred, without logs or system coupling.
-# Receipts for Digital Actions
+# Digital Action Receipts
 
-This repository contains the website and reference materials for a system that issues
-verifiable receipts for digital actions.
+DAR is intended to become the evidence and authorization layer for consequential AI-assisted actions.
 
-A digital action receipt is a neutral, append-only record that an action occurred,
-created at the moment of execution and independently verifiable later — without
-requiring access to internal logs, screenshots, or tightly coupled systems.
+The project explores portable, independently reviewable records showing what an AI agent, person, contractor, or third-party vendor was asked to do; who or what acted; which authority, evidence, tools, and approvals applied; what was completed; and what was blocked, declined, escalated, or left unsubmitted.
 
-## What this is
-- A reference implementation and public-facing website
-- Documentation describing digital action receipts and verification
-- Early prototype materials demonstrating receipt issuance and verification
+## Accountability model
 
-## What this is not
-- A monitoring or analytics platform
-- A compliance product
-- A log aggregation system
-- A replacement for existing workflows
+- **Proof of action:** evidence of the work that was performed.
+- **Proof of restraint:** evidence that authority boundaries, approval gates, and prohibited actions were respected.
 
-## Status
-This project is in early development.
-The focus is on clarity, correctness, and minimal surface area.
+DAR is designed as complementary infrastructure for existing agent, workflow, procurement, governance, and case-management systems. It is not intended to be employee-surveillance software, a generic activity logger, or an automatic compliance or legal decision-maker.
 
-More documentation will be added as the system evolves.
+## Demonstrated today
+
+This repository currently provides:
+
+- A public static website and reference documentation.
+- A bounded browser-based receipt verification demonstration.
+- Strict demonstration schemas and size limits.
+- Receipt-ID derivation and ECDSA signature verification.
+- Separate checks for structure, integrity, issuer recognition, key status, and event-time validity.
+- Automated verifier and trust-registry tests.
+- Government-readiness documentation that identifies implemented, unimplemented, and unknown controls without claiming certification.
+
+The current repository is not a production service, government-approved system, compliance certification, or complete authorization-enforcement platform.
+
+## Case studies
+
+- **Case Study 1 — completed:** Codex/software-development instrumentation and publication-readiness evidence. The public-redacted report is maintained on the `government-readiness/codex-case-study-instrumentation` branch.
+- **Case Study 2 — completed:** AI-assisted government procurement opportunity analysis within a controlled research and document-preparation boundary. Submission, signature, certification, and legal representation remained outside the authorized scope.
+- **Case Study 3 — planned:** a bounded, non-sensitive external-company pilot. It is not represented as completed.
+
+## Roadmap direction
+
+Future work may include receipt issuance patterns, proof-of-restraint events, human approval records, customer-controlled custody, bounded workflow integrations, enterprise identity, enforceable authorization, managed keys, tenant isolation, accessibility assurance, and independent security review. These are roadmap items unless repository evidence states otherwise.
+
+## Development
+
+Requires Node.js 22 or newer.
+
+```sh
+npm test
+```
+
+No sensitive customer information, production credentials, private keys, or nonpublic procurement evidence should be committed to this repository.
