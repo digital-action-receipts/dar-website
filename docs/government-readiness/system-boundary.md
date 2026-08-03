@@ -64,3 +64,6 @@ These constraints govern future design but do not expand the current evidenced b
 ## Trust boundaries
 
 TB-1 separates repository/change control from released static content. TB-2 separates hosting/CDN delivery from the user's browser. TB-3 separates untrusted user-controlled input from browser code. TB-4 separates the browser from an arbitrary URL when remote fetch is enabled. TB-5 separates public content from browser persistence; private demo keys cross into localStorage. None of these boundaries currently has documented operational ownership or control evidence beyond code behavior.
+# Phase B3 boundary note
+
+The repository boundary now includes CI workflow checks, scanner scripts, a CycloneDX application-dependency SBOM, and a static-hosting `_headers` policy. GitHub branch protections, Actions environments, artifact retention, hosting enforcement, TLS, DNS, provider logs and deployment credentials remain outside repository evidence.

@@ -1,0 +1,4 @@
+import {readdir,readFile} from "node:fs/promises";import {join} from "node:path";
+const ignored=new Set([".git","node_modules"]),root=process.cwd(),checks=[[/\beval\s*\(/,"dynamic eval"],[/new Function\s*\(/,"dynamic Function"],[/innerHTML\s*=/,"unsafe innerHTML assignment"],[/document\.write\s*\(/,"document.write"],[/javascript:\s*[^/]/i,"javascript URL"]];
+async function walk(d){const a=[];for(const e of await readdir(d,{withFileTypes:true})){if(ignored.has(e.name))continue;const p=join(d,e.name);e.isDirectory()?a.push(...await walk(p)):a.push(p)}return a}
+const hits=[];for(const f of await walk(root)){if(!/\.(mjs|js|html)$/.test(f))continue;const lines=(await readFile(f,"utf8")).split(/\r?\n/);lines.forEach((l,i)=>checks.forEach(([p,n])=>{if(p.test(l)&&!f.endsWith("sast-scan.mjs"))hits.push(`${f}:${i+1}: ${n}`)}))}if(hits.length){console.error(hits.join("\n"));process.exit(1)}console.log("SAST baseline passed: no disallowed patterns found.");

@@ -29,3 +29,6 @@ Founder decisions are now authoritative for custody, retention, legal holds, dis
 ## Phase B1 verification treatment
 
 Phase B1 partially treats T1, T2, T5, T6, T8, and T9 for the bounded browser demonstration: it removes arbitrary URL retrieval and field-presence verification, adds a strict size-limited schema, RFC 8785-style canonicalization, derived content identity, real ECDSA verification, an explicit demonstration trust registry, issuer/key/time/status gates, and false-positive tests. The browser holds no private key. These controls do not establish production issuer governance, key custody, revocation distribution, trusted time, replay prevention, or general JCS interoperability. Corresponding threats remain open outside the demonstration boundary.
+# Phase B3 supply-chain and deployment threats
+
+The baseline addresses accidental secret commits, dependency drift, common JavaScript/HTML sink misuse, missing browser headers, unreviewed release artifacts, and unrecoverable static deployments through CI gates, SBOM evidence, static checks, a header policy, commit-linked release procedure, and rollback exercise. It does not prove GitHub settings, hosting configuration, third-party infrastructure, production authentication, managed secrets, or incident response readiness.

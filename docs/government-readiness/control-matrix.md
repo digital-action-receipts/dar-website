@@ -69,3 +69,12 @@ These facts do not establish a production security control environment.
 | CY-SDLC-01 | Partial | Dependency-free Node test suite and PR-triggered GitHub Actions workflow exist. SAST, dependency scanning, SBOM, protected reviews, and broader SDLC controls remain unimplemented/not evidenced. |
 
 No Phase B1 evidence changes the status of production authentication, managed key custody, storage/retention, logging, backup/recovery, privacy operations, accessibility compliance, or incident response.
+
+## Phase B3 evidence update
+
+| ID | Updated status | Evidence and limitation |
+|---|---|---|
+| CY-SDLC-01 | Partial | CI runs repository tests, secret scan, dependency inventory, targeted SAST, CycloneDX SBOM generation, header validation and diff checks. GitHub branch protections and full infrastructure/dependency coverage remain not evidenced. |
+| CY-SDLC-02 | Partial | Environment, release-integrity and repository-only rollback procedures are documented. No production deployment target, environment separation, backup or recovery service is evidenced. |
+| CY-DP-03 | Partial | A high-confidence repository secret scanner runs in CI; no actual secret is committed. Provider secret stores and history-remediation operations remain external/not evidenced. |
+| CY-WEB-01 | Partial | `_headers` and `security-headers.json` define and validate a static-hosting baseline. Provider enforcement and HTTPS/HSTS evidence remain external. |

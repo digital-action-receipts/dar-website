@@ -1,0 +1,14 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:dar-b3-repository",
+  "version": 1,
+  "metadata": {
+    "component": {
+      "type": "application",
+      "name": "dar-website",
+      "version": "repository-state"
+    }
+  },
+  "components": []
+}
