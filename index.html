@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="description" content="DAR creates verifiable histories of AI-assisted creative work by documenting prompts, generations, human edits, reviews, approvals, and publication events." />
-  <meta name="keywords" content="Digital Action Receipts, DAR, AI creators, creative process, verified creation report, process evidence, C2PA, trusted timestamps" />
-  <title>DAR — Verifiable creation histories for AI-assisted work</title>
+  <meta name="description" content="DAR is an independent evidence and authorization layer for consequential digital and AI-assisted actions." />
+  <meta name="keywords" content="Digital Action Receipts, DAR, AI agents, agent authorization, action assurance, human approval, independent verification" />
+  <title>DAR — Independent assurance for consequential AI actions</title>
   <style>
     :root{
       --bg:#f6f8fc; --surface:#fff; --surface-2:#eef3fb; --text:#111827; --muted:#5b6474;
@@ -18,6 +18,7 @@
     html{scroll-behavior:smooth}
     body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55}
     a{color:inherit;text-decoration:none}
+    a:focus-visible{outline:3px solid #7aa2ff;outline-offset:4px;border-radius:6px}
     button{font:inherit}
     .container{width:min(var(--max),calc(100% - 40px));margin:0 auto}
     .nav{position:sticky;top:0;z-index:20;background:rgba(246,248,252,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(223,229,239,.9)}
@@ -48,6 +49,7 @@
     .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
     .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:0 12px 34px rgba(33,54,96,.05)}
     .card .num{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#eaf0ff;color:var(--brand);font-weight:900;margin-bottom:18px}.card h3{margin:0 0 9px;font-size:20px;letter-spacing:-.025em}.card p{margin:0;color:var(--muted)}
+    .card ul{padding-left:20px;color:var(--muted)}.card li+li{margin-top:7px}.status{display:inline-block;margin-bottom:14px;padding:5px 9px;border-radius:999px;font:800 11px var(--mono);letter-spacing:.04em}.status-live{background:#e6f6ef;color:var(--green)}.status-plan{background:#fff3df;color:var(--amber)}
     .dark{background:#111936;color:white}.dark .section-head p,.dark .card p{color:#b4bdd0}.dark .card{background:#182238;border-color:#2a3650;box-shadow:none}.dark .kicker{color:#8fb0ff}
     .trust-ladder{display:grid;gap:12px}.trust-row{display:grid;grid-template-columns:48px 1fr auto;gap:16px;align-items:center;padding:17px 18px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}.stars{letter-spacing:2px;color:#d6b26e}.trust-row.active .stars{color:#f0a800}.trust-row strong{display:block}.trust-row small{color:var(--muted)}.level{font:12px var(--mono);color:var(--brand)}
     .comparison{overflow:auto}.comparison table{width:100%;border-collapse:collapse;min-width:700px;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}.comparison th,.comparison td{text-align:left;padding:17px;border-bottom:1px solid var(--line)}.comparison th{background:var(--surface-2);font-size:13px}.comparison td{color:var(--muted)}.comparison td:first-child{color:var(--text);font-weight:750}
@@ -58,14 +60,15 @@
     footer{border-top:1px solid var(--line);padding:30px 0 45px;color:var(--muted);font-size:13px}.footer-inner{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}.footer-links{display:flex;gap:18px}
     @media(max-width:900px){.nav-links{display:none}.hero-grid,.grid-3,.grid-2{grid-template-columns:1fr}.report{transform:none;max-width:640px}.roadmap{grid-template-columns:1fr 1fr}.cta-box{align-items:flex-start;flex-direction:column}.hero{padding-top:52px}}
     @media(max-width:560px){.container{width:min(var(--max),calc(100% - 26px))}.hero{padding:42px 0}.lead{font-size:18px}.report{padding:18px}.report-list,.roadmap{grid-template-columns:1fr}.trust-row{grid-template-columns:40px 1fr}.stars{display:none}.cta-box{padding:30px}.cta-box h2{font-size:32px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn:hover{transform:none}}
   </style>
 </head>
 <body>
   <nav class="nav">
     <div class="container nav-inner">
-      <a class="brand" href="#top"><span class="logo">DAR</span><span>Digital Action Receipts<small>Verifiable process evidence</small></span></a>
-      <div class="nav-links"><a href="#creators">Creators</a><a href="#trust">How trust works</a><a href="#c2pa">DAR + C2PA</a><a href="#organizations">Organizations</a><a href="/tools.html">Tools</a></div>
-      <a class="btn btn-primary" href="#report">See the report</a>
+      <a class="brand" href="#top"><span class="logo">DAR</span><span>Digital Action Receipts<small>Independent action assurance</small></span></a>
+      <div class="nav-links"><a href="#proof">Proof model</a><a href="#use-cases">Use cases</a><a href="#cases">Case studies</a><a href="#capabilities">Today vs. roadmap</a><a href="/tools.html">Tools</a></div>
+      <a class="btn btn-primary" href="#pilot">Discuss a pilot</a>
     </div>
   </nav>
 
@@ -73,68 +76,86 @@
     <header class="hero">
       <div class="container hero-grid">
         <div>
-          <div class="eyebrow"><span class="eyebrow-dot"></span>Built for AI-assisted creators</div>
-          <h1>Create a verifiable history of how your work was made.</h1>
-          <p class="lead">DAR documents the prompts, generations, human edits, reviews, approvals, and publication events behind digital work—then turns that history into a Verified Creation Report.</p>
-          <div class="hero-actions"><a class="btn btn-primary" href="#report">Explore the report</a><a class="btn" href="#organizations">For organizations</a></div>
-          <p class="trust-note">DAR does not determine copyright ownership. It creates independently verifiable evidence of the creative process.</p>
+          <div class="eyebrow"><span class="eyebrow-dot"></span>Evidence for actions that matter</div>
+          <h1>The evidence and authorization layer for consequential AI-assisted actions.</h1>
+          <p class="lead">Know what happened, who or what performed the action, who authorized it, what evidence supported it, and whether the operator stayed within its assigned authority.</p>
+          <div class="hero-actions"><a class="btn btn-primary" href="#how">See how it works</a><a class="btn" href="/definition.html">Read the definition</a></div>
+          <p class="trust-note">DAR verifies the action record and its supporting trust evidence. It does not automatically claim the underlying decision was correct, lawful, or successful.</p>
         </div>
-        <aside class="report" aria-label="Verified Creation Report preview">
-          <div class="report-top"><div><div class="report-title">Verified Creation Report</div><div class="report-id">DAR-CR-2026-0713-0042</div></div><div class="score"><div><strong>86</strong><span>TRUST SCORE</span></div></div></div>
+        <aside class="report" aria-label="Digital Action Receipt preview">
+          <div class="report-top"><div><div class="report-title">Digital Action Receipt</div><div class="report-id">DAR-DEMO-2026-0042</div></div><div class="score"><div><strong>DEMO</strong><span>RECEIPT</span></div></div></div>
           <div class="timeline">
-            <div class="event"><div class="time">2:15 PM</div><div class="rail"><div class="node"></div></div><div><h3>Prompt submitted</h3><p>Creative direction captured with source evidence.</p><span class="tag">TIMESTAMPED</span></div></div>
-            <div class="event"><div class="time">2:18 PM</div><div class="rail"><div class="node"></div></div><div><h3>AI generation created</h3><p>Platform output and generation reference recorded.</p><span class="tag">PLATFORM EVIDENCE</span></div></div>
-            <div class="event"><div class="time">3:05 PM</div><div class="rail"><div class="node"></div></div><div><h3>Human arrangement edited</h3><p>Project version and edit summary linked to the chain.</p><span class="tag">CHAIN VERIFIED</span></div></div>
-            <div class="event"><div class="time">4:15 PM</div><div class="rail"><div class="node"></div></div><div><h3>Final work published</h3><p>Export fingerprint and publication event preserved.</p><span class="tag">PUBLICLY ANCHORED</span></div></div>
+            <div class="event"><div class="time">2:15 PM</div><div class="rail"><div class="node"></div></div><div><h3>Task authorized</h3><p>Scope, principal, limits, and prohibited actions recorded.</p><span class="tag">AUTHORITY RECORDED</span></div></div>
+            <div class="event"><div class="time">2:18 PM</div><div class="rail"><div class="node"></div></div><div><h3>Evidence reviewed</h3><p>Source and tool references linked without requiring raw sensitive content.</p><span class="tag">EVIDENCE REFERENCED</span></div></div>
+            <div class="event"><div class="time">2:24 PM</div><div class="rail"><div class="node"></div></div><div><h3>Submission blocked</h3><p>The action exceeded assigned authority and was left for human approval.</p><span class="tag">RESTRAINT RECORDED</span></div></div>
+            <div class="event"><div class="time">2:26 PM</div><div class="rail"><div class="node"></div></div><div><h3>Integrity checked</h3><p>Structure, signature, issuer, and key status evaluated separately.</p><span class="tag">DEMO VERIFIED</span></div></div>
           </div>
         </aside>
       </div>
     </header>
 
-    <section class="section" id="creators">
-      <div class="container"><div class="section-head"><div class="kicker">The creator wedge</div><h2>Your process is scattered across tools. DAR connects the evidence.</h2><p>An AI-assisted project may begin in a chatbot, move through a generation platform, change in a DAW or editor, and finish on a publishing platform. DAR creates one coherent timeline across that journey.</p></div>
-        <div class="grid-3"><article class="card"><div class="num">1</div><h3>Capture meaningful events</h3><p>Record prompts, source files, generations, selections, edits, approvals, exports, and publication events.</p></article><article class="card"><div class="num">2</div><h3>Anchor the timeline</h3><p>Hash-chain receipts, trusted timestamps, and public log anchoring make silent backdating or alteration detectable.</p></article><article class="card"><div class="num">3</div><h3>Generate usable evidence</h3><p>Turn the timeline into a portable report for clients, collaborators, licensing discussions, disputes, or internal records.</p></article></div>
+    <section class="section">
+      <div class="container"><div class="section-head"><div class="kicker">Why evidence matters</div><h2>Consequential work can no longer live only inside a chat transcript or vendor log.</h2><p>AI agents, employees, contractors, and service providers can research, draft, recommend, modify records, use tools, and prepare external actions. When the work affects money, rights, records, contracts, or public services, an authorized reviewer needs a durable account of both execution and restraint.</p></div>
+        <div class="grid-3"><article class="card"><h3>Authority becomes visible</h3><p>Show what the operator was asked and permitted to do, who delegated that authority, and which limits applied.</p></article><article class="card"><h3>Evidence becomes reviewable</h3><p>Connect actions to approved sources, tools, systems, policies, approvals, results, and material exceptions.</p></article><article class="card"><h3>Boundaries become provable</h3><p>Record what was refused, blocked, escalated, or intentionally left unsubmitted when authority ran out.</p></article></div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="container"><div class="section-head"><div class="kicker">How it works</div><h2>Turn consequential actions into reviewable evidence.</h2><p>DAR sits alongside existing agents and workflows. It records observable actions, authority, evidence, policy checks, and human decisions without pretending to capture hidden model reasoning or replacing the original system.</p></div>
+        <div class="grid-3"><article class="card"><div class="num">1</div><h3>Define authority</h3><p>Record the requested action, permitted scope, prohibited actions, principal, and required approval boundaries.</p></article><article class="card"><div class="num">2</div><h3>Capture evidence</h3><p>Link the action actually taken to its agent, tool, sources, policy version, human interventions, output, and receipt signature.</p></article><article class="card"><div class="num">3</div><h3>Verify and reconstruct</h3><p>Let an independent reviewer confirm integrity, issuer trust, authority, approvals, missing evidence, and stated limitations.</p></article></div>
+      </div>
+    </section>
+
+    <section class="section" id="proof">
+      <div class="container"><div class="section-head"><div class="kicker">Two sides of accountability</div><h2>Proof of action. Proof of restraint.</h2><p>An accountable workflow must explain not only what occurred, but also which consequential actions did not occur and why.</p></div>
+        <div class="grid-2"><article class="card door"><h3>Proof of action</h3><p>Evidence of the work that was actually performed.</p><ul><li>Request and intended outcome</li><li>Actor, agent, operator, or vendor identity</li><li>Tools, systems, sources, and policy references</li><li>Approvals, material actions, results, and timestamps</li><li>Integrity hashes and verification data</li></ul></article><article class="card door"><h3>Proof of restraint</h3><p>Evidence that authority boundaries and required controls were respected.</p><ul><li>Prohibited actions and approval gates</li><li>Refusals, blocks, exceptions, and escalations</li><li>Actions declined or left unsubmitted</li><li>Human review and retained decision authority</li><li>Unresolved evidence and explicit limitations</li></ul></article></div>
       </div>
     </section>
 
     <section class="section dark" id="trust">
-      <div class="container"><div class="section-head"><div class="kicker">Trust must be earned</div><h2>A receipt chain is only the beginning.</h2><p>DAR grades evidence by the independent trust anchors supporting it. The score communicates evidence strength without asking users to understand cryptography.</p></div>
+      <div class="container"><div class="section-head"><div class="kicker">Trust must be earned</div><h2>Integrity, identity, and outcome are different questions.</h2><p>The current demonstration evaluates receipt structure, content integrity, signature validity, issuer recognition, key status, and event-time validity separately. A valid signature alone does not prove that the underlying action was authorized, accurate, successful, fair, or complete.</p></div>
         <div class="trust-ladder">
-          <div class="trust-row"><div class="level">L1</div><div><strong>Self-issued receipt</strong><small>Integrity-linked project event recorded by the creator or organization.</small></div><div class="stars">★☆☆☆</div></div>
-          <div class="trust-row active"><div class="level">L2</div><div><strong>Trusted timestamp</strong><small>Independent proof that the receipt hash existed by a specific time.</small></div><div class="stars">★★☆☆</div></div>
-          <div class="trust-row active"><div class="level">L3</div><div><strong>Public transparency anchoring</strong><small>Receipt commitments published to an append-only external log.</small></div><div class="stars">★★★☆</div></div>
-          <div class="trust-row"><div class="level">L4</div><div><strong>Platform or counterparty attestation</strong><small>The system or party involved co-signs or independently confirms the event.</small></div><div class="stars">★★★★</div></div>
+          <div class="trust-row active"><div class="level">NOW</div><div><strong>Receipt and issuer checks</strong><small>The demonstration evaluates structure, receipt ID, signature, recognized issuer, key status, and event-time validity.</small></div><div class="stars">DEMO</div></div>
+          <div class="trust-row"><div class="level">REF</div><div><strong>Referenced workflow evidence</strong><small>An integrating workflow may reference approved sources, approvals, policies, and artifacts without copying all sensitive content.</small></div><div class="stars">DESIGN</div></div>
+          <div class="trust-row"><div class="level">NEXT</div><div><strong>Independent time and custody evidence</strong><small>Trusted timestamps and customer-controlled evidence custody are development directions, not current production claims.</small></div><div class="stars">ROADMAP</div></div>
+          <div class="trust-row"><div class="level">LATER</div><div><strong>Platform or counterparty attestation</strong><small>Future integrations could allow an involved system or party to independently confirm an event.</small></div><div class="stars">VISION</div></div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="report">
-      <div class="container grid-2"><div class="section-head"><div class="kicker">The first deliverable</div><h2>The Verified Creation Report</h2><p>A human-readable evidence package backed by machine-verifiable receipts. It explains what happened, when it happened, what supports each event, and how strong the evidence is.</p></div>
-        <article class="card"><h3>What the report includes</h3><div class="report-list"><div class="report-item"><span class="check">✓</span>Project and creator identity</div><div class="report-item"><span class="check">✓</span>Chronological creation timeline</div><div class="report-item"><span class="check">✓</span>Human and AI contribution markers</div><div class="report-item"><span class="check">✓</span>Evidence references and hashes</div><div class="report-item"><span class="check">✓</span>Trusted timestamps and anchors</div><div class="report-item"><span class="check">✓</span>Trust Score with explanation</div><div class="report-item"><span class="check">✓</span>Final asset fingerprint</div><div class="report-item"><span class="check">✓</span>Independent verification link</div></div></article>
+    <section class="section" id="principles">
+      <div class="container grid-2"><div class="section-head"><div class="kicker">A focused assurance primitive</div><h2>More than a log. More honest than a blanket “verified.”</h2><p>A DAR separates what can be cryptographically verified from what still requires human, policy, or outcome review. Missing evidence and unresolved claims remain visible instead of being collapsed into a single pass indicator.</p></div>
+        <article class="card"><h3>What a receipt can include</h3><div class="report-list"><div class="report-item"><span class="check">✓</span>Agent and principal identity</div><div class="report-item"><span class="check">✓</span>Authority and delegation</div><div class="report-item"><span class="check">✓</span>Requested versus executed action</div><div class="report-item"><span class="check">✓</span>Sources and evidence references</div><div class="report-item"><span class="check">✓</span>Policy and model version</div><div class="report-item"><span class="check">✓</span>Human approval or correction</div><div class="report-item"><span class="check">✓</span>Signature and issuer trust</div><div class="report-item"><span class="check">✓</span>Outcome and limitations</div></div></article>
       </div>
     </section>
 
-    <section class="section" id="c2pa">
-      <div class="container"><div class="section-head"><div class="kicker">Complementary by design</div><h2>DAR and C2PA answer different questions.</h2><p>C2PA can carry provenance information with a content asset. DAR preserves the broader process timeline across tools, files, people, and systems. A C2PA manifest can be recorded as one event within a DAR timeline.</p></div>
-        <div class="comparison"><table><thead><tr><th>Question</th><th>C2PA</th><th>DAR</th></tr></thead><tbody><tr><td>Primary object</td><td>A content asset and its credentials</td><td>A sequence of digital actions</td></tr><tr><td>Scope</td><td>Asset-level provenance</td><td>Cross-platform process evidence</td></tr><tr><td>Human review</td><td>Can be represented in asset assertions</td><td>Recorded as timestamped workflow events and attestations</td></tr><tr><td>Survival outside the file</td><td>Depends on credential preservation or recovery mechanisms</td><td>External receipt history remains separately verifiable</td></tr><tr><td>Relationship</td><td>Content credential standard</td><td>Evidence timeline that can reference C2PA events</td></tr></tbody></table></div>
+    <section class="section" id="use-cases">
+      <div class="container"><div class="section-head"><div class="kicker">Priority use cases</div><h2>A neutral layer across agents, vendors, supervisors, and buyers.</h2><p>DAR is designed to complement existing workflow, procurement, governance, case-management, and service-delivery systems rather than replace them.</p></div>
+        <div class="grid-3"><article class="card"><h3>AI-agent accountability</h3><p>Document assigned authority, evidence, tool activity, approvals, results, exceptions, and prohibited actions for consequential agent work.</p></article><article class="card"><h3>Third-party vendor verification</h3><p>Create evidence that agreed work occurred, approved systems and processes were used, required approvals were obtained, and expected deliverables were addressed—without invasive employee surveillance.</p></article><article class="card"><h3>Human–AI approval chains</h3><p>Show where AI assisted, where a person reviewed or corrected the work, and who retained final decision authority.</p></article><article class="card"><h3>Government and regulated workflows</h3><p>Support evidence-backed research, analysis, document preparation, and human approval while recording strict boundaries around submission, certification, signature, eligibility, and legal representation.</p></article><article class="card"><h3>Dispute and audit support</h3><p>Help an authorized reviewer reconstruct observable actions and evidence without claiming DAR decides liability, compliance, eligibility, or legal sufficiency.</p></article><article class="card"><h3>Contracted-work evidence</h3><p>Give buyers and service providers a shared, portable record of requested work, delivery steps, exceptions, acceptance, and unresolved obligations.</p></article></div>
       </div>
     </section>
 
-    <section class="section" id="organizations">
-      <div class="container"><div class="section-head"><div class="kicker">Two doors, one engine</div><h2>Start with creators. Expand into governed AI processes.</h2><p>The first product serves creators directly. The same receipt and trust architecture later supports organizations documenting review, approval, policy checks, and autonomous system actions.</p></div>
-        <div class="grid-2"><article class="card door"><h3>For creators</h3><p>Build a credible record of how an AI-assisted work evolved from idea to publication.</p><ul><li>Music, video, images, writing, and software</li><li>Client and collaborator documentation</li><li>Licensing and dispute support</li><li>Verified Creation Report</li></ul><a class="btn btn-primary" href="#report">See creator deliverable</a></article><article class="card door"><h3>For organizations</h3><p>Document who reviewed AI output, what changed, when approval occurred, and which controls were applied.</p><ul><li>Human-in-the-loop review evidence</li><li>Approval and policy checkpoints</li><li>Audit-ready process timelines</li><li>Future agent action receipts</li></ul><a class="btn" href="mailto:hello@digitalactionreceipts.com">Discuss an organizational use case</a></article></div>
+    <section class="section" id="cases">
+      <div class="container"><div class="section-head"><div class="kicker">Evidence before claims</div><h2>Case studies are how DAR earns trust.</h2><p>Completed studies demonstrate bounded workflows and narrow claims. Planned work remains labeled as planned until evidence and participant authorization support publication.</p></div>
+        <div class="grid-3"><article class="card"><span class="status status-live">COMPLETED</span><h3>Case Study 1: Codex development</h3><p>Reconstructed an AI-assisted software-development workflow from authorized scope through repository changes, 28 local tests, security checks, human-controlled publication, and CI corroboration. It does not prove complete model visibility, certification, or production security.</p><p style="margin-top:18px"><a class="btn" href="https://github.com/digital-action-receipts/dar-website/blob/government-readiness/codex-case-study-instrumentation/docs/case-studies/codex-case-study-01/public-redacted-report.md">Read the public-redacted report</a></p></article><article class="card"><span class="status status-live">COMPLETED</span><h3>Case Study 2: Procurement analysis</h3><p>Documented AI-assisted government procurement opportunity research and document preparation within a controlled boundary. Submission, certification, signature, legal representation, and unsupported owner claims remained prohibited or unperformed.</p></article><article class="card"><span class="status status-plan">PLANNED</span><h3>Case Study 3: External pilot</h3><p>A proposed no-install, non-sensitive company workflow with participant-controlled evidence, explicit prohibited actions, human review, and no public release without written approval.</p></article></div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container"><div class="section-head"><div class="kicker">Deliberate sequencing</div><h2>What ships now—and what waits.</h2><p>DAR is narrowing the first release to one concrete creator workflow before expanding into platform attestations and enterprise infrastructure.</p></div>
-        <div class="roadmap"><article class="phase now"><span>NOW</span><h3>Creator report</h3><p>Receipt chains, timestamps, public anchoring, captured evidence, Trust Score, and PDF report.</p></article><article class="phase"><span>NEXT</span><h3>Capture tools</h3><p>Lightweight project capture across common creative platforms and desktop workflows.</p></article><article class="phase"><span>LATER</span><h3>Team review</h3><p>Collaborator attestations, client approvals, human review, and organization workflows.</p></article><article class="phase"><span>ROADMAP</span><h3>Attestation network</h3><p>Native platform co-signatures, verification APIs, enterprise agents, and SV-DAR trust services.</p></article></div>
+    <section class="section" id="boundaries">
+      <div class="container"><div class="section-head"><div class="kicker">Clear boundaries</div><h2>Evidence without surveillance or lock-in.</h2><p>DAR is meant to make specific actions verifiable, not to become another monitoring platform or a copy of every system log.</p></div>
+        <div class="grid-2"><article class="card door"><h3>What DAR is</h3><ul><li>An independent evidence and authorization layer</li><li>Portable assurance for consequential agent actions</li><li>A record of scope, evidence, controls, and human decisions</li><li>A way to reconstruct actions across tools and organizations</li></ul><a class="btn btn-primary" href="/how-it-works.html">Explore the architecture</a></article><article class="card door"><h3>What DAR is not</h3><ul><li>Employee-surveillance or generic activity logging</li><li>The AI model or operational decision system</li><li>Proof that an AI answer or decision is true</li><li>Government approval, certification, or automatic compliance</li></ul><a class="btn" href="/boundaries.html">Read the boundaries</a></article></div>
       </div>
     </section>
 
-    <section class="cta"><div class="container"><div class="cta-box"><div><h2>Make the process part of the proof.</h2><p>DAR is building the first Verified Creation Report around a real AI-assisted creative workflow. Follow the project or explore the open tools already available.</p></div><a class="btn" href="https://github.com/digital-action-receipts/dar-website">View on GitHub</a></div></div></section>
+    <section class="section" id="capabilities">
+      <div class="container"><div class="section-head"><div class="kicker">Today versus roadmap</div><h2>Demonstrated now. Developed next. Envisioned longer term.</h2><p>The current repository is an early static prototype and browser-based verification demonstration—not a production service or government-approved system.</p></div>
+        <div class="roadmap"><article class="phase now"><span>DEMONSTRATED TODAY</span><h3>Bounded verification</h3><p>Strict demo schemas, receipt integrity, ECDSA signatures, issuer recognition, key status, event-time validity, automated tests, and public case-study evidence.</p></article><article class="phase"><span>IN DEVELOPMENT</span><h3>Issuance and pilots</h3><p>Receipt capture patterns, proof-of-restraint events, human approval records, customer-controlled custody, and bounded external validation.</p></article><article class="phase"><span>FUTURE CAPABILITY</span><h3>Workflow integration</h3><p>Optional connections to agent, vendor, procurement, governance, and case-management systems using references, hashes, metadata, or selectively retained evidence.</p></article><article class="phase"><span>LONGER-TERM VISION</span><h3>Production assurance</h3><p>Enterprise identity, enforceable authorization, managed keys, tenant isolation, recovery, monitoring, accessibility assurance, and independent security review.</p></article></div>
+      </div>
+    </section>
+
+    <section class="cta" id="pilot"><div class="container"><div class="cta-box"><div><h2>Help test evidence for actions that matter.</h2><p>DAR is seeking controlled-pilot collaborators, technical and security reviewers, and organizations willing to evaluate a bounded, non-sensitive workflow. Participation does not imply certification or public endorsement.</p></div><div class="hero-actions"><a class="btn" href="mailto:hello@digitalactionreceipts.com?subject=DAR%20controlled%20pilot">Discuss a controlled pilot</a><a class="btn" href="https://github.com/digital-action-receipts/dar-website">Review the repository</a></div></div></div></section>
   </main>
 
-  <footer><div class="container footer-inner"><div>© 2026 Digital Action Receipts. DAR provides evidence infrastructure, not legal ownership determinations.</div><div class="footer-links"><a href="/tools.html">Tools</a><a href="/playground.html">Playground</a><a href="https://github.com/digital-action-receipts">GitHub</a></div></div></footer>
+  <footer><div class="container footer-inner"><div>© 2026 Digital Action Receipts. Evidence infrastructure—not legal, compliance, eligibility, or outcome determination.</div><div class="footer-links"><a href="/tools.html">Tools</a><a href="/playground.html">Playground</a><a href="https://github.com/digital-action-receipts">GitHub</a></div></div></footer>
 </body>
 </html>
